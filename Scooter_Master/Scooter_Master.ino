@@ -271,6 +271,7 @@ void setup() {
   
 lcd_clear(); 
 
+//calibration_menu();
   
 }
 
@@ -558,17 +559,17 @@ void lcd_clear(){
 void calibration_menu(){
   
     lcd_clear();
-    Serial3.print("  PLEASE  TURN    SCOOTER  OFF");
-    while (digitalRead(scooter_sense) != 0){
-    delay(10);
-    }
+    Serial.print("Turning Scooter Off");
+    delay(1000);
+    digitalWrite(relaypower, LOW);
+    
     digitalWrite(relay1, HIGH);
     digitalWrite(relay2, HIGH);
     lcd_clear();
-    Serial3.print("  PLEASE  TURN     SCOOTER ON");
-    while (digitalRead(scooter_sense) != 1){
-      delay(10);
-    }
+    Serial.print("Turning Scooter on");
+    delay(1000);
+    digitalWrite(relaypower, HIGH);
+
     delay(3000);
     digitalWrite(relay1, LOW);
     digitalWrite(relay2, LOW);
@@ -580,7 +581,7 @@ void calibration_menu(){
     delay(1000);
     
     lcd_clear();
-    Serial3.print("  PLEASE  PULL     LEVER  CCW"); //begin calibration
+    Serial.print("  PLEASE  PULL     LEVER  CCW"); //begin calibration
     delay(3000);
     digitalWrite(relay1, HIGH);
     delay(150);
@@ -588,7 +589,7 @@ void calibration_menu(){
     delay(1000);
     
     lcd_clear();
-    Serial3.print(" PLEASE  CENTER    THE  LEVER");
+    Serial.print(" PLEASE  CENTER    THE  LEVER");
     delay(3000);
     digitalWrite(relay2, HIGH);
     delay(150);
@@ -596,7 +597,7 @@ void calibration_menu(){
     delay(1000);
     
     lcd_clear();
-    Serial3.print("  PLEASE  PULL      LEVER CW");
+    Serial.print("  PLEASE  PULL      LEVER CW");
     delay(3000);
     digitalWrite(relay4, HIGH);
     delay(150);
@@ -604,7 +605,7 @@ void calibration_menu(){
     delay(1000);
     
     lcd_clear();
-    Serial3.print(" PLEASE  CENTER    THE  LEVER");
+    Serial.print(" PLEASE  CENTER    THE  LEVER");
     delay(3000);
     digitalWrite(relay3, HIGH);
     delay(150);
@@ -612,19 +613,19 @@ void calibration_menu(){
     delay(2000);
     
     lcd_clear();
-    Serial3.print("  PLEASE  TURN    SCOOTER  OFF");
-    while (digitalRead(scooter_sense) != 0){
-      delay(10);
-    }
+    Serial.print("Turning Scooter Off");
+    delay(1000);
+    digitalWrite(relaypower, LOW);
+    
     delay(5000);
     lcd_clear();
-    Serial3.print("  PLEASE  TURN     SCOOTER ON");
-    while (digitalRead(scooter_sense) != 1){
-      delay(10);
-    }
+    Serial.print("Turning Scooter on");
+    delay(1000);
+    digitalWrite(relaypower, HIGH);
+    
     delay(1000);
     lcd_clear();
-    Serial3.print("AUTO CALIBRATION   COMPLETE");
+    Serial.print("AUTO CALIBRATION   COMPLETE");
     delay(3000);
 
 }

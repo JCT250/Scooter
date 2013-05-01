@@ -1,6 +1,6 @@
 //Test comment put in by Matt to test he can edit in github
-int throttle_input = 0; //input pin from the throttle lever
-int throttle_output = 0; //output pin to the scooter controller
+int throttle_input = A0 ; //input pin from the throttle lever
+int throttle_output = D10; //output pin to the scooter controller
 int incoming_byte = 0; //stores the incoming serial data
 int serial_active = 0; //determines whether we stay in the serial loop
 int throttle_output_val = 0; // holds mapped output value
@@ -40,7 +40,7 @@ void loop() {
        }
   }
   
-  throttle_output_val = map(analogRead(throttle_input), 0, 0123, 0, 255);
+  throttle_output_val = map(analogRead(throttle_input), 0, 1023, 0, 255);
   analogWrite(throttle_output, throttle_output_val);
   if(throttle_output_val != old_throttle_output_val){
     Serial.println(throttle_output_val);
