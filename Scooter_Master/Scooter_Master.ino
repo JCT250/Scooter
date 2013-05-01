@@ -270,13 +270,13 @@ void setup() {
   digitalWrite(relaypower, LOW);
   
 lcd_clear(); 
-
-//calibration_menu();
   
 }
 
 void loop() {
 
+
+  
 //  if(digitalRead(scooter_lock) == 0){
   //  isr_detach();
   //  scooter_lock_screen();
@@ -344,6 +344,9 @@ void loop() {
     }
     if (inputString[1] =='O'){
         digitalWrite(relaypower, LOW);
+    }
+    if (inputString[1] =='C'){
+        calibration_menu();
     }
    }
    
@@ -556,80 +559,80 @@ void lcd_clear(){
   Serial3.write(0x58);
 }
 
+
 void calibration_menu(){
-  
-    lcd_clear();
-    Serial.print("Turning Scooter Off");
-    delay(1000);
-    digitalWrite(relaypower, LOW);
     
+    Serial.println("Turning Scooter Off");
+    delay(500);
+    digitalWrite(relaypower, LOW);
+    delay(1000);
+    
+    Serial.println("Presetting for calibration");
+    delay(500);
     digitalWrite(relay1, HIGH);
     digitalWrite(relay2, HIGH);
-    lcd_clear();
-    Serial.print("Turning Scooter on");
     delay(1000);
-    digitalWrite(relaypower, HIGH);
 
+    Serial.println("Turning Scooter On");
+    delay(500);
+    digitalWrite(relaypower, HIGH);
     delay(3000);
+    
+    Serial.println("Presetting complete");
+    delay(500);
     digitalWrite(relay1, LOW);
     digitalWrite(relay2, LOW);
-    delay(2000);
+    delay(1000);
     
+    Serial.println("Entering Calibration"); //begin calibration
+    delay(1000);
     digitalWrite(relay1, HIGH); //enter service menu option 1
     delay(150);
     digitalWrite(relay1, LOW);
     delay(1000);
     
-    lcd_clear();
-    Serial.print("  PLEASE  PULL     LEVER  CCW"); //begin calibration
+    Serial.println("Please pull lever CCW");
     delay(3000);
     digitalWrite(relay1, HIGH);
     delay(150);
     digitalWrite(relay1, LOW);
     delay(1000);
     
-    lcd_clear();
-    Serial.print(" PLEASE  CENTER    THE  LEVER");
+    Serial.println("Please center the lever");
     delay(3000);
     digitalWrite(relay2, HIGH);
     delay(150);
     digitalWrite(relay2, LOW);
     delay(1000);
     
-    lcd_clear();
-    Serial.print("  PLEASE  PULL      LEVER CW");
+    Serial.println("Please pull lever CW");
     delay(3000);
     digitalWrite(relay4, HIGH);
     delay(150);
     digitalWrite(relay4, LOW);
     delay(1000);
     
-    lcd_clear();
-    Serial.print(" PLEASE  CENTER    THE  LEVER");
+    Serial.println("Please center the lever");
     delay(3000);
     digitalWrite(relay3, HIGH);
     delay(150);
     digitalWrite(relay3, LOW);
     delay(2000);
     
-    lcd_clear();
-    Serial.print("Turning Scooter Off");
+    Serial.println("Turning Scooter Off");
     delay(1000);
     digitalWrite(relaypower, LOW);
-    
-    delay(5000);
-    lcd_clear();
-    Serial.print("Turning Scooter on");
+    delay(3000);
+    Serial.println("Turning Scooter On");
     delay(1000);
     digitalWrite(relaypower, HIGH);
     
     delay(1000);
-    lcd_clear();
-    Serial.print("AUTO CALIBRATION   COMPLETE");
+    Serial.println("Auto calibration complete");
     delay(3000);
 
 }
-
+  
 void isr_detach(){
  
  detachInterrupt(0);

@@ -1,10 +1,17 @@
 //Test comment put in by Matt to test he can edit in github
 int throttle_input = A0 ; //input pin from the throttle lever
-int throttle_output = D10; //output pin to the scooter controller
+int throttle_output = 10; //output pin to the scooter controller
 int incoming_byte = 0; //stores the incoming serial data
 int serial_active = 0; //determines whether we stay in the serial loop
 int throttle_output_val = 0; // holds mapped output value
 int old_throttle_output_val = 0; //holds old throttle output val
+
+const int numReadings = 10;
+ 
+ int readings[numReadings];      // the readings from the analog input
+ int index = 0;                  // the index of the current reading
+ int total = 0;                  // the running total
+ int average = 0; 
 
 void setup() {
   // put your setup code here, to run once:
@@ -40,7 +47,25 @@ void loop() {
        }
   }
   
-  throttle_output_val = map(analogRead(throttle_input), 0, 1023, 0, 255);
+  total= total - readings[index];         
+  // read from the sensor:  
+   readings[index] = analogRead(throttle_input); 
+  // add the reading to the total:
+   total= total + readings[index];       
+  // advance to the next position in the array:  
+   index = index + 1;                    
+ 
+  // if we're at the end of the array...
+   if (index >= numReadings)              
+     // ...wrap around to the beginning: 
+    index = 0;                           
+
+  // calculate the average:
+   average = total / numReadings;
+   
+   
+   
+  throttle_output_val = map(average, 0, 1023, 26, 230);
   analogWrite(throttle_output, throttle_output_val);
   if(throttle_output_val != old_throttle_output_val){
     Serial.println(throttle_output_val);
