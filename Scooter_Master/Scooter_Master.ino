@@ -23,9 +23,8 @@ int relay7 = 28;
 int relay8 = 29;
 int relaypower = 52;
 
-int scooter_sense = 53; // input pin sensing 5v on the scooter controller
-int lcd_color = 0; // variable storing current lcd color
-int scooter_lock = 52;
+int scooter_lock = 52; //pin coming from nano to trigger remote lock 
+int scooter_key = 48; // pin coming from key to trigger local lock
 
 int indicateval = 2;
 int updateindicate = 0;
@@ -112,7 +111,9 @@ void setup() {
   pinMode(Stat_Battery3, INPUT);
   pinMode(Stat_Battery4, INPUT);
   pinMode(Stat_BatteryCharging, INPUT);
-  pinMode(scooter_sense, INPUT);
+  pinMode(scooter_lock, INPUT_PULLUP);
+  pinMode(scooter_key, INPUT_PULLUP);
+
   
   // Attach interupt pins to ISR's
   attachInterrupt(1, isr_Horn, CHANGE);
@@ -277,13 +278,21 @@ void loop() {
 
 
   
-//  if(digitalRead(scooter_lock) == 0){
-  //  isr_detach();
-  //  scooter_lock_screen();
-   // lcd_color_update(); //update the LCD color to reflect the scooter power status
-  //  isr_attach();
+  if(digitalRead(scooter_lock) == 0){
+    isr_detach();
+    scooter_lock_screen();
+    lcd_update(); //update the LCD 
+    isr_attach();
    
- // }
+  }
+ 
+   if(digitalRead(scooter_key) == 0){
+    isr_detach();
+    scooter_lock_screen();
+    lcd_update(); //update the LCD 
+    isr_attach();
+   
+  }
     
   
   if (stringComplete) {
@@ -655,43 +664,50 @@ void isr_attach(){
 }
 
 void lcd_update(){
+  
+      Serial3.write(0xFE); //Change backlight Color
+      Serial3.write(0xD0);
+      Serial3.write(0x00); //R
+      Serial3.write(0xFF); //G
+      Serial3.write(0x00); //B
+      delay(10);
 
-      Serial3.write(0xFE);
+      Serial3.write(0xFE); //Move the cursor
       Serial3.write(0x47);
-      Serial3.write(0x01);
-      Serial3.write(0x01);
+      Serial3.write(0x01); //column
+      Serial3.write(0x01); //row
       
       Serial3.print("Speed:");
     
-        Serial3.write(0xFE);
+        Serial3.write(0xFE); //Move the cursor
         Serial3.write(0x47);
-        Serial3.write(0x07);
-        Serial3.write(0x01); 
+        Serial3.write(0x07); //column
+        Serial3.write(0x01); //row
         
       if(digitalRead(Stat_Speed1) == 1){
     
-        Serial3.write((uint8_t)0);
-        Serial3.print("   ");
+        Serial3.write((uint8_t)0); //Write 25% icon
+        Serial3.print("   "); //Write blanks over the other icon spaces
       }
       
       else if(digitalRead(Stat_Speed2) == 1){
-        Serial3.write((uint8_t)0);
-        Serial3.write((uint8_t)1);
-        Serial3.print("  ");
+        Serial3.write((uint8_t)0); //Write 25% icon
+        Serial3.write((uint8_t)1); //Write 50% icon
+        Serial3.print("  "); //Write blanks over the other icon spaces
       }
       
       else if(digitalRead(Stat_Speed3) == 1){
-        Serial3.write((uint8_t)0);
-        Serial3.write((uint8_t)1);
-        Serial3.write((uint8_t)2);
-        Serial3.print(" ");
+        Serial3.write((uint8_t)0); //Write 25% icon
+        Serial3.write((uint8_t)1); //Write 50% icon
+        Serial3.write((uint8_t)2); //Write 75% icon
+        Serial3.print(" "); //Write blanks over the other icon spaces
       }
       
       else if(digitalRead(Stat_Speed4) == 1){
-        Serial3.write((uint8_t)0);
-        Serial3.write((uint8_t)1);
-        Serial3.write((uint8_t)2);
-        Serial3.write((uint8_t)3);
+        Serial3.write((uint8_t)0); //Write 25% icon
+        Serial3.write((uint8_t)1); //Write 50% icon
+        Serial3.write((uint8_t)2); //Write 75% icon
+        Serial3.write((uint8_t)3); //Write 100% icon
       }
       
         Serial3.write(0xFE); // move the cursor
@@ -727,19 +743,19 @@ void lcd_update(){
       Serial3.print("        ");
       
       if(digitalRead(Stat_Headlights) == 1){
-        Serial3.write((uint8_t)5);
+        Serial3.write((uint8_t)5); //If the headlights are on then write the icon to indicate that
       }
       else if(digitalRead(Stat_Headlights) == 0){
-        Serial3.print(" ");
+        Serial3.print(" "); //If the headlights are off then write a blank over that space
       }
     
       Serial3.print(" ");
     
       if(digitalRead(Stat_BatteryCharging) == 1){
-        Serial3.write((uint8_t)4);
+        Serial3.write((uint8_t)4); //If the battery LED is on then write the icon to indicate that 
       }
       else if(digitalRead(Stat_BatteryCharging) == 0){
-        Serial3.print(" ");
+        Serial3.print(" "); //If the battery LED is off then write the icon to indicate that 
       }
  }
  
@@ -748,35 +764,35 @@ void lcd_update(){
 void scooter_lock_screen(){
   
     while(digitalRead(scooter_lock) == 0){
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
     Serial3.write(0x00); //G
     Serial3.write(0x00); //B
     delay(10);
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Clear the LCD
     Serial3.write(0x58);
     delay(10);
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Set the cursor position
     Serial3.write(0x47);
-    Serial3.write(0x01);
-    Serial3.write(0x01);
+    Serial3.write(0x01); //column
+    Serial3.write(0x01); //row
     delay(10);
     Serial3.print(" SCOOTER LOCKED");
     delay(1500);
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
     Serial3.write(0x10); //G
     Serial3.write(0x00); //B
     delay(10);
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Clear the LCD
     Serial3.write(0x58);
     delay(10);
-    Serial3.write(0xFE);
+    Serial3.write(0xFE); //Set the cursor position
     Serial3.write(0x47);
-    Serial3.write(0x01);
-    Serial3.write(0x02);
+    Serial3.write(0x01); //column
+    Serial3.write(0x02); //row
     delay(10);
     Serial3.print(" SCOOTER LOCKED");
     delay(1500);
