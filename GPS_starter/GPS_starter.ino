@@ -17,6 +17,8 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
+static int lock_pin = 1; //digital pin connected to Mega for remote lock 
+
 void setup()
 {
   Serial.begin(115200);
@@ -30,10 +32,22 @@ void setup()
   Serial.println("Sats HDOP Latitude Longitude Fix  Date       Time       Date Alt     Course Speed Card  Distance Course Card  Chars Sentences Checksum");
   Serial.println("          (deg)    (deg)     Age                        Age  (m)     --- from GPS ----  ---- to London  ----  RX    RX        Fail");
   Serial.println("--------------------------------------------------------------------------------------------------------------------------------------");
+  pinMode(lock_pin, OUTPUT);
+  digitalWrite(lock_pin, HIGH);
 }
 
 void loop()
 {
+  if(Serial.available() > 0){
+   int inbyte = Serial.read();
+      if(inbyte == 1){
+       digitalWrite(lock_pin, HIGH);
+      }
+      if(inbyte == 0){
+       digitalWrite(lock_pin, LOW);
+      }
+  }
+ 
   bool newdata = false;
   unsigned long start = millis();
   
