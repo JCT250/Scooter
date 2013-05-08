@@ -23,8 +23,8 @@ int relay7 = 28;
 int relay8 = 29;
 int relaypower = 52;
 
-int scooter_lock = 52; //pin coming from nano to trigger remote lock 
-int scooter_key = 48; // pin coming from key to trigger local lock
+int scooter_lock = 47; //pin coming from nano to trigger remote lock 
+int scooter_key = 46; // pin coming from key to trigger local lock
 
 int indicateval = 2;
 int updateindicate = 0;
@@ -80,6 +80,10 @@ volatile boolean oldindicateleft = false;
 
 
 void setup() {
+
+  // initialize serial ports
+  Serial.begin(115200); // Connection through to computer
+  Serial3.begin(9600); // Connection through to LCD
   
   // initialize the digital pin as an output.
   pinMode(relay1, OUTPUT);
@@ -92,6 +96,8 @@ void setup() {
   pinMode(relay8, OUTPUT);
   pinMode(relaypower, OUTPUT);
   
+  Serial.println("Outputs Set");
+  
   // Configure interrupt pins  
   pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
@@ -99,6 +105,8 @@ void setup() {
   pinMode(19, INPUT_PULLUP);
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP);
+  
+  Serial.println("Interrupts Set");
   
   // Configure input pins
   pinMode(Stat_Speed1, INPUT);
@@ -113,6 +121,8 @@ void setup() {
   pinMode(Stat_BatteryCharging, INPUT);
   pinMode(scooter_lock, INPUT_PULLUP);
   pinMode(scooter_key, INPUT_PULLUP);
+  
+  Serial.println("Inputs Set");
 
   
   // Attach interupt pins to ISR's
@@ -123,10 +133,8 @@ void setup() {
   attachInterrupt(4, isr_IndicateLeft, FALLING);
   attachInterrupt(5, isr_IndicateRight, FALLING);
   
-  // initialize serial ports
-  Serial.begin(115200); // Connection through to computer
-  Serial3.begin(9600); // Connection through to LCD
-  
+  Serial.println("ISRs Attached");
+    
   // set the size of the display if it isn't 16x2 (you only have to do this once)
   Serial3.write(0xFE);
   Serial3.write(0xD1);
@@ -148,6 +156,8 @@ void setup() {
   Serial3.write(0x4B);
   Serial3.write(0xFE);
   Serial3.write(0x54);
+  
+  Serial.println("LCD setup complete");
   
   // create a custom character for battery level 1
   Serial3.write(0xFE);
@@ -233,6 +243,8 @@ void setup() {
   Serial3.write((uint8_t)0x0E);
   delay(10);
   
+  Serial.println("LCD custom characters written");
+  
   // clear screen
   Serial3.write(0xFE);
   Serial3.write(0x58);
@@ -268,28 +280,30 @@ void setup() {
     oldcurrentspeed = 4;
   }
   
-  digitalWrite(relaypower, LOW);
+  digitalWrite(relaypower, 1);
   
 lcd_clear(); 
-  
+  Serial.println("Entering Loop");
 }
 
 void loop() {
 
 
   
-  if(digitalRead(scooter_lock) == 0){
+ /* if(digitalRead(scooter_lock) == LOW){
     isr_detach();
     scooter_lock_screen();
     lcd_update(); //update the LCD 
     isr_attach();
    
   }
+ */
  
-   if(digitalRead(scooter_key) == 0){
+   if(digitalRead(scooter_key) == 1){
     isr_detach();
     scooter_lock_screen();
-    lcd_update(); //update the LCD 
+    lcd_update(); //update the LCD
+    digitalWrite(relaypower, HIGH); 
     isr_attach();
    
   }
@@ -340,14 +354,6 @@ void loop() {
        delay(500);
        digitalWrite(relay8, LOW);
      }
-   if (inputString[1] == 'A') {
-       digitalWrite(relay1, HIGH);
-       digitalWrite(relay2, HIGH);
-     } 
-    if (inputString[1] == 'B') {
-       digitalWrite(relay1, LOW);
-       digitalWrite(relay2, LOW);
-     } 
     if (inputString[1] =='I'){
         digitalWrite(relaypower, HIGH);
     }
@@ -762,8 +768,9 @@ void lcd_update(){
 
 
 void scooter_lock_screen(){
-  
-    while(digitalRead(scooter_lock) == 0){
+  Serial.write("Scooter Locked");
+    digitalWrite(relaypower, LOW);
+    while(digitalRead(scooter_key) == 1){
     Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
@@ -797,6 +804,5 @@ void scooter_lock_screen(){
     Serial3.print(" SCOOTER LOCKED");
     delay(1500);
     }
-    
 }
 

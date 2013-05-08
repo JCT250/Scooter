@@ -17,7 +17,7 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
-static int lock_pin = 1; //digital pin connected to Mega for remote lock 
+static int lock_pin = 4; //digital pin connected to Mega for remote lock 
 
 void setup()
 {
@@ -39,15 +39,19 @@ void setup()
 void loop()
 {
   if(Serial.available() > 0){
-   int inbyte = Serial.read();
+   byte inbyte = Serial.read();
       if(inbyte == 1){
        digitalWrite(lock_pin, HIGH);
+       Serial.write("HIGH");
       }
-      if(inbyte == 0){
+      if(inbyte  != 1){
        digitalWrite(lock_pin, LOW);
+       Serial.write("LOW");
       }
   }
- 
+}
+
+/*
   bool newdata = false;
   unsigned long start = millis();
   
@@ -169,3 +173,5 @@ static bool feedgps()
   }
   return false;
 }
+
+*/
