@@ -26,7 +26,7 @@ Slider abc;
 PFont fontA;
 
 void setup() {
-  size(700,100);
+  size(500,450);
   noStroke();
   cp5 = new ControlP5(this);
   fontA = loadFont("Arial-BoldMT-48.vlw");
@@ -35,7 +35,7 @@ void setup() {
   // add a vertical slider
   cp5.addSlider("slider")
      .setPosition(20,40)
-     .setSize(400,20)
+     .setSize(460,20)
      .setRange(0,100)
      .setValue(50)
      ;
@@ -43,23 +43,91 @@ void setup() {
   // reposition the Label for controller 'slider'
   cp5.getController("slider").getValueLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
   cp5.getController("slider").getCaptionLabel().align(ControlP5.RIGHT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
-  
-  cp5.addButton("Update")
+    
+  cp5.addButton("speed1")
      .setValue(0)
-     .setPosition(500,40)
+     .setPosition(20,120)
      .setSize(100,20)
      ;
-  // reposition the Label for controller 'Update'
-  cp5.getController("Update").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
-     
+  // reposition the Label for controller 'speed1'
+  cp5.getController("speed1").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  
+  cp5.addButton("speed2")
+     .setValue(0)
+     .setPosition(140,120)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed2'
+  cp5.getController("speed2").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  
+  cp5.addButton("speed3")
+     .setValue(0)
+     .setPosition(260,120)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed3'
+  cp5.getController("speed3").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+
+  cp5.addButton("speed4")
+     .setValue(0)
+     .setPosition(380,120)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed4'
+  cp5.getController("speed4").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
+
+  cp5.addButton("headlights")
+     .setValue(0)
+     .setPosition(20,170)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed1'
+  cp5.getController("headlights").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  
+  cp5.addButton("horn")
+     .setValue(0)
+     .setPosition(140,170)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed2'
+  cp5.getController("horn").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  
+  cp5.addButton("left")
+     .setValue(0)
+     .setPosition(260,170)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed3'
+  cp5.getController("left").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+
+  cp5.addButton("right")
+     .setValue(0)
+     .setPosition(380,170)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed4'
+  cp5.getController("right").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0); 
+  
+  cp5.addButton("power")
+     .setValue(0)
+     .setPosition(20,220)
+     .setSize(100,20)
+     ;
+  // reposition the Label for controller 'speed4'
+  cp5.getController("power").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
 }
+
+
 
 void draw() {
   fill(myColor);
   rect(0,0,width,height);
   
   fill(255);  
-  text("SPEED",20,30);
+  text("THROTTLE",20,30);
+  
+  fill(255);  
+  text("MAIN CONTROLS",20,110);
   
 }
 
