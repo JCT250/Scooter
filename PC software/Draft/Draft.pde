@@ -30,7 +30,7 @@ Slider abc;
 PFont fontA;
 
 void setup() {
-  size(500,450);
+  size(500,280);
   noStroke();
   cp5 = new ControlP5(this);
   fontA = loadFont("Arial-BoldMT-48.vlw");
