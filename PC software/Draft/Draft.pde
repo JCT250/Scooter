@@ -21,7 +21,10 @@
 import processing.serial.*;
 import controlP5.*;
 
-Serial myPort;  // Create object from Serial class
+Serial port_one;  // Create object from Serial class
+Serial port_two;
+Serial port_three;
+
 int val;        // Data received from the serial port
 
 ControlP5 cp5;
@@ -30,7 +33,7 @@ Slider abc;
 PFont fontA;
 
 void setup() {
-  size(500,280);
+  size(500,400);
   noStroke();
   cp5 = new ControlP5(this);
   fontA = loadFont("Arial-BoldMT-48.vlw");
@@ -38,7 +41,9 @@ void setup() {
   
  println(Serial.list());
  
-  myPort = new Serial(this, Serial.list()[1], 57600);
+  port_one = new Serial(this, Serial.list()[0], 57600);
+ // port_two = new Serial(this, Serial.list()[0], 57600);
+ // port_three = new Serial(this, Serial.list()[0], 57600);
      
   // add a vertical slider
   cp5.addSlider("slider")
@@ -46,16 +51,18 @@ void setup() {
      .setSize(460,20)
      .setRange(0,255)
      .setValue(0)
+     .setCaptionLabel("Throttle Position");
      ;
   
   // reposition the Label for controller 'slider'
-  cp5.getController("slider").getValueLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
-  cp5.getController("slider").getCaptionLabel().align(ControlP5.RIGHT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  cp5.getController("slider").getValueLabel().align(ControlP5.RIGHT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+  cp5.getController("slider").getCaptionLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
     
   cp5.addButton("speed1")
      .setValue(0)
      .setPosition(20,120)
      .setSize(100,20)
+     .setCaptionLabel("Speed 1");
      ;
   // reposition the Label for controller 'speed1'
   cp5.getController("speed1").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -64,6 +71,7 @@ void setup() {
      .setValue(0)
      .setPosition(140,120)
      .setSize(100,20)
+     .setCaptionLabel("Speed 2");
      ;
   // reposition the Label for controller 'speed2'
   cp5.getController("speed2").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -72,6 +80,7 @@ void setup() {
      .setValue(0)
      .setPosition(260,120)
      .setSize(100,20)
+     .setCaptionLabel("Speed 3");
      ;
   // reposition the Label for controller 'speed3'
   cp5.getController("speed3").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -80,6 +89,7 @@ void setup() {
      .setValue(0)
      .setPosition(380,120)
      .setSize(100,20)
+     .setCaptionLabel("Speed 4");
      ;
   // reposition the Label for controller 'speed4'
   cp5.getController("speed4").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
@@ -88,6 +98,7 @@ void setup() {
      .setValue(0)
      .setPosition(20,170)
      .setSize(100,20)
+     .setCaptionLabel("Headlights");
      ;
   // reposition the Label for controller 'speed1'
   cp5.getController("headlights").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -96,6 +107,7 @@ void setup() {
      .setValue(0)
      .setPosition(140,170)
      .setSize(100,20)
+     .setCaptionLabel("Horn");
      ;
   // reposition the Label for controller 'speed2'
   cp5.getController("horn").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -104,6 +116,7 @@ void setup() {
      .setValue(0)
      .setPosition(260,170)
      .setSize(100,20)
+     .setCaptionLabel("Left Indicator");
      ;
   // reposition the Label for controller 'speed3'
   cp5.getController("left_indicator").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
@@ -112,6 +125,7 @@ void setup() {
      .setValue(0)
      .setPosition(380,170)
      .setSize(100,20)
+     .setCaptionLabel("Right Indicator");
      ;
   // reposition the Label for controller 'speed4'
   cp5.getController("right_indicator").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0); 
@@ -120,6 +134,7 @@ void setup() {
      .setValue(0)
      .setPosition(20,220)
      .setSize(100,20)
+     .setCaptionLabel("Power On");
      ;
   // reposition the Label for controller 'power'
   cp5.getController("power_on").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
@@ -129,9 +144,28 @@ void setup() {
      .setValue(0)
      .setPosition(140,220)
      .setSize(100,20)
+     .setCaptionLabel("Power Off");
      ;
   // reposition the Label for controller 'power'
-  cp5.getController("power_off").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
+  cp5.getController("power_off").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0); 
+ 
+   cp5.addButton("remote_lock")
+     .setValue(0)
+     .setPosition(20,300)
+     .setSize(100,20)
+     .setCaptionLabel("Remote Lock");
+     ;
+    // reposition the Label for controller 'power'
+    cp5.getController("remote_lock").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0); 
+ 
+   cp5.addButton("remote_unlock")
+     .setValue(0)
+     .setPosition(140,300)
+     .setSize(100,20)
+     .setCaptionLabel("Remote Unlock");
+     ;
+    // reposition the Label for controller 'power'
+    cp5.getController("remote_unlock").getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);  
 }
 
 
@@ -144,6 +178,9 @@ void draw() {
   fill(255);  
   text("MAIN CONTROLS",20,110);
   
+  fill(255);
+  text("GPS CONTROLS",20,290);
+  
 }
 
 void loop(){
@@ -152,71 +189,82 @@ void loop(){
 
 void slider(int theValue) {
   println("a slider event from throttle");
-  myPort.write(theValue);
-  myPort.write(0x0A);
+  port_one.write(theValue);
+  port_one.write(0x0A);
 }
 
 void speed1(int theValue) {
   println("a button event from speed1");
-  myPort.write("R1");
-  myPort.write(0x0A);
+  port_one.write("R1");
+  port_one.write(0x0A);
   
 }
 
 void speed2(int theValue) {
   println("a button event from speed2");
-  myPort.write("R2");
-  myPort.write(0x0A);
+  port_one.write("R2");
+  port_one.write(0x0A);
 }
 
 void speed3(int theValue) {
   println("a button event from speed3");
-  myPort.write("R3");
-  myPort.write(0x0A);
+  port_one.write("R3");
+  port_one.write(0x0A);
 }
 
 void speed4(int theValue) {
   println("a button event from speed4");
-  myPort.write("R4");
-  myPort.write(0x0A);
+  port_one.write("R4");
+  port_one.write(0x0A);
 }
 
 void headlights(int theValue) {
   println("a button event from headlights");
-  myPort.write("R5");
-  myPort.write(0x0A);
+  port_one.write("R5");
+  port_one.write(0x0A);
 }
 
 void horn(int theValue) {
   println("a button event from horn");
-  myPort.write("R6");
-  myPort.write(0x0A);
+  port_one.write("R6");
+  port_one.write(0x0A);
 }
 
 void left_indicator (int theValue) {
   println("a button event from headlights");
-  myPort.write("R7");
-  myPort.write(0x0A);
+  port_one.write("R7");
+  port_one.write(0x0A);
 }
 
 void right_indicator (int theValue) {
   println("a button event from headlights");
-  myPort.write("R8");
-  myPort.write(0x0A);
+  port_one.write("R8");
+  port_one.write(0x0A);
 }
 
 void power_on(int theValue) {
   println("a button event from power_on");
-  myPort.write("RI");
-  myPort.write(0x0A);
+  port_one.write("RI");
+  port_one.write(0x0A);
 }
 
 void power_off(int theValue) {
   println("a button event from power_off");
-  myPort.write("RO");
-  myPort.write(0x0A);
+  port_one.write("RO");
+  port_one.write(0x0A);
 }
 
+void remote_lock(int theValue) {
+  println("a button event from remote_lock");
+  port_one.write("1");
+  port_one.write(0x0A);
+}
+
+void remote_unlock(int theValue) {
+  println("a button event from remote_unlock");
+  port_one.write("0");
+  port_one.write(0x0A);
+}
 
 /**
 * ControlP5 Slider

@@ -44,7 +44,7 @@ void loop()
        digitalWrite(lock_pin, HIGH);
        Serial.write("HIGH");
       }
-      if(inbyte  != 1){
+      if(inbyte == 0){
        digitalWrite(lock_pin, LOW);
        Serial.write("LOW");
       }
