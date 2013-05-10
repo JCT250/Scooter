@@ -290,18 +290,19 @@ void loop() {
 
 
   
- /* if(digitalRead(scooter_lock) == LOW){
+  if(digitalRead(scooter_lock) == LOW){
     isr_detach();
-    scooter_lock_screen();
-    lcd_update(); //update the LCD 
+    scooter_lock_screen_remote();
+    lcd_update(); //update the LCD
+    digitalWrite(relaypower, HIGH); 
     isr_attach();
    
   }
- */
+ 
  
    if(digitalRead(scooter_key) == 1){
     isr_detach();
-    scooter_lock_screen();
+    scooter_lock_screen_key();
     lcd_update(); //update the LCD
     digitalWrite(relaypower, HIGH); 
     isr_attach();
@@ -767,10 +768,50 @@ void lcd_update(){
  
 
 
-void scooter_lock_screen(){
-  Serial.write("Scooter Locked");
+void scooter_lock_screen_key(){
+  Serial.println("Scooter locked by Key");
     digitalWrite(relaypower, LOW);
     while(digitalRead(scooter_key) == 1){
+    Serial3.write(0xFE); //Change backlight Color
+    Serial3.write(0xD0);
+    Serial3.write(0xFF); //R
+    Serial3.write(0x00); //G
+    Serial3.write(0x00); //B
+    delay(10);
+    Serial3.write(0xFE); //Clear the LCD
+    Serial3.write(0x58);
+    delay(10);
+    Serial3.write(0xFE); //Set the cursor position
+    Serial3.write(0x47);
+    Serial3.write(0x01); //column
+    Serial3.write(0x01); //row
+    delay(10);
+    Serial3.print(" SCOOTER LOCKED");
+    delay(1500);
+    Serial3.write(0xFE); //Change backlight Color
+    Serial3.write(0xD0);
+    Serial3.write(0xFF); //R
+    Serial3.write(0x10); //G
+    Serial3.write(0x00); //B
+    delay(10);
+    Serial3.write(0xFE); //Clear the LCD
+    Serial3.write(0x58);
+    delay(10);
+    Serial3.write(0xFE); //Set the cursor position
+    Serial3.write(0x47);
+    Serial3.write(0x01); //column
+    Serial3.write(0x02); //row
+    delay(10);
+    Serial3.print(" SCOOTER LOCKED");
+    delay(1500);
+    }
+}
+
+
+void scooter_lock_screen_remote(){
+  Serial.println("Scooter locked by Remote");
+    digitalWrite(relaypower, LOW);
+    while(digitalRead(scooter_lock) == 0){
     Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R

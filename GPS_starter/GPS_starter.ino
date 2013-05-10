@@ -40,15 +40,17 @@ void loop()
 {
   if(Serial.available() > 0){
    byte inbyte = Serial.read();
-      if(inbyte == 1){
+
+      if(inbyte == 49){
        digitalWrite(lock_pin, HIGH);
        Serial.write("HIGH");
       }
-      if(inbyte == 0){
+      if(inbyte == 48){
        digitalWrite(lock_pin, LOW);
        Serial.write("LOW");
       }
-  }
+      
+    }
 }
 
 /*

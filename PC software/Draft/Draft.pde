@@ -41,8 +41,8 @@ void setup() {
   
  println(Serial.list());
  
-  port_one = new Serial(this, Serial.list()[0], 57600);
- // port_two = new Serial(this, Serial.list()[0], 57600);
+  port_one = new Serial(this, Serial.list()[3], 115200);
+  port_two = new Serial(this, Serial.list()[2], 115200);
  // port_three = new Serial(this, Serial.list()[0], 57600);
      
   // add a vertical slider
@@ -194,76 +194,74 @@ void slider(int theValue) {
 }
 
 void speed1(int theValue) {
-  println("a button event from speed1");
+  println("a button event from Speed 1");
   port_one.write("R1");
   port_one.write(0x0A);
   
 }
 
 void speed2(int theValue) {
-  println("a button event from speed2");
+  println("a button event from Speed 2");
   port_one.write("R2");
   port_one.write(0x0A);
 }
 
 void speed3(int theValue) {
-  println("a button event from speed3");
+  println("a button event from Speed 3");
   port_one.write("R3");
   port_one.write(0x0A);
 }
 
 void speed4(int theValue) {
-  println("a button event from speed4");
+  println("a button event from Speed 4");
   port_one.write("R4");
   port_one.write(0x0A);
 }
 
 void headlights(int theValue) {
-  println("a button event from headlights");
-  port_one.write("R5");
-  port_one.write(0x0A);
-}
-
-void horn(int theValue) {
-  println("a button event from horn");
-  port_one.write("R6");
-  port_one.write(0x0A);
-}
-
-void left_indicator (int theValue) {
-  println("a button event from headlights");
-  port_one.write("R7");
-  port_one.write(0x0A);
-}
-
-void right_indicator (int theValue) {
-  println("a button event from headlights");
+  println("a button event from Headlights");
   port_one.write("R8");
   port_one.write(0x0A);
 }
 
+void horn(int theValue) {
+  println("a button event from Horn");
+  port_one.write("R7");
+  port_one.write(0x0A);
+}
+
+void left_indicator (int theValue) {
+  println("a button event from Left Indicator");
+  port_one.write("R5");
+  port_one.write(0x0A);
+}
+
+void right_indicator (int theValue) {
+  println("a button event from Right Indicator");
+  port_one.write("R6");
+  port_one.write(0x0A);
+}
+
 void power_on(int theValue) {
-  println("a button event from power_on");
+  println("a button event from Power ON");
   port_one.write("RI");
   port_one.write(0x0A);
 }
 
 void power_off(int theValue) {
-  println("a button event from power_off");
+  println("a button event from Power OFF");
   port_one.write("RO");
   port_one.write(0x0A);
 }
 
 void remote_lock(int theValue) {
   println("a button event from remote_lock");
-  port_one.write("1");
-  port_one.write(0x0A);
+  port_two.write("0");
 }
 
 void remote_unlock(int theValue) {
   println("a button event from remote_unlock");
-  port_one.write("0");
-  port_one.write(0x0A);
+  port_two.write("1");
 }
 
 /**
