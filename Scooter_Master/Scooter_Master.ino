@@ -70,13 +70,10 @@ volatile int currentspeed = 0;
 volatile int oldcurrentspeed = 0;
 
 volatile int headlights = 0;
-volatile int oldheadlights = 0;
 
-volatile boolean indicateright = false;
-volatile boolean oldindicateright = false;
+volatile int indicateright = 0;
 
-volatile boolean indicateleft = false;
-volatile boolean oldindicateleft = false;
+volatile int indicateleft = 0;
 
 
 void setup() {
@@ -99,12 +96,12 @@ void setup() {
   Serial.println("Outputs Set");
   
   // Configure interrupt pins  
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(18, INPUT_PULLUP);
-  pinMode(19, INPUT_PULLUP);
-  pinMode(20, INPUT_PULLUP);
-  pinMode(21, INPUT_PULLUP);
+  pinMode(2, INPUT);
+  pinMode(3, INPUT);
+  pinMode(18, INPUT);
+  pinMode(19, INPUT);
+  pinMode(20, INPUT);
+  pinMode(21, INPUT);
   
   Serial.println("Interrupts Set");
   
@@ -126,12 +123,12 @@ void setup() {
 
   
   // Attach interupt pins to ISR's
-  attachInterrupt(1, isr_Horn, CHANGE);
-  attachInterrupt(0, isr_Headlights, FALLING);
-  attachInterrupt(2, isr_ShiftUp, FALLING);
-  attachInterrupt(3, isr_ShiftDown, FALLING);
-  attachInterrupt(4, isr_IndicateLeft, FALLING);
-  attachInterrupt(5, isr_IndicateRight, FALLING);
+  //attachInterrupt(5, isr_Horn, CHANGE);
+  attachInterrupt(0, isr_Headlights, RISING);
+  attachInterrupt(2, isr_ShiftUp, RISING);
+  attachInterrupt(3, isr_ShiftDown, RISING);
+  attachInterrupt(4, isr_IndicateLeft, RISING);
+  attachInterrupt(1, isr_IndicateRight, RISING);
   
   Serial.println("ISRs Attached");
     
@@ -289,6 +286,7 @@ lcd_clear();
 void loop() {
 
 
+  digitalWrite(relay7, (digitalRead(18)));
   
   if(digitalRead(scooter_lock) == LOW){
     isr_detach();
@@ -425,32 +423,40 @@ void loop() {
   if (updatespeed == 1) {
    isr_detach();
     if (currentspeed == 1) {
+      Serial.println("R1H");
       digitalWrite(relay1, HIGH);
       delay(150);
+      Serial.println("R1L");
       digitalWrite(relay1, LOW);
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
     
   if (currentspeed == 2) {
+    Serial.println("R2H");
       digitalWrite(relay2, HIGH);
       delay(150);
+      Serial.println("R2L");
       digitalWrite(relay2, LOW);
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
     
   if (currentspeed == 3) {
+    Serial.println("R3H");
       digitalWrite(relay3, HIGH);
       delay(150);
+      Serial.println("R3L");
       digitalWrite(relay3, LOW);
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
     
   if (currentspeed == 4) {
+    Serial.println("R4H");
       digitalWrite(relay4, HIGH);
       delay(150);
+      Serial.println("R4L");
       digitalWrite(relay4, LOW);
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
@@ -458,36 +464,40 @@ void loop() {
     isr_attach();
   }
 
-  if (oldheadlights != headlights) {
+  if (headlights == 1) {
     isr_detach();
+    Serial.println("HLH");
     digitalWrite(relay8, HIGH);
     delay(150);
+    Serial.println("HLL");
     digitalWrite(relay8, LOW);
-    oldheadlights = headlights;
+    headlights = 0;
     isr_attach();
   }
   
-  if (updateindicate == 1) {
+
+   if (indicateleft == 1) {
+     isr_detach();
+     Serial.println("ILH");
+     digitalWrite(relay5, HIGH);
+     delay(150);
+     Serial.println("ILL");
+     digitalWrite(relay5, LOW);
+     indicateleft = 0;
+     isr_attach();
+   }
       
-      isr_detach();
-  
-      if (oldindicateleft != indicateleft) {
-        digitalWrite(relay5, HIGH);
-        delay(150);
-        digitalWrite(relay5, LOW);
-        oldindicateleft = indicateleft;
-      }
+   if (indicateright == 1) {
+     isr_detach();
+     Serial.println("IRH");
+     digitalWrite(relay6, HIGH);
+     delay(150);
+     Serial.println("IRL");
+     digitalWrite(relay6, LOW);
+     indicateright = 0;
+     isr_attach();
+   }  
       
-      if (oldindicateright != indicateright) {
-        digitalWrite(relay6, HIGH);
-        delay(150);
-        digitalWrite(relay6, LOW);
-        oldindicateright = indicateright;
-      }  
-      
-      isr_attach();
-      updateindicate = 0;
-  }
 
  lcd_update(); 
   
@@ -513,7 +523,9 @@ void serialEvent() {
   }
 }
 
+/*
 void isr_Horn() {
+  Serial.println("Horn Selected");
   if(digitalRead(3) == LOW) {
     digitalWrite(relay7, HIGH);
   }else{
@@ -521,12 +533,14 @@ void isr_Horn() {
   }
   
 }
+*/
+
 
 void isr_Headlights() {
   newisr0 = millis();
   
   if((oldisr0+150) < newisr0) {
-  headlights = !headlights;
+  headlights = 1;
   oldisr0 = newisr0;
   }
   
@@ -554,8 +568,7 @@ void isr_IndicateLeft() {
    newisr4 = millis();
   
   if((oldisr4+300) < newisr4) {
-  indicateleft = !indicateleft;
-  updateindicate = 1;
+  indicateleft = 1;
   oldisr4=newisr4;
   }
 }
@@ -564,8 +577,7 @@ void isr_IndicateRight() {
    newisr5 = millis();
   
   if((oldisr5+300) < newisr5) {
-  indicateright = !indicateright;
-  updateindicate = 1;
+  indicateright = 1;
   oldisr5=newisr5;
   }
 }
@@ -661,12 +673,12 @@ void isr_detach(){
 }
 
 void isr_attach(){
-  attachInterrupt(1, isr_Horn, CHANGE);
+ // attachInterrupt(5, isr_Horn, CHANGE);
   attachInterrupt(0, isr_Headlights, FALLING);
   attachInterrupt(2, isr_ShiftUp, FALLING);
   attachInterrupt(3, isr_ShiftDown, FALLING);
   attachInterrupt(4, isr_IndicateLeft, FALLING);
-  attachInterrupt(5, isr_IndicateRight, FALLING);
+  attachInterrupt(1, isr_IndicateRight, FALLING);
 
 }
 
