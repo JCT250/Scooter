@@ -20,7 +20,7 @@ void setup() {
   
 Serial.begin(115200);
 }
-
+/*
 void serial_control(){
   while(incoming_byte != 500){
     if (Serial.available() > 0) {
@@ -34,10 +34,11 @@ void serial_control(){
   }
 }
 
-
+*/
 void loop() {
   // put your main code here, to run repeatedly: 
-  
+
+/*  
   if (Serial.available() > 0) {
        incoming_byte = Serial.read();
        if(incoming_byte == 500){
@@ -45,6 +46,7 @@ void loop() {
           serial_control();
        }
   }
+  */
   
     total = total - readings[index]; //subtract the old reading at this position in the array from the total         
     readings[index] = analogRead(throttle_input); // read from the sensor:  

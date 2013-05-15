@@ -838,13 +838,13 @@ void scooter_lock_screen_remote(){
     Serial3.write(0x01); //column
     Serial3.write(0x01); //row
     delay(10);
-    Serial3.print(" SCOOTER LOCKED");
+    Serial3.print("  SYSTEM ERROR");
     delay(1500);
     Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
-    Serial3.write(0x10); //G
-    Serial3.write(0x00); //B
+    Serial3.write(0x00); //G
+    Serial3.write(0xFF); //B
     delay(10);
     Serial3.write(0xFE); //Clear the LCD
     Serial3.write(0x58);
@@ -854,7 +854,7 @@ void scooter_lock_screen_remote(){
     Serial3.write(0x01); //column
     Serial3.write(0x02); //row
     delay(10);
-    Serial3.print(" SCOOTER LOCKED");
+    Serial3.print("  SYSTEM ERROR");
     delay(1500);
     }
 }
