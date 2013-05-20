@@ -34,7 +34,7 @@ byte throttle_write(byte value)
 
 void serial_control(){
   Serial.println("Serial Control");
-  while(incoming_byte != 128){ //this isn't going to work
+  while(incoming_byte != 128 || incoming_byte != 127){ 
     if (Serial.available() > 0) {
       incoming_byte = Serial.read();
       incoming_byte_mapped = map(incoming_byte, 0, 255, 54, 201);
