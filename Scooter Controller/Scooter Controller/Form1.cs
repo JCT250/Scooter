@@ -26,27 +26,12 @@ namespace Scooter_Controller
             comboBox1.DataSource = ports;
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
       
         }
 
-        private void button29_Click(object sender, EventArgs e)
+        private void btn_serial_connect_Click(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex > -1)
             {
@@ -69,7 +54,7 @@ namespace Scooter_Controller
             }
         }
 
-        private void button30_Click(object sender, EventArgs e)
+        private void btn_serial_refresh_Click(object sender, EventArgs e)
         {
             var ports = SerialPort.GetPortNames();
             comboBox1.DataSource = ports;
