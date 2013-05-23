@@ -1,8 +1,9 @@
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\bin\Debug\Scooter_Controller.exe.config
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\bin\Debug\Scooter_Controller.exe
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\bin\Debug\Scooter_Controller.pdb
-C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\WindowsFormsApplication3.Form1.resources
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter_Controller.Properties.Resources.resources
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter Controller.csproj.GenerateResource.Cache
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter_Controller.exe
 C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter_Controller.pdb
+C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter Controller.csprojResolveAssemblyReference.cache
+C:\Users\prepress2\Documents\GitHub\Scooter\Scooter Controller\Scooter Controller\obj\Debug\Scooter_Controller.Form1.resources
