@@ -87,6 +87,7 @@
             this.btn_speed_1.TabIndex = 0;
             this.btn_speed_1.Text = "Speed 1";
             this.btn_speed_1.UseVisualStyleBackColor = true;
+            this.btn_speed_1.Click += new System.EventHandler(this.btn_speed_1_Click);
             // 
             // btn_speed_2
             // 
@@ -96,6 +97,7 @@
             this.btn_speed_2.TabIndex = 1;
             this.btn_speed_2.Text = "Speed 2";
             this.btn_speed_2.UseVisualStyleBackColor = true;
+            this.btn_speed_2.Click += new System.EventHandler(this.btn_speed_2_Click);
             // 
             // btn_speed_3
             // 
@@ -105,6 +107,7 @@
             this.btn_speed_3.TabIndex = 2;
             this.btn_speed_3.Text = "Speed 3";
             this.btn_speed_3.UseVisualStyleBackColor = true;
+            this.btn_speed_3.Click += new System.EventHandler(this.btn_speed_3_Click);
             // 
             // btn_speed_4
             // 
@@ -114,6 +117,7 @@
             this.btn_speed_4.TabIndex = 3;
             this.btn_speed_4.Text = "Speed 4";
             this.btn_speed_4.UseVisualStyleBackColor = true;
+            this.btn_speed_4.Click += new System.EventHandler(this.btn_speed_4_Click);
             // 
             // btn_indicate_left
             // 
@@ -124,6 +128,7 @@
             this.btn_indicate_left.TabIndex = 4;
             this.btn_indicate_left.Text = "Indicate Left";
             this.btn_indicate_left.UseVisualStyleBackColor = false;
+            this.btn_indicate_left.Click += new System.EventHandler(this.btn_indicate_left_Click);
             // 
             // btn_indicate_right
             // 
@@ -134,6 +139,7 @@
             this.btn_indicate_right.TabIndex = 5;
             this.btn_indicate_right.Text = "Indicate Right";
             this.btn_indicate_right.UseVisualStyleBackColor = false;
+            this.btn_indicate_right.Click += new System.EventHandler(this.btn_indicate_right_Click);
             // 
             // btn_headlights
             // 
@@ -143,6 +149,7 @@
             this.btn_headlights.TabIndex = 6;
             this.btn_headlights.Text = "Headlights";
             this.btn_headlights.UseVisualStyleBackColor = true;
+            this.btn_headlights.Click += new System.EventHandler(this.btn_headlights_Click);
             // 
             // btn_horn
             // 
@@ -152,6 +159,7 @@
             this.btn_horn.TabIndex = 7;
             this.btn_horn.Text = "Horn";
             this.btn_horn.UseVisualStyleBackColor = true;
+            this.btn_horn.Click += new System.EventHandler(this.btn_horn_Click);
             // 
             // btn_power_on
             // 
@@ -162,6 +170,7 @@
             this.btn_power_on.TabIndex = 8;
             this.btn_power_on.Text = "On";
             this.btn_power_on.UseVisualStyleBackColor = false;
+            this.btn_power_on.Click += new System.EventHandler(this.btn_power_on_Click);
             // 
             // btn_power_off
             // 
@@ -172,6 +181,7 @@
             this.btn_power_off.TabIndex = 9;
             this.btn_power_off.Text = "Off";
             this.btn_power_off.UseVisualStyleBackColor = false;
+            this.btn_power_off.Click += new System.EventHandler(this.btn_power_off_Click);
             // 
             // btn_remote_lock
             // 
@@ -182,6 +192,7 @@
             this.btn_remote_lock.TabIndex = 10;
             this.btn_remote_lock.Text = "Remote Lock";
             this.btn_remote_lock.UseVisualStyleBackColor = false;
+            this.btn_remote_lock.Click += new System.EventHandler(this.btn_remote_lock_Click);
             // 
             // btn_remote_unlock
             // 
@@ -192,6 +203,7 @@
             this.btn_remote_unlock.TabIndex = 11;
             this.btn_remote_unlock.Text = "Remote Unlock";
             this.btn_remote_unlock.UseVisualStyleBackColor = false;
+            this.btn_remote_unlock.Click += new System.EventHandler(this.btn_remote_unlock_Click);
             // 
             // btn_locate
             // 
@@ -201,6 +213,7 @@
             this.btn_locate.TabIndex = 12;
             this.btn_locate.Text = "Locate";
             this.btn_locate.UseVisualStyleBackColor = true;
+            this.btn_locate.Click += new System.EventHandler(this.btn_locate_Click);
             // 
             // btn_forward
             // 
@@ -211,6 +224,7 @@
             this.btn_forward.TabIndex = 13;
             this.btn_forward.Text = "Forward";
             this.btn_forward.UseVisualStyleBackColor = false;
+            this.btn_forward.Click += new System.EventHandler(this.btn_forward_Click);
             // 
             // btn_reverse
             // 
@@ -221,6 +235,7 @@
             this.btn_reverse.TabIndex = 14;
             this.btn_reverse.Text = "Reverse";
             this.btn_reverse.UseVisualStyleBackColor = false;
+            this.btn_reverse.Click += new System.EventHandler(this.btn_reverse_Click);
             // 
             // btn_pan_left
             // 
@@ -230,6 +245,7 @@
             this.btn_pan_left.TabIndex = 15;
             this.btn_pan_left.Text = "Pan Left";
             this.btn_pan_left.UseVisualStyleBackColor = true;
+            this.btn_pan_left.Click += new System.EventHandler(this.btn_pan_left_Click);
             // 
             // btn_pan_right
             // 
@@ -239,6 +255,7 @@
             this.btn_pan_right.TabIndex = 16;
             this.btn_pan_right.Text = "Pan Right";
             this.btn_pan_right.UseVisualStyleBackColor = true;
+            this.btn_pan_right.Click += new System.EventHandler(this.btn_pan_right_Click);
             // 
             // btn_pan_up
             // 
@@ -248,6 +265,7 @@
             this.btn_pan_up.TabIndex = 17;
             this.btn_pan_up.Text = "Pan Up";
             this.btn_pan_up.UseVisualStyleBackColor = true;
+            this.btn_pan_up.Click += new System.EventHandler(this.btn_pan_up_Click);
             // 
             // btn_pan_down
             // 
@@ -257,6 +275,7 @@
             this.btn_pan_down.TabIndex = 18;
             this.btn_pan_down.Text = "Pan Down ";
             this.btn_pan_down.UseVisualStyleBackColor = true;
+            this.btn_pan_down.Click += new System.EventHandler(this.btn_pan_down_Click);
             // 
             // btn_stop
             // 
@@ -266,6 +285,7 @@
             this.btn_stop.TabIndex = 19;
             this.btn_stop.Text = "Stop";
             this.btn_stop.UseVisualStyleBackColor = true;
+            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
             // 
             // bnt_lighting_mode_1
             // 
@@ -275,6 +295,7 @@
             this.bnt_lighting_mode_1.TabIndex = 20;
             this.bnt_lighting_mode_1.Text = "Mode 1";
             this.bnt_lighting_mode_1.UseVisualStyleBackColor = true;
+            this.bnt_lighting_mode_1.Click += new System.EventHandler(this.bnt_lighting_mode_1_Click);
             // 
             // btn_lighting_mode_2
             // 
@@ -284,6 +305,7 @@
             this.btn_lighting_mode_2.TabIndex = 21;
             this.btn_lighting_mode_2.Text = "Mode 2";
             this.btn_lighting_mode_2.UseVisualStyleBackColor = true;
+            this.btn_lighting_mode_2.Click += new System.EventHandler(this.btn_lighting_mode_2_Click);
             // 
             // btn_lighting_mode_3
             // 
@@ -293,6 +315,7 @@
             this.btn_lighting_mode_3.TabIndex = 22;
             this.btn_lighting_mode_3.Text = "Mode 3";
             this.btn_lighting_mode_3.UseVisualStyleBackColor = true;
+            this.btn_lighting_mode_3.Click += new System.EventHandler(this.btn_lighting_mode_3_Click);
             // 
             // btn_lighting_mode_4
             // 
@@ -302,6 +325,7 @@
             this.btn_lighting_mode_4.TabIndex = 23;
             this.btn_lighting_mode_4.Text = "Mode 4";
             this.btn_lighting_mode_4.UseVisualStyleBackColor = true;
+            this.btn_lighting_mode_4.Click += new System.EventHandler(this.btn_lighting_mode_4_Click);
             // 
             // btn_lighting_mode_5
             // 
@@ -311,6 +335,7 @@
             this.btn_lighting_mode_5.TabIndex = 24;
             this.btn_lighting_mode_5.Text = "Mode 5";
             this.btn_lighting_mode_5.UseVisualStyleBackColor = true;
+            this.btn_lighting_mode_5.Click += new System.EventHandler(this.btn_lighting_mode_5_Click);
             // 
             // btn_lighting_activate
             // 
@@ -321,6 +346,7 @@
             this.btn_lighting_activate.TabIndex = 25;
             this.btn_lighting_activate.Text = "Activate";
             this.btn_lighting_activate.UseVisualStyleBackColor = false;
+            this.btn_lighting_activate.Click += new System.EventHandler(this.btn_lighting_activate_Click);
             // 
             // btn_lighting_deactivate
             // 
@@ -331,6 +357,7 @@
             this.btn_lighting_deactivate.TabIndex = 26;
             this.btn_lighting_deactivate.Text = "Deactivate";
             this.btn_lighting_deactivate.UseVisualStyleBackColor = false;
+            this.btn_lighting_deactivate.Click += new System.EventHandler(this.btn_lighting_deactivate_Click);
             // 
             // btn_lighting_mode_6
             // 
@@ -340,6 +367,7 @@
             this.btn_lighting_mode_6.TabIndex = 27;
             this.btn_lighting_mode_6.Text = "Mode 6";
             this.btn_lighting_mode_6.UseVisualStyleBackColor = true;
+            this.btn_lighting_mode_6.Click += new System.EventHandler(this.btn_lighting_mode_6_Click);
             // 
             // trackBar1
             // 
@@ -466,6 +494,7 @@
             this.btn_serial_connect.TabIndex = 33;
             this.btn_serial_connect.Text = "Connect";
             this.btn_serial_connect.UseVisualStyleBackColor = true;
+            this.btn_serial_connect.Click += new System.EventHandler(this.btn_serial_connect_Click);
             // 
             // btn_serial_refresh
             // 
@@ -475,6 +504,7 @@
             this.btn_serial_refresh.TabIndex = 35;
             this.btn_serial_refresh.Text = "Refresh";
             this.btn_serial_refresh.UseVisualStyleBackColor = true;
+            this.btn_serial_refresh.Click += new System.EventHandler(this.btn_serial_refresh_Click);
             // 
             // groupBox7
             // 
@@ -518,6 +548,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Scooter Controller";
             this.Load += new System.EventHandler(this.Form1_Load);

@@ -59,5 +59,149 @@ namespace Scooter_Controller
             var ports = SerialPort.GetPortNames();
             comboBox1.DataSource = ports;
         }
+
+        private void btn_speed_1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_speed_2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_speed_3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_speed_4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_indicate_left_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_indicate_right_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_headlights_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_horn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_power_on_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_power_off_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_remote_lock_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_remote_unlock_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_locate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_forward_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_reverse_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_stop_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_pan_up_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_pan_down_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_pan_left_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_pan_right_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bnt_lighting_mode_1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_mode_2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_mode_3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_mode_4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_mode_5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_mode_6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_activate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_lighting_deactivate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
     }
 }
