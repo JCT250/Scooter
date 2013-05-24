@@ -70,6 +70,8 @@
             this.btn_serial_refresh = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.btn_camera_lower = new System.Windows.Forms.Button();
+            this.btn_camera_raise = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -239,41 +241,41 @@
             // 
             // btn_pan_left
             // 
-            this.btn_pan_left.Location = new System.Drawing.Point(13, 55);
+            this.btn_pan_left.Location = new System.Drawing.Point(119, 55);
             this.btn_pan_left.Name = "btn_pan_left";
             this.btn_pan_left.Size = new System.Drawing.Size(100, 30);
             this.btn_pan_left.TabIndex = 15;
-            this.btn_pan_left.Text = "Pan Left";
+            this.btn_pan_left.Text = "← Pan Left";
             this.btn_pan_left.UseVisualStyleBackColor = true;
             this.btn_pan_left.Click += new System.EventHandler(this.btn_pan_left_Click);
             // 
             // btn_pan_right
             // 
-            this.btn_pan_right.Location = new System.Drawing.Point(225, 55);
+            this.btn_pan_right.Location = new System.Drawing.Point(331, 55);
             this.btn_pan_right.Name = "btn_pan_right";
             this.btn_pan_right.Size = new System.Drawing.Size(100, 30);
             this.btn_pan_right.TabIndex = 16;
-            this.btn_pan_right.Text = "Pan Right";
+            this.btn_pan_right.Text = "Pan Right →";
             this.btn_pan_right.UseVisualStyleBackColor = true;
             this.btn_pan_right.Click += new System.EventHandler(this.btn_pan_right_Click);
             // 
             // btn_pan_up
             // 
-            this.btn_pan_up.Location = new System.Drawing.Point(119, 19);
+            this.btn_pan_up.Location = new System.Drawing.Point(225, 19);
             this.btn_pan_up.Name = "btn_pan_up";
             this.btn_pan_up.Size = new System.Drawing.Size(100, 30);
             this.btn_pan_up.TabIndex = 17;
-            this.btn_pan_up.Text = "Pan Up";
+            this.btn_pan_up.Text = "Pan Up ↑";
             this.btn_pan_up.UseVisualStyleBackColor = true;
             this.btn_pan_up.Click += new System.EventHandler(this.btn_pan_up_Click);
             // 
             // btn_pan_down
             // 
-            this.btn_pan_down.Location = new System.Drawing.Point(119, 91);
+            this.btn_pan_down.Location = new System.Drawing.Point(225, 91);
             this.btn_pan_down.Name = "btn_pan_down";
             this.btn_pan_down.Size = new System.Drawing.Size(100, 30);
             this.btn_pan_down.TabIndex = 18;
-            this.btn_pan_down.Text = "Pan Down ";
+            this.btn_pan_down.Text = "Pan Down ↓";
             this.btn_pan_down.UseVisualStyleBackColor = true;
             this.btn_pan_down.Click += new System.EventHandler(this.btn_pan_down_Click);
             // 
@@ -452,6 +454,8 @@
             // 
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.btn_camera_raise);
+            this.groupBox5.Controls.Add(this.btn_camera_lower);
             this.groupBox5.Controls.Add(this.groupBox6);
             this.groupBox5.Controls.Add(this.btn_pan_left);
             this.groupBox5.Controls.Add(this.btn_pan_up);
@@ -460,7 +464,7 @@
             this.groupBox5.Location = new System.Drawing.Point(12, 429);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox5.Size = new System.Drawing.Size(338, 137);
+            this.groupBox5.Size = new System.Drawing.Size(444, 137);
             this.groupBox5.TabIndex = 33;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Camera Control";
@@ -533,6 +537,24 @@
             this.groupBox8.TabIndex = 32;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Throttle Controller";
+            // 
+            // btn_camera_lower
+            // 
+            this.btn_camera_lower.Location = new System.Drawing.Point(13, 91);
+            this.btn_camera_lower.Name = "btn_camera_lower";
+            this.btn_camera_lower.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_lower.TabIndex = 34;
+            this.btn_camera_lower.Text = "Lower ↓";
+            this.btn_camera_lower.UseVisualStyleBackColor = true;
+            // 
+            // btn_camera_raise
+            // 
+            this.btn_camera_raise.Location = new System.Drawing.Point(13, 21);
+            this.btn_camera_raise.Name = "btn_camera_raise";
+            this.btn_camera_raise.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_raise.TabIndex = 35;
+            this.btn_camera_raise.Text = "Raise ↑";
+            this.btn_camera_raise.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -610,6 +632,8 @@
         private System.Windows.Forms.Button btn_serial_refresh;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Button btn_camera_raise;
+        private System.Windows.Forms.Button btn_camera_lower;
     }
 }
 
