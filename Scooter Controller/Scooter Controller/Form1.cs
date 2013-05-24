@@ -26,6 +26,11 @@ namespace Scooter_Controller
             comboBox1.DataSource = ports;
         }
 
+        private void serial_check()
+        {
+            MessageBox.Show("Please open Serial connection");
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
       
@@ -35,7 +40,7 @@ namespace Scooter_Controller
         {
             if (comboBox1.SelectedIndex > -1)
             {
-                MessageBox.Show(String.Format("Attempting to connect to '{0}'", comboBox1.SelectedItem));
+                MessageBox.Show(String.Format("Connecting to '{0}'", comboBox1.SelectedItem));
                 Connect(comboBox1.SelectedItem.ToString());
             }
             else
@@ -46,11 +51,12 @@ namespace Scooter_Controller
 
         private void Connect(string portName)
         {
-            var port = new SerialPort(portName);
-            if (!port.IsOpen)
+            serialPort1 = new SerialPort(portName);
+            if (!serialPort1.IsOpen)
             {
-                port.BaudRate = 19200;
-                port.Open();
+                serialPort1.BaudRate = 19200;
+                serialPort1.Open();
+                
             }
         }
 
@@ -62,8 +68,17 @@ namespace Scooter_Controller
 
         private void btn_speed_1_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] speed_1 = { 0x1B, 0x32, 0x57, 0x41, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(speed_1, 0, 13);
+            }
         }
+
 
         private void btn_speed_2_Click(object sender, EventArgs e)
         {
@@ -200,8 +215,19 @@ namespace Scooter_Controller
 
         }
 
+        private void btn_serial_disconnect_Click(object sender, EventArgs e)
+        {
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Close();
+                MessageBox.Show("Serial connection closed");
+            }
+            else if(!serialPort1.IsOpen)
+            {
+                MessageBox.Show("No connection currently open");
+            }
 
-
-
+        }
+        
     }
 }

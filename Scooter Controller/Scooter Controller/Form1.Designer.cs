@@ -63,6 +63,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btn_camera_raise = new System.Windows.Forms.Button();
+            this.btn_camera_lower = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -70,8 +72,7 @@
             this.btn_serial_refresh = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.btn_camera_lower = new System.Windows.Forms.Button();
-            this.btn_camera_raise = new System.Windows.Forms.Button();
+            this.btn_serial_disconnect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -469,6 +470,24 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Camera Control";
             // 
+            // btn_camera_raise
+            // 
+            this.btn_camera_raise.Location = new System.Drawing.Point(13, 21);
+            this.btn_camera_raise.Name = "btn_camera_raise";
+            this.btn_camera_raise.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_raise.TabIndex = 35;
+            this.btn_camera_raise.Text = "Raise ↑";
+            this.btn_camera_raise.UseVisualStyleBackColor = true;
+            // 
+            // btn_camera_lower
+            // 
+            this.btn_camera_lower.Location = new System.Drawing.Point(13, 91);
+            this.btn_camera_lower.Name = "btn_camera_lower";
+            this.btn_camera_lower.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_lower.TabIndex = 34;
+            this.btn_camera_lower.Text = "Lower ↓";
+            this.btn_camera_lower.UseVisualStyleBackColor = true;
+            // 
             // groupBox6
             // 
             this.groupBox6.AutoSize = true;
@@ -502,7 +521,7 @@
             // 
             // btn_serial_refresh
             // 
-            this.btn_serial_refresh.Location = new System.Drawing.Point(119, 48);
+            this.btn_serial_refresh.Location = new System.Drawing.Point(13, 84);
             this.btn_serial_refresh.Name = "btn_serial_refresh";
             this.btn_serial_refresh.Size = new System.Drawing.Size(100, 30);
             this.btn_serial_refresh.TabIndex = 35;
@@ -514,6 +533,7 @@
             // 
             this.groupBox7.AutoSize = true;
             this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox7.Controls.Add(this.btn_serial_disconnect);
             this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.Controls.Add(this.btn_serial_refresh);
             this.groupBox7.Controls.Add(this.comboBox1);
@@ -521,7 +541,7 @@
             this.groupBox7.Location = new System.Drawing.Point(488, 12);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox7.Size = new System.Drawing.Size(232, 94);
+            this.groupBox7.Size = new System.Drawing.Size(232, 130);
             this.groupBox7.TabIndex = 36;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Serial Port Settings";
@@ -538,23 +558,15 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Throttle Controller";
             // 
-            // btn_camera_lower
+            // btn_serial_disconnect
             // 
-            this.btn_camera_lower.Location = new System.Drawing.Point(13, 91);
-            this.btn_camera_lower.Name = "btn_camera_lower";
-            this.btn_camera_lower.Size = new System.Drawing.Size(100, 30);
-            this.btn_camera_lower.TabIndex = 34;
-            this.btn_camera_lower.Text = "Lower ↓";
-            this.btn_camera_lower.UseVisualStyleBackColor = true;
-            // 
-            // btn_camera_raise
-            // 
-            this.btn_camera_raise.Location = new System.Drawing.Point(13, 21);
-            this.btn_camera_raise.Name = "btn_camera_raise";
-            this.btn_camera_raise.Size = new System.Drawing.Size(100, 30);
-            this.btn_camera_raise.TabIndex = 35;
-            this.btn_camera_raise.Text = "Raise ↑";
-            this.btn_camera_raise.UseVisualStyleBackColor = true;
+            this.btn_serial_disconnect.Location = new System.Drawing.Point(119, 48);
+            this.btn_serial_disconnect.Name = "btn_serial_disconnect";
+            this.btn_serial_disconnect.Size = new System.Drawing.Size(100, 30);
+            this.btn_serial_disconnect.TabIndex = 36;
+            this.btn_serial_disconnect.Text = "Disconnect";
+            this.btn_serial_disconnect.UseVisualStyleBackColor = true;
+            this.btn_serial_disconnect.Click += new System.EventHandler(this.btn_serial_disconnect_Click);
             // 
             // Form1
             // 
@@ -634,6 +646,7 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Button btn_camera_raise;
         private System.Windows.Forms.Button btn_camera_lower;
+        private System.Windows.Forms.Button btn_serial_disconnect;
     }
 }
 
