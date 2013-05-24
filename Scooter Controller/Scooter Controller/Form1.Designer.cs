@@ -71,8 +71,8 @@
             this.btn_serial_connect = new System.Windows.Forms.Button();
             this.btn_serial_refresh = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.btn_serial_disconnect = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -478,6 +478,7 @@
             this.btn_camera_raise.TabIndex = 35;
             this.btn_camera_raise.Text = "Raise ↑";
             this.btn_camera_raise.UseVisualStyleBackColor = true;
+            this.btn_camera_raise.Click += new System.EventHandler(this.btn_camera_raise_Click);
             // 
             // btn_camera_lower
             // 
@@ -487,6 +488,7 @@
             this.btn_camera_lower.TabIndex = 34;
             this.btn_camera_lower.Text = "Lower ↓";
             this.btn_camera_lower.UseVisualStyleBackColor = true;
+            this.btn_camera_lower.Click += new System.EventHandler(this.btn_camera_lower_Click);
             // 
             // groupBox6
             // 
@@ -546,6 +548,16 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Serial Port Settings";
             // 
+            // btn_serial_disconnect
+            // 
+            this.btn_serial_disconnect.Location = new System.Drawing.Point(119, 48);
+            this.btn_serial_disconnect.Name = "btn_serial_disconnect";
+            this.btn_serial_disconnect.Size = new System.Drawing.Size(100, 30);
+            this.btn_serial_disconnect.TabIndex = 36;
+            this.btn_serial_disconnect.Text = "Disconnect";
+            this.btn_serial_disconnect.UseVisualStyleBackColor = true;
+            this.btn_serial_disconnect.Click += new System.EventHandler(this.btn_serial_disconnect_Click);
+            // 
             // groupBox8
             // 
             this.groupBox8.AutoSize = true;
@@ -557,16 +569,6 @@
             this.groupBox8.TabIndex = 32;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Throttle Controller";
-            // 
-            // btn_serial_disconnect
-            // 
-            this.btn_serial_disconnect.Location = new System.Drawing.Point(119, 48);
-            this.btn_serial_disconnect.Name = "btn_serial_disconnect";
-            this.btn_serial_disconnect.Size = new System.Drawing.Size(100, 30);
-            this.btn_serial_disconnect.TabIndex = 36;
-            this.btn_serial_disconnect.Text = "Disconnect";
-            this.btn_serial_disconnect.UseVisualStyleBackColor = true;
-            this.btn_serial_disconnect.Click += new System.EventHandler(this.btn_serial_disconnect_Click);
             // 
             // Form1
             // 
