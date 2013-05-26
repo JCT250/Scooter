@@ -73,6 +73,15 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btn_serial_disconnect = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.code_1 = new System.Windows.Forms.NumericUpDown();
+            this.code_2 = new System.Windows.Forms.NumericUpDown();
+            this.code_3 = new System.Windows.Forms.NumericUpDown();
+            this.code_4 = new System.Windows.Forms.NumericUpDown();
+            this.code_5 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_serial = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -80,6 +89,12 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.code_1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_5)).BeginInit();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_speed_1
@@ -507,7 +522,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(13, 21);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(206, 21);
+            this.comboBox1.Size = new System.Drawing.Size(219, 21);
             this.comboBox1.TabIndex = 34;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -535,6 +550,7 @@
             // 
             this.groupBox7.AutoSize = true;
             this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox7.Controls.Add(this.lbl_serial);
             this.groupBox7.Controls.Add(this.btn_serial_disconnect);
             this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.Controls.Add(this.btn_serial_refresh);
@@ -543,14 +559,14 @@
             this.groupBox7.Location = new System.Drawing.Point(488, 12);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox7.Size = new System.Drawing.Size(232, 130);
+            this.groupBox7.Size = new System.Drawing.Size(245, 147);
             this.groupBox7.TabIndex = 36;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Serial Port Settings";
             // 
             // btn_serial_disconnect
             // 
-            this.btn_serial_disconnect.Location = new System.Drawing.Point(119, 48);
+            this.btn_serial_disconnect.Location = new System.Drawing.Point(132, 48);
             this.btn_serial_disconnect.Name = "btn_serial_disconnect";
             this.btn_serial_disconnect.Size = new System.Drawing.Size(100, 30);
             this.btn_serial_disconnect.TabIndex = 36;
@@ -570,14 +586,133 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Throttle Controller";
             // 
+            // code_1
+            // 
+            this.code_1.Location = new System.Drawing.Point(13, 21);
+            this.code_1.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.code_1.Name = "code_1";
+            this.code_1.Size = new System.Drawing.Size(43, 20);
+            this.code_1.TabIndex = 37;
+            this.code_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_1.ValueChanged += new System.EventHandler(this.code_1_ValueChanged);
+            // 
+            // code_2
+            // 
+            this.code_2.Location = new System.Drawing.Point(57, 21);
+            this.code_2.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.code_2.Name = "code_2";
+            this.code_2.Size = new System.Drawing.Size(43, 20);
+            this.code_2.TabIndex = 38;
+            this.code_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_2.ValueChanged += new System.EventHandler(this.code_2_ValueChanged);
+            // 
+            // code_3
+            // 
+            this.code_3.Location = new System.Drawing.Point(101, 21);
+            this.code_3.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.code_3.Name = "code_3";
+            this.code_3.Size = new System.Drawing.Size(43, 20);
+            this.code_3.TabIndex = 39;
+            this.code_3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_3.ValueChanged += new System.EventHandler(this.code_3_ValueChanged);
+            // 
+            // code_4
+            // 
+            this.code_4.Location = new System.Drawing.Point(145, 21);
+            this.code_4.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.code_4.Name = "code_4";
+            this.code_4.Size = new System.Drawing.Size(43, 20);
+            this.code_4.TabIndex = 40;
+            this.code_4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_4.ValueChanged += new System.EventHandler(this.code_4_ValueChanged);
+            // 
+            // code_5
+            // 
+            this.code_5.Location = new System.Drawing.Point(189, 21);
+            this.code_5.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.code_5.Name = "code_5";
+            this.code_5.Size = new System.Drawing.Size(43, 20);
+            this.code_5.TabIndex = 41;
+            this.code_5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_5.ValueChanged += new System.EventHandler(this.code_5_ValueChanged);
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.AutoSize = true;
+            this.groupBox9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox9.Controls.Add(this.groupBox10);
+            this.groupBox9.Controls.Add(this.code_5);
+            this.groupBox9.Controls.Add(this.code_1);
+            this.groupBox9.Controls.Add(this.code_4);
+            this.groupBox9.Controls.Add(this.code_2);
+            this.groupBox9.Controls.Add(this.code_3);
+            this.groupBox9.Location = new System.Drawing.Point(488, 165);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox9.Size = new System.Drawing.Size(245, 57);
+            this.groupBox9.TabIndex = 42;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Security Code";
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.AutoSize = true;
+            this.groupBox10.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox10.Location = new System.Drawing.Point(-9, -25);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox10.Size = new System.Drawing.Size(20, 4);
+            this.groupBox10.TabIndex = 32;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Throttle Controller";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 43;
+            this.label1.Text = "label1";
+            // 
+            // lbl_serial
+            // 
+            this.lbl_serial.AutoSize = true;
+            this.lbl_serial.Location = new System.Drawing.Point(10, 121);
+            this.lbl_serial.Name = "lbl_serial";
+            this.lbl_serial.Size = new System.Drawing.Size(125, 13);
+            this.lbl_serial.TabIndex = 44;
+            this.lbl_serial.Text = "Serial Connection Closed";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(787, 603);
+            this.ClientSize = new System.Drawing.Size(754, 603);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -598,6 +733,13 @@
             this.groupBox5.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.code_1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code_5)).EndInit();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -649,6 +791,15 @@
         private System.Windows.Forms.Button btn_camera_raise;
         private System.Windows.Forms.Button btn_camera_lower;
         private System.Windows.Forms.Button btn_serial_disconnect;
+        private System.Windows.Forms.NumericUpDown code_1;
+        private System.Windows.Forms.NumericUpDown code_2;
+        private System.Windows.Forms.NumericUpDown code_3;
+        private System.Windows.Forms.NumericUpDown code_4;
+        private System.Windows.Forms.NumericUpDown code_5;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Label lbl_serial;
+        private System.Windows.Forms.Label label1;
     }
 }
 

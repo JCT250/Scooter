@@ -43,6 +43,8 @@ namespace Scooter_Controller
             {
                 serialPort1.BaudRate = 19200;
                 serialPort1.Open();
+                btn_serial_connect.Enabled = false;
+                lbl_serial.Text = (String.Format("Connected to '{0}'", comboBox1.SelectedItem));
 
             }
         }
@@ -51,7 +53,7 @@ namespace Scooter_Controller
         {
             if (comboBox1.SelectedIndex > -1)
             {
-                MessageBox.Show(String.Format("Connecting to '{0}'", comboBox1.SelectedItem));
+               // MessageBox.Show(String.Format("Connecting to '{0}'", comboBox1.SelectedItem));
                 Connect(comboBox1.SelectedItem.ToString());
             }
             else
@@ -65,11 +67,13 @@ namespace Scooter_Controller
             if (serialPort1.IsOpen)
             {
                 serialPort1.Close();
-                MessageBox.Show("Serial connection closed");
+                lbl_serial.Text = ("Serial Connection Closed");
+               // MessageBox.Show("Serial connection closed");
+                btn_serial_connect.Enabled = true;
             }
             else if (!serialPort1.IsOpen)
             {
-                MessageBox.Show("No connection currently open");
+                MessageBox.Show("No connection currently open", "Alert");
             }
 
         }
@@ -88,8 +92,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] speed_1 = { 0x1B, 0x32, 0x57, 0x41, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
-                serialPort1.Write(speed_1, 0, 13);
+                Byte[] speed_1 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(speed_1, 0, 18);
             }
         }
 
@@ -102,8 +106,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] speed_2 = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
-                serialPort1.Write(speed_2, 0, 13);
+                Byte[] speed_2 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(speed_2, 0, 18);
             }
         }
 
@@ -115,8 +119,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] speed_3 = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
-                serialPort1.Write(speed_3, 0, 13);
+                Byte[] speed_3 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(speed_3, 0, 18);
             }
         }
 
@@ -128,8 +132,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] speed_4 = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x0A };
-                serialPort1.Write(speed_4, 0, 13);
+                Byte[] speed_4 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(speed_4, 0, 18);
             }
         }
 
@@ -141,8 +145,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] indicate_left = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x0A };
-                serialPort1.Write(indicate_left, 0, 13);
+                Byte[] indicate_left = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x0A };
+                serialPort1.Write(indicate_left, 0, 18);
             }
         }
 
@@ -154,8 +158,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] indicate_right = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x0A };
-                serialPort1.Write(indicate_right, 0, 13);
+                Byte[] indicate_right = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x0A };
+                serialPort1.Write(indicate_right, 0, 18);
             }
         }
 
@@ -167,8 +171,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] headlights = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x0A };
-                serialPort1.Write(headlights, 0, 13);
+                Byte[] headlights = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x0A };
+                serialPort1.Write(headlights, 0, 18);
             }
         }
 
@@ -180,8 +184,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] horn = { 0x1B, 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x0A };
-                serialPort1.Write(horn, 0, 13);
+                Byte[] horn = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x0A };
+                serialPort1.Write(horn, 0, 18);
             }
         }
 
@@ -193,8 +197,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] power_on = { 0x1B, 0x32, 0x57, 0x42, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(power_on, 0, 13);
+                Byte[] power_on = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(power_on, 0, 18);
             }
         }
 
@@ -206,8 +210,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] power_off = { 0x1B, 0x32, 0x57, 0x42, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(power_off, 0, 13);
+                Byte[] power_off = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(power_off, 0, 18);
             }
         }
 
@@ -219,8 +223,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] remote_lock = { 0x1B, 0x30, 0x57, 0x41, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(remote_lock, 0, 13);
+                Byte[] remote_lock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(remote_lock, 0, 18);
             }
         }
 
@@ -232,8 +236,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] remote_unlock = { 0x1B, 0x30, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(remote_unlock, 0, 13);
+                Byte[] remote_unlock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(remote_unlock, 0, 18);
             }
         }
 
@@ -245,8 +249,8 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] locate = { 0x1B, 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(locate, 0, 13);
+                Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(locate, 0, 18);
             }
         }
 
@@ -331,6 +335,31 @@ namespace Scooter_Controller
         }
 
         private void btn_lighting_deactivate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void code_1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void code_2_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void code_3_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void code_4_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void code_5_ValueChanged(object sender, EventArgs e)
         {
 
         }
