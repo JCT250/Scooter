@@ -12,12 +12,10 @@ using System.Windows.Forms;
 namespace Scooter_Controller
 {
     public partial class Form1 : Form
-    {
-      
+    {     
         public Form1()
         {
             InitializeComponent();
-        
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -256,12 +254,14 @@ namespace Scooter_Controller
 
         private void btn_forward_Click(object sender, EventArgs e)
         {
-
+            btn_forward.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
+            btn_reverse.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
         }
 
         private void btn_reverse_Click(object sender, EventArgs e)
         {
-
+            btn_forward.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
+            btn_reverse.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -362,6 +362,11 @@ namespace Scooter_Controller
         private void code_5_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+          
         }
         
     }

@@ -71,6 +71,7 @@
             this.btn_serial_connect = new System.Windows.Forms.Button();
             this.btn_serial_refresh = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.lbl_serial = new System.Windows.Forms.Label();
             this.btn_serial_disconnect = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.code_1 = new System.Windows.Forms.NumericUpDown();
@@ -81,7 +82,6 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbl_serial = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -393,6 +393,7 @@
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(206, 45);
             this.trackBar1.TabIndex = 28;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // groupBox1
             // 
@@ -564,6 +565,15 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Serial Port Settings";
             // 
+            // lbl_serial
+            // 
+            this.lbl_serial.AutoSize = true;
+            this.lbl_serial.Location = new System.Drawing.Point(10, 121);
+            this.lbl_serial.Name = "lbl_serial";
+            this.lbl_serial.Size = new System.Drawing.Size(125, 13);
+            this.lbl_serial.TabIndex = 44;
+            this.lbl_serial.Text = "Serial Connection Closed";
+            // 
             // btn_serial_disconnect
             // 
             this.btn_serial_disconnect.Location = new System.Drawing.Point(132, 48);
@@ -694,15 +704,6 @@
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 43;
             this.label1.Text = "label1";
-            // 
-            // lbl_serial
-            // 
-            this.lbl_serial.AutoSize = true;
-            this.lbl_serial.Location = new System.Drawing.Point(10, 121);
-            this.lbl_serial.Name = "lbl_serial";
-            this.lbl_serial.Size = new System.Drawing.Size(125, 13);
-            this.lbl_serial.TabIndex = 44;
-            this.lbl_serial.Text = "Serial Connection Closed";
             // 
             // Form1
             // 
