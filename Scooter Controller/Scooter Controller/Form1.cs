@@ -28,10 +28,103 @@ namespace Scooter_Controller
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.KeyCode == (Keys.A))
+         //   MessageBox.Show("key pressed = " + e.KeyCode);
+            if (e.KeyCode == (Keys.D1))
             {
                 btn_speed_1.PerformClick();
             }
+            if (e.KeyCode == (Keys.D2))
+            {
+                btn_speed_2.PerformClick();
+            }
+            if (e.KeyCode == (Keys.D3))
+            {
+                btn_speed_3.PerformClick();
+            }
+            if (e.KeyCode == (Keys.D4))
+            {
+                btn_speed_4.PerformClick();
+            }
+            if (e.KeyCode == (Keys.Q))
+            {
+                btn_indicate_left.PerformClick();
+            }
+            if (e.KeyCode == (Keys.E))
+            {
+                btn_indicate_right.PerformClick();
+            }
+            if (e.KeyCode == (Keys.O))
+            {
+                btn_power_off.PerformClick();
+            }
+            if (e.KeyCode == (Keys.I))
+            {
+                btn_power_on.PerformClick();
+            }
+            if (e.KeyCode == (Keys.C))
+            {
+                btn_horn.PerformClick();
+            }
+            if (e.KeyCode == (Keys.Z))
+            {
+                btn_headlights.PerformClick();
+            }
+            if (e.KeyCode == (Keys.F))
+            {
+                btn_forward.PerformClick();
+            }
+            if (e.KeyCode == (Keys.R))
+            {
+                btn_reverse.PerformClick();
+            }
+            if (e.KeyCode == (Keys.W))
+            {
+                if (trackBar1.Value <= 125)
+                {
+                    trackBar1.Value = trackBar1.Value + 2;
+                    textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
+
+                }
+            }
+            if (e.KeyCode == (Keys.S))
+            {
+                if (trackBar1.Value > 1)
+                {
+                    trackBar1.Value = trackBar1.Value - 2;
+                    textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
+                }
+            }
+            if (e.KeyCode == (Keys.X))
+            {
+                trackBar1.Value = 0;
+                btn_stop.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad8 ))
+            {
+                btn_pan_up.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad2))
+            {
+                btn_pan_down.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad4))
+            {
+                btn_pan_left.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad6))
+            {
+                btn_pan_right.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad7))
+            {
+                btn_camera_raise.PerformClick();
+            }
+            if (e.KeyCode == (Keys.NumPad1))
+            {
+                btn_camera_lower.PerformClick();
+            }
+            
+
         }
 
         private void serial_check()
@@ -41,7 +134,7 @@ namespace Scooter_Controller
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-      
+
         }
 
         private void Connect(string portName)
@@ -102,6 +195,7 @@ namespace Scooter_Controller
             {
                 Byte[] speed_1 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_1, 0, 18);
+                textBox1.AppendText("Speed set to 1" + Environment.NewLine);
             }
         }
 
@@ -115,6 +209,7 @@ namespace Scooter_Controller
             {
                 Byte[] speed_2 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_2, 0, 18);
+                textBox1.AppendText("Speed set to 2" + Environment.NewLine);
             }
         }
 
@@ -128,6 +223,7 @@ namespace Scooter_Controller
             {
                 Byte[] speed_3 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_3, 0, 18);
+                textBox1.AppendText("Speed set to 3" + Environment.NewLine);
             }
         }
 
@@ -141,6 +237,7 @@ namespace Scooter_Controller
             {
                 Byte[] speed_4 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_4, 0, 18);
+                textBox1.AppendText("Speed set to 4" + Environment.NewLine);
             }
         }
 
@@ -154,6 +251,7 @@ namespace Scooter_Controller
             {
                 Byte[] indicate_left = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(indicate_left, 0, 18);
+                textBox1.AppendText("Indicating Left" + Environment.NewLine);
             }
         }
 
@@ -167,6 +265,7 @@ namespace Scooter_Controller
             {
                 Byte[] indicate_right = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x0A };
                 serialPort1.Write(indicate_right, 0, 18);
+                textBox1.AppendText("Indicating Right" + Environment.NewLine);
             }
         }
 
@@ -180,6 +279,7 @@ namespace Scooter_Controller
             {
                 Byte[] headlights = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x0A };
                 serialPort1.Write(headlights, 0, 18);
+                textBox1.AppendText("Headlights Toggled" + Environment.NewLine);
             }
         }
 
@@ -193,6 +293,7 @@ namespace Scooter_Controller
             {
                 Byte[] horn = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x0A };
                 serialPort1.Write(horn, 0, 18);
+                textBox1.AppendText("Horn Triggered" + Environment.NewLine);
             }
         }
 
@@ -206,6 +307,7 @@ namespace Scooter_Controller
             {
                 Byte[] power_on = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(power_on, 0, 18);
+                textBox1.AppendText("Powering On" + Environment.NewLine);
             }
         }
 
@@ -219,6 +321,7 @@ namespace Scooter_Controller
             {
                 Byte[] power_off = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(power_off, 0, 18);
+                textBox1.AppendText("Powering Off" + Environment.NewLine);
             }
         }
 
@@ -232,6 +335,7 @@ namespace Scooter_Controller
             {
                 Byte[] remote_lock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(remote_lock, 0, 18);
+                textBox1.AppendText("Remote Lock Set" + Environment.NewLine);
             }
         }
 
@@ -245,6 +349,7 @@ namespace Scooter_Controller
             {
                 Byte[] remote_unlock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(remote_unlock, 0, 18);
+                textBox1.AppendText("Remote Lock Unset" + Environment.NewLine);
             }
         }
 
@@ -258,6 +363,7 @@ namespace Scooter_Controller
             {
                 Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Gps Location Requested" + Environment.NewLine);
             }
         }
 
@@ -265,47 +371,103 @@ namespace Scooter_Controller
         {
             btn_forward.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
             btn_reverse.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
+            textBox1.AppendText("Setting Direction to Forward" + Environment.NewLine);
         }
 
         private void btn_reverse_Click(object sender, EventArgs e)
         {
             btn_forward.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
             btn_reverse.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
+            textBox1.AppendText("Setting Direction to Reverse" + Environment.NewLine);
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
-
+            textBox1.AppendText("All Stop Selected" + Environment.NewLine);
         }
 
         private void btn_pan_up_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Camera Panning Up" + Environment.NewLine);
+            }
         }
 
         private void btn_pan_down_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Camera Panning Down" + Environment.NewLine);
+            }
+         }
 
         private void btn_pan_left_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Camera Panning Left" + Environment.NewLine);
+            }
         }
 
         private void btn_pan_right_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Camera Panning Right" + Environment.NewLine);
+            }
         }
 
         private void btn_camera_raise_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Raising Camera" + Environment.NewLine);
+            }
         }
 
         private void btn_camera_lower_Click(object sender, EventArgs e)
         {
-
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               // serialPort1.Write(locate, 0, 18);
+                textBox1.AppendText("Lowering Camera" + Environment.NewLine);
+            }
         }
 
         private void bnt_lighting_mode_1_Click(object sender, EventArgs e)
@@ -375,7 +537,7 @@ namespace Scooter_Controller
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-          
+            textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
         }
         
     }
