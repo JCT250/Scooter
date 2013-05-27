@@ -22,11 +22,21 @@ namespace Scooter_Controller
         {
             var ports = SerialPort.GetPortNames();
             comboBox1.DataSource = ports;
+            this.KeyPreview = true;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+        }
+
+        private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == (Keys.A))
+            {
+                btn_speed_1.PerformClick();
+            }
         }
 
         private void serial_check()
         {
-            MessageBox.Show("Please open Serial connection");
+            MessageBox.Show("Please open Serial Connection");
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,7 +104,6 @@ namespace Scooter_Controller
                 serialPort1.Write(speed_1, 0, 18);
             }
         }
-
 
         private void btn_speed_2_Click(object sender, EventArgs e)
         {
