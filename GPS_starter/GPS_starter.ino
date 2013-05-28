@@ -7,8 +7,11 @@
    4800-baud serial GPS device hooked up on pins 3(rx) and 4(tx).
 */
 
+char incoming_char;
+
 TinyGPS gps;
 SoftwareSerial nss(9, 8);
+SoftwareSerial gsm(10, 11);
 
 static void gpsdump(TinyGPS &gps);
 static bool feedgps();
@@ -17,28 +20,33 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
-static int lock_pin = 4; //digital pin connected to Mega for remote lock 
+static int lock_pin = A7; //digital pin connected to Mega for remote lock 
+static int gsm_reset = A0;
+static int gsm_power = A1;
+int runonce = 1;
+
 
 void setup()
 {
-  Serial.begin(115200);
-  nss.begin(9600);
-  
-  Serial.print("Testing TinyGPS library v. "); Serial.println(TinyGPS::library_version());
-  Serial.println("by Mikal Hart");
-  Serial.println();
-  Serial.print("Sizeof(gpsobject) = "); Serial.println(sizeof(TinyGPS));
-  Serial.println();
-  Serial.println("Sats HDOP Latitude Longitude Fix  Date       Time       Date Alt     Course Speed Card  Distance Course Card  Chars Sentences Checksum");
-  Serial.println("          (deg)    (deg)     Age                        Age  (m)     --- from GPS ----  ---- to London  ----  RX    RX        Fail");
-  Serial.println("--------------------------------------------------------------------------------------------------------------------------------------");
+  pinMode(gsm_power, OUTPUT);
+  digitalWrite(gsm_power, HIGH);
+  pinMode(gsm_reset, OUTPUT);
+  digitalWrite(gsm_reset, LOW);
   pinMode(lock_pin, OUTPUT);
   digitalWrite(lock_pin, HIGH);
-}
+  Serial.begin(115200);  
+  nss.begin(9600);
+  gsm.begin(9600);
+  
+  //turn on 
+  digitalWrite(gsm_power,LOW);
+  delay(1500);
+  digitalWrite(gsm_power,HIGH);
+ }
 
 void loop()
 {
-  if(Serial.available() > 0){
+  /*if(Serial.available() > 0){
    byte inbyte = Serial.read();
 
       if(inbyte == 49){
@@ -50,11 +58,48 @@ void loop()
        Serial.write("LOW");
       }
       
+    }*/
+    
+   /*
+    if(Serial.available() > 1)
+    {
+      //if(Serial.read() == 49){
+        //gsm.print("AT+IPR=?");
+        //gsm.print('\r');
+      //}
+      if(Serial.read() == 50){
+        gsm.print("AT+IPR?");
+        gsm.print('\r');
+      }
+      if(Serial.read() == 49){
+        gsm.print("AT+IPR=9600");
+        gsm.print('\r');
+      }
+      if(Serial.read() == 52){
+        digitalWrite(gsm_power,LOW);
+        delay(1500);
+        digitalWrite(gsm_power,HIGH);
+      }
+      if(Serial.read() == 53){
+        gsm.print("ATE0");
+        gsm.print('\r');
+      }
+      if(Serial.read() == 54){
+        gsm.print("ATE0");
+        gsm.print('\r');
+      }
+      if(Serial.read() == 55){
+        gsm.print("AT+IPR?");
+        gsm.print('\r');
+      }
     }
+     */
+if (gsm.available())
+ Serial.write(gsm.read());
+if (Serial.available())
+ gsm.write(Serial.read());
 }
-
-/*
-  bool newdata = false;
+ /* bool newdata = false;
   unsigned long start = millis();
   
   // Every second we print an update
