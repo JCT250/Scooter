@@ -197,7 +197,7 @@ namespace Scooter_Controller
                 serialPort1.Write(speed_1, 0, 18);
                 textBox1.AppendText("Speed set to 1" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_speed_2_Click(object sender, EventArgs e)
         {
@@ -211,7 +211,7 @@ namespace Scooter_Controller
                 serialPort1.Write(speed_2, 0, 18);
                 textBox1.AppendText("Speed set to 2" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_speed_3_Click(object sender, EventArgs e)
         {
@@ -225,7 +225,7 @@ namespace Scooter_Controller
                 serialPort1.Write(speed_3, 0, 18);
                 textBox1.AppendText("Speed set to 3" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_speed_4_Click(object sender, EventArgs e)
         {
@@ -239,7 +239,7 @@ namespace Scooter_Controller
                 serialPort1.Write(speed_4, 0, 18);
                 textBox1.AppendText("Speed set to 4" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_indicate_left_Click(object sender, EventArgs e)
         {
@@ -253,7 +253,7 @@ namespace Scooter_Controller
                 serialPort1.Write(indicate_left, 0, 18);
                 textBox1.AppendText("Indicating Left" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_indicate_right_Click(object sender, EventArgs e)
         {
@@ -267,7 +267,7 @@ namespace Scooter_Controller
                 serialPort1.Write(indicate_right, 0, 18);
                 textBox1.AppendText("Indicating Right" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_headlights_Click(object sender, EventArgs e)
         {
@@ -281,7 +281,7 @@ namespace Scooter_Controller
                 serialPort1.Write(headlights, 0, 18);
                 textBox1.AppendText("Headlights Toggled" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_horn_Click(object sender, EventArgs e)
         {
@@ -295,7 +295,7 @@ namespace Scooter_Controller
                 serialPort1.Write(horn, 0, 18);
                 textBox1.AppendText("Horn Triggered" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_power_on_Click(object sender, EventArgs e)
         {
@@ -309,7 +309,7 @@ namespace Scooter_Controller
                 serialPort1.Write(power_on, 0, 18);
                 textBox1.AppendText("Powering On" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_power_off_Click(object sender, EventArgs e)
         {
@@ -323,7 +323,7 @@ namespace Scooter_Controller
                 serialPort1.Write(power_off, 0, 18);
                 textBox1.AppendText("Powering Off" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_remote_lock_Click(object sender, EventArgs e)
         {
@@ -337,7 +337,7 @@ namespace Scooter_Controller
                 serialPort1.Write(remote_lock, 0, 18);
                 textBox1.AppendText("Remote Lock Set" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_remote_unlock_Click(object sender, EventArgs e)
         {
@@ -351,7 +351,7 @@ namespace Scooter_Controller
                 serialPort1.Write(remote_unlock, 0, 18);
                 textBox1.AppendText("Remote Lock Unset" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_locate_Click(object sender, EventArgs e)
         {
@@ -365,7 +365,7 @@ namespace Scooter_Controller
                 serialPort1.Write(locate, 0, 18);
                 textBox1.AppendText("Gps Location Requested" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_forward_Click(object sender, EventArgs e)
         {
@@ -450,11 +450,11 @@ namespace Scooter_Controller
             }
             else
             {
-               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-               // serialPort1.Write(locate, 0, 18);
-                textBox1.AppendText("Raising Camera" + Environment.NewLine);
+               Byte[] camera_raise = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x43, 0x52, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               serialPort1.Write(camera_raise, 0, 18);
+               textBox1.AppendText("Raising Camera" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_camera_lower_Click(object sender, EventArgs e)
         {
@@ -464,11 +464,11 @@ namespace Scooter_Controller
             }
             else
             {
-               //Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-               // serialPort1.Write(locate, 0, 18);
-                textBox1.AppendText("Lowering Camera" + Environment.NewLine);
+               Byte[] camera_lower = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x43, 0x4C, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+               serialPort1.Write(camera_lower, 0, 18);
+               textBox1.AppendText("Lowering Camera" + Environment.NewLine);
             }
-        }
+        } //done
 
         private void bnt_lighting_mode_1_Click(object sender, EventArgs e)
         {
