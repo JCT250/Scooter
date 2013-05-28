@@ -82,8 +82,11 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -98,6 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.code_5)).BeginInit();
             this.groupBox9.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.groupBox13.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_speed_1
@@ -710,10 +714,19 @@
             this.groupBox11.Location = new System.Drawing.Point(488, 228);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox11.Size = new System.Drawing.Size(245, 338);
+            this.groupBox11.Size = new System.Drawing.Size(245, 163);
             this.groupBox11.TabIndex = 43;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Command History";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(13, 21);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(219, 126);
+            this.textBox1.TabIndex = 34;
             // 
             // groupBox12
             // 
@@ -727,14 +740,40 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Throttle Controller";
             // 
-            // textBox1
+            // groupBox13
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 21);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(219, 301);
-            this.textBox1.TabIndex = 34;
+            this.groupBox13.AutoSize = true;
+            this.groupBox13.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox13.Controls.Add(this.textBox2);
+            this.groupBox13.Controls.Add(this.groupBox14);
+            this.groupBox13.Location = new System.Drawing.Point(488, 404);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox13.Size = new System.Drawing.Size(245, 162);
+            this.groupBox13.TabIndex = 44;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "Serial History";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(13, 21);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox2.Size = new System.Drawing.Size(219, 125);
+            this.textBox2.TabIndex = 34;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.AutoSize = true;
+            this.groupBox14.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox14.Location = new System.Drawing.Point(-9, -25);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox14.Size = new System.Drawing.Size(20, 4);
+            this.groupBox14.TabIndex = 32;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Throttle Controller";
             // 
             // Form1
             // 
@@ -743,6 +782,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(754, 603);
+            this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox7);
@@ -774,6 +814,8 @@
             this.groupBox9.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -836,6 +878,9 @@
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.GroupBox groupBox14;
     }
 }
 
