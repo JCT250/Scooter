@@ -2,16 +2,34 @@
 
 #include <TinyGPS.h>
 
-/* This sample code demonstrates the normal use of a TinyGPS object.
-   It requires the use of SoftwareSerial, and assumes that you have a
-   4800-baud serial GPS device hooked up on pins 3(rx) and 4(tx).
-*/
+//sets the security code
+#define code_1 0x01 
+#define code_2 0x02
+#define code_3 0x03
+#define code_4 0x04
+#define code_5 0x05
 
-char incoming_char;
+//sets the comparison comands
+byte cmd_comms_read_location[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x52, 0x41};
+byte cmd_comms_write_remotelock[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x41};
+byte cmd_comms_write_cameramove[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x42};
+byte cmd_comms_write_cameraheight[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x43};
 
-TinyGPS gps;
-SoftwareSerial nss(9, 8);
-SoftwareSerial gsm(10, 11);
+byte cmd_throttle_read_speed[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x52, 0x41};
+byte cmd_throttle_write_speed[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
+
+byte cmd_mega_read_status[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52, 0x41};
+byte cmd_mega_write_buttons[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
+byte cmd_mega_write_powerstate[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x42};
+
+TinyGPS gps; //Create GPS device
+
+SoftwareSerial serial_gps(9, 8); // Attach Software Serial devices
+SoftwareSerial serial_gsm(10, 11);
+SoftwareSerial serial_throttle(0,0);
+SoftwareSerial serial_mega(0,0);
+SoftwareSerial serial_camera(0,0);
+SoftwareSerial serial_lighting(0,0);
 
 static void gpsdump(TinyGPS &gps);
 static bool feedgps();
@@ -23,7 +41,6 @@ static void print_str(const char *str, int len);
 static int lock_pin = A7; //digital pin connected to Mega for remote lock 
 static int gsm_reset = A0;
 static int gsm_power = A1;
-int runonce = 1;
 
 
 void setup()
@@ -32,13 +49,20 @@ void setup()
   digitalWrite(gsm_power, HIGH);
   pinMode(gsm_reset, OUTPUT);
   digitalWrite(gsm_reset, LOW);
+  
   pinMode(lock_pin, OUTPUT);
   digitalWrite(lock_pin, HIGH);
-  Serial.begin(115200);  
-  nss.begin(9600);
-  gsm.begin(9600);
   
-  //turn on 
+  Serial.begin(9600);  
+  serial_gps.begin(9600);
+  serial_gsm.begin(9600);
+  serial_throttle.begin(9600);
+  serial_mega.begin(9600);
+  serial_camera.begin(9600);
+  serial_lighting.begin(9600);
+  
+  
+  //turn on gsm module
   digitalWrite(gsm_power,LOW);
   delay(1500);
   digitalWrite(gsm_power,HIGH);
@@ -46,19 +70,6 @@ void setup()
 
 void loop()
 {
-  /*if(Serial.available() > 0){
-   byte inbyte = Serial.read();
-
-      if(inbyte == 49){
-       digitalWrite(lock_pin, HIGH);
-       Serial.write("HIGH");
-      }
-      if(inbyte == 48){
-       digitalWrite(lock_pin, LOW);
-       Serial.write("LOW");
-      }
-      
-    }*/
     
    /*
     if(Serial.available() > 1)
@@ -94,10 +105,10 @@ void loop()
       }
     }
      */
-if (gsm.available())
- Serial.write(gsm.read());
+if (serial_gsm.available())
+ Serial.write(serial_gsm.read());
 if (Serial.available())
- gsm.write(Serial.read());
+ serial_gsm.write(Serial.read());
 }
  /* bool newdata = false;
   unsigned long start = millis();
@@ -213,9 +224,9 @@ static void print_str(const char *str, int len)
 
 static bool feedgps()
 {
-  while (nss.available())
+  while (serial_gps.available())
   {
-    if (gps.encode(nss.read()))
+    if (gps.encode(serial_gps.read()))
       return true;
   }
   return false;

@@ -196,7 +196,7 @@ namespace Scooter_Controller
                 Byte[] speed_1 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_1, 0, 18);
                 textBox1.AppendText("Speed set to 1" + Environment.NewLine);
-                textBox2.AppendText(speed_1.ToString() + Environment.NewLine);
+                textBox2.AppendText( BitConverter.ToString(speed_1) + Environment.NewLine);
             }
         } //done
 
