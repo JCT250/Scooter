@@ -19,8 +19,12 @@ byte cmd_throttle_read_speed[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 
 byte cmd_throttle_write_speed[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
 
 byte cmd_mega_read_status[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52, 0x41};
-byte cmd_mega_write_buttons[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
-byte cmd_mega_write_powerstate[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x42};
+byte cmd_mega_write_buttons[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57, 0x41};
+byte cmd_mega_write_powerstate[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57, 0x42};
+
+byte cmd_lighting_read_state[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x52, 0x41};
+byte cmd_lighting_write_state[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57, 0x41};
+byte cmd_lighting_write_mode[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57, 0x42};
 
 TinyGPS gps; //Create GPS device
 
@@ -38,7 +42,7 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
-static int lock_pin = A7; //digital pin connected to Mega for remote lock 
+static int lock_pin = A7; //remote lock Mega
 static int gsm_reset = A0;
 static int gsm_power = A1;
 
@@ -70,7 +74,11 @@ void setup()
 
 void loop()
 {
-    
+    if(Serial.available() > 1)
+    {
+      byte inData[18];
+      Serial.readBytesUntil('\n',inData,20);
+    }
    /*
     if(Serial.available() > 1)
     {

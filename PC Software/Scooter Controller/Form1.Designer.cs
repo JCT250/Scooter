@@ -59,9 +59,11 @@
             this.btn_lighting_mode_6 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_query_power = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lighting_status = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_camera_raise = new System.Windows.Forms.Button();
             this.btn_camera_lower = new System.Windows.Forms.Button();
@@ -87,6 +89,7 @@
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.btn_query_led_status = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -407,6 +410,8 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.btn_query_led_status);
+            this.groupBox1.Controls.Add(this.btn_query_power);
             this.groupBox1.Controls.Add(this.btn_speed_1);
             this.groupBox1.Controls.Add(this.btn_speed_4);
             this.groupBox1.Controls.Add(this.btn_speed_2);
@@ -424,6 +429,16 @@
             this.groupBox1.TabIndex = 29;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Main Control";
+            // 
+            // btn_query_power
+            // 
+            this.btn_query_power.Location = new System.Drawing.Point(241, 93);
+            this.btn_query_power.Name = "btn_query_power";
+            this.btn_query_power.Size = new System.Drawing.Size(100, 30);
+            this.btn_query_power.TabIndex = 45;
+            this.btn_query_power.Text = "Query PWR State";
+            this.btn_query_power.UseVisualStyleBackColor = true;
+            this.btn_query_power.Click += new System.EventHandler(this.btn_query_power_Click);
             // 
             // groupBox2
             // 
@@ -460,6 +475,7 @@
             // 
             this.groupBox4.AutoSize = true;
             this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox4.Controls.Add(this.lighting_status);
             this.groupBox4.Controls.Add(this.bnt_lighting_mode_1);
             this.groupBox4.Controls.Add(this.btn_lighting_mode_2);
             this.groupBox4.Controls.Add(this.btn_lighting_mode_3);
@@ -471,10 +487,20 @@
             this.groupBox4.Location = new System.Drawing.Point(250, 157);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox4.Size = new System.Drawing.Size(232, 175);
+            this.groupBox4.Size = new System.Drawing.Size(232, 211);
             this.groupBox4.TabIndex = 32;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Lighting Control";
+            // 
+            // lighting_status
+            // 
+            this.lighting_status.Location = new System.Drawing.Point(13, 165);
+            this.lighting_status.Name = "lighting_status";
+            this.lighting_status.Size = new System.Drawing.Size(100, 30);
+            this.lighting_status.TabIndex = 28;
+            this.lighting_status.Text = "Query Status";
+            this.lighting_status.UseVisualStyleBackColor = true;
+            this.lighting_status.Click += new System.EventHandler(this.lighting_status_Click);
             // 
             // groupBox5
             // 
@@ -775,6 +801,16 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Throttle Controller";
             // 
+            // btn_query_led_status
+            // 
+            this.btn_query_led_status.Location = new System.Drawing.Point(357, 93);
+            this.btn_query_led_status.Name = "btn_query_led_status";
+            this.btn_query_led_status.Size = new System.Drawing.Size(100, 30);
+            this.btn_query_led_status.TabIndex = 46;
+            this.btn_query_led_status.Text = "Query Status";
+            this.btn_query_led_status.UseVisualStyleBackColor = true;
+            this.btn_query_led_status.Click += new System.EventHandler(this.btn_query_led_status_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -881,6 +917,9 @@
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.Button btn_query_power;
+        private System.Windows.Forms.Button lighting_status;
+        private System.Windows.Forms.Button btn_query_led_status;
     }
 }
 

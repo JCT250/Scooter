@@ -211,6 +211,7 @@ namespace Scooter_Controller
                 Byte[] speed_2 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_2, 0, 18);
                 textBox1.AppendText("Speed set to 2" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(speed_2) + Environment.NewLine);
             }
         } //done
 
@@ -225,6 +226,7 @@ namespace Scooter_Controller
                 Byte[] speed_3 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_3, 0, 18);
                 textBox1.AppendText("Speed set to 3" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(speed_3) + Environment.NewLine);
             }
         } //done
 
@@ -239,6 +241,7 @@ namespace Scooter_Controller
                 Byte[] speed_4 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(speed_4, 0, 18);
                 textBox1.AppendText("Speed set to 4" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(speed_4) + Environment.NewLine);
             }
         } //done
 
@@ -253,6 +256,7 @@ namespace Scooter_Controller
                 Byte[] indicate_left = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x0A };
                 serialPort1.Write(indicate_left, 0, 18);
                 textBox1.AppendText("Indicating Left" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(indicate_left) + Environment.NewLine);
             }
         } //done
 
@@ -267,6 +271,7 @@ namespace Scooter_Controller
                 Byte[] indicate_right = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x0A };
                 serialPort1.Write(indicate_right, 0, 18);
                 textBox1.AppendText("Indicating Right" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(indicate_right) + Environment.NewLine);
             }
         } //done
 
@@ -281,6 +286,7 @@ namespace Scooter_Controller
                 Byte[] headlights = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x0A };
                 serialPort1.Write(headlights, 0, 18);
                 textBox1.AppendText("Headlights Toggled" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(headlights) + Environment.NewLine);
             }
         } //done
 
@@ -295,6 +301,7 @@ namespace Scooter_Controller
                 Byte[] horn = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x41, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0x30, 0x0A };
                 serialPort1.Write(horn, 0, 18);
                 textBox1.AppendText("Horn Triggered" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(horn) + Environment.NewLine);
             }
         } //done
 
@@ -309,6 +316,7 @@ namespace Scooter_Controller
                 Byte[] power_on = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(power_on, 0, 18);
                 textBox1.AppendText("Powering On" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(power_on) + Environment.NewLine);
             }
         } //done
 
@@ -323,6 +331,7 @@ namespace Scooter_Controller
                 Byte[] power_off = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x42, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(power_off, 0, 18);
                 textBox1.AppendText("Powering Off" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(power_off) + Environment.NewLine);
             }
         } //done
 
@@ -337,6 +346,7 @@ namespace Scooter_Controller
                 Byte[] remote_lock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(remote_lock, 0, 18);
                 textBox1.AppendText("Remote Lock Set" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(remote_lock) + Environment.NewLine);
             }
         } //done
 
@@ -351,6 +361,7 @@ namespace Scooter_Controller
                 Byte[] remote_unlock = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(remote_unlock, 0, 18);
                 textBox1.AppendText("Remote Lock Unset" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(remote_unlock) + Environment.NewLine);
             }
         } //done
 
@@ -365,6 +376,7 @@ namespace Scooter_Controller
                 Byte[] locate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(locate, 0, 18);
                 textBox1.AppendText("Gps Location Requested" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(locate) + Environment.NewLine);
             }
         } //done
 
@@ -454,6 +466,7 @@ namespace Scooter_Controller
                Byte[] camera_raise = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x43, 0x52, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                serialPort1.Write(camera_raise, 0, 18);
                textBox1.AppendText("Raising Camera" + Environment.NewLine);
+               textBox2.AppendText(BitConverter.ToString(camera_raise) + Environment.NewLine);
             }
         } //done
 
@@ -468,78 +481,203 @@ namespace Scooter_Controller
                Byte[] camera_lower = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x30, 0x57, 0x43, 0x4C, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                serialPort1.Write(camera_lower, 0, 18);
                textBox1.AppendText("Lowering Camera" + Environment.NewLine);
+               textBox2.AppendText(BitConverter.ToString(camera_lower) + Environment.NewLine);
             }
         } //done
 
         private void bnt_lighting_mode_1_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode1 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode1, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 1" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode1) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_mode_2_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode2 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x32, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode2, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 2" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode2) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_mode_3_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode3 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x33, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode3, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 3" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode3) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_mode_4_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode4 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x34, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode4, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 4" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode4) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_mode_5_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode5 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x35, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode5, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 5" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode5) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_mode_6_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_mode6 = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x42, 0x36, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_mode6, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 6" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_mode6) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_activate_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_activate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x41, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_activate, 0, 18);
+                textBox1.AppendText("Lighting Activated" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_activate) + Environment.NewLine);
+            }
+        } //done
 
         private void btn_lighting_deactivate_Click(object sender, EventArgs e)
         {
-
-        }
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_deactivate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_deactivate, 0, 18);
+                textBox1.AppendText("Setting Lighting Mode 4" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_deactivate) + Environment.NewLine);
+            }
+        } //done
 
         private void code_1_ValueChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void code_2_ValueChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void code_3_ValueChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void code_4_ValueChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void code_5_ValueChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
+        } //done
+
+        private void lighting_status_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] lighting_satus = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(lighting_satus, 0, 18);
+                textBox1.AppendText("Querying Lighting Status" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(lighting_satus) + Environment.NewLine);
+            }
         }
-        
-    }
+
+        private void btn_query_power_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] power_state = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x52, 0x41, 0x50, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(power_state, 0, 18);
+                textBox1.AppendText("Querying Power State" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(power_state) + Environment.NewLine);
+            }
+        } //done
+
+        private void btn_query_led_status_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] led_state = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x52, 0x41, 0x4C, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(led_state, 0, 18);
+                textBox1.AppendText("Querying Main Status" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(led_state) + Environment.NewLine);
+            }
+        } //done
+    } 
 }
