@@ -1,0 +1,8 @@
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.exe.config
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.exe
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.pdb
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Form1.resources
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Properties.Resources.resources
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csproj.GenerateResource.Cache
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.exe
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.pdb

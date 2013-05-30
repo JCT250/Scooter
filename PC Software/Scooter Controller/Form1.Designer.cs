@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_speed_1 = new System.Windows.Forms.Button();
             this.btn_speed_2 = new System.Windows.Forms.Button();
             this.btn_speed_3 = new System.Windows.Forms.Button();
@@ -59,6 +60,7 @@
             this.btn_lighting_mode_6 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_query_led_status = new System.Windows.Forms.Button();
             this.btn_query_power = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -89,7 +91,6 @@
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.btn_query_led_status = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -429,6 +430,16 @@
             this.groupBox1.TabIndex = 29;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Main Control";
+            // 
+            // btn_query_led_status
+            // 
+            this.btn_query_led_status.Location = new System.Drawing.Point(357, 93);
+            this.btn_query_led_status.Name = "btn_query_led_status";
+            this.btn_query_led_status.Size = new System.Drawing.Size(100, 30);
+            this.btn_query_led_status.TabIndex = 46;
+            this.btn_query_led_status.Text = "Query Status";
+            this.btn_query_led_status.UseVisualStyleBackColor = true;
+            this.btn_query_led_status.Click += new System.EventHandler(this.btn_query_led_status_Click);
             // 
             // btn_query_power
             // 
@@ -801,16 +812,6 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Throttle Controller";
             // 
-            // btn_query_led_status
-            // 
-            this.btn_query_led_status.Location = new System.Drawing.Point(357, 93);
-            this.btn_query_led_status.Name = "btn_query_led_status";
-            this.btn_query_led_status.Size = new System.Drawing.Size(100, 30);
-            this.btn_query_led_status.TabIndex = 46;
-            this.btn_query_led_status.Text = "Query Status";
-            this.btn_query_led_status.UseVisualStyleBackColor = true;
-            this.btn_query_led_status.Click += new System.EventHandler(this.btn_query_led_status_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -827,6 +828,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Scooter Controller";

@@ -12,7 +12,9 @@ using System.Windows.Forms;
 namespace Scooter_Controller
 {
     public partial class Form1 : Form
-    {     
+    {
+        private bool direction = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -82,16 +84,26 @@ namespace Scooter_Controller
                 if (trackBar1.Value <= 125)
                 {
                     trackBar1.Value = trackBar1.Value + 2;
-                    textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
-
+                    throttle_update();
                 }
+                if (trackBar1.Value == 126)
+                {
+                    trackBar1.Value = trackBar1.Value + 1;
+                    throttle_update();
+                }
+                
             }
             if (e.KeyCode == (Keys.S))
             {
                 if (trackBar1.Value > 1)
                 {
                     trackBar1.Value = trackBar1.Value - 2;
-                    textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
+                    throttle_update();
+                }
+                if (trackBar1.Value == 1)
+                {
+                    trackBar1.Value = trackBar1.Value - 1;
+                    throttle_update();
                 }
             }
             if (e.KeyCode == (Keys.X))
@@ -130,12 +142,12 @@ namespace Scooter_Controller
         private void serial_check()
         {
             MessageBox.Show("Please open Serial Connection");
-        }
+        } //done
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        }
+        } //done
 
         private void Connect(string portName)
         {
@@ -148,7 +160,7 @@ namespace Scooter_Controller
                 lbl_serial.Text = (String.Format("Connected to '{0}'", comboBox1.SelectedItem));
 
             }
-        }
+        } //done
 
         private void btn_serial_connect_Click(object sender, EventArgs e)
         {
@@ -161,7 +173,7 @@ namespace Scooter_Controller
             {
                 MessageBox.Show("Please select a port first");
             }
-        }
+        } //done
 
         private void btn_serial_disconnect_Click(object sender, EventArgs e)
         {
@@ -177,13 +189,13 @@ namespace Scooter_Controller
                 MessageBox.Show("No connection currently open", "Alert");
             }
 
-        }
+        } //done
 
         private void btn_serial_refresh_Click(object sender, EventArgs e)
         {
             var ports = SerialPort.GetPortNames();
             comboBox1.DataSource = ports;
-        }
+        } //done
 
         private void btn_speed_1_Click(object sender, EventArgs e)
         {
@@ -385,19 +397,25 @@ namespace Scooter_Controller
             btn_forward.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
             btn_reverse.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
             textBox1.AppendText("Setting Direction to Forward" + Environment.NewLine);
-        }
+            direction = true;
+            throttle_update();
+        } //done
 
         private void btn_reverse_Click(object sender, EventArgs e)
         {
             btn_forward.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
             btn_reverse.BackColor = System.Drawing.Color.FromArgb(128, 255, 128);
             textBox1.AppendText("Setting Direction to Reverse" + Environment.NewLine);
-        }
+            direction = false;
+            throttle_update();
+        } //done
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
             textBox1.AppendText("All Stop Selected" + Environment.NewLine);
-        }
+            trackBar1.Value = 0;
+            throttle_update();
+        } //done
 
         private void btn_pan_up_Click(object sender, EventArgs e)
         {
@@ -632,7 +650,40 @@ namespace Scooter_Controller
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            textBox1.AppendText("Throttle Position = " + trackBar1.Value + Environment.NewLine);
+                 throttle_update();
+        } //done
+
+        private void throttle_update()
+        {
+            int parsed_value = 0;
+
+            if (direction == true)
+            {
+                parsed_value = (127 - trackBar1.Value);
+            }
+
+            if (direction == false)
+            {
+                 parsed_value = (128 + trackBar1.Value);
+            }
+
+            double hundreds = Math.Floor(parsed_value / 100.00);
+            double tens = Math.Floor((parsed_value - (hundreds * 100)) / 10.00);
+            double ones = Math.Floor((parsed_value - (hundreds * 100) - (tens * 10)) / 1.00);
+            
+           // MessageBox.Show("numbers are " + hundreds + "  " + tens + "  " + ones);
+            
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] throttle_write = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x31, 0x57, 0x41, Convert.ToByte(hundreds), Convert.ToByte(tens), Convert.ToByte(ones), 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(throttle_write, 0, 18);
+                textBox1.AppendText("Updating Throttle Position to " + trackBar1.Value + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(throttle_write) + Environment.NewLine);
+            }
         } //done
 
         private void lighting_status_Click(object sender, EventArgs e)
@@ -648,7 +699,7 @@ namespace Scooter_Controller
                 textBox1.AppendText("Querying Lighting Status" + Environment.NewLine);
                 textBox2.AppendText(BitConverter.ToString(lighting_satus) + Environment.NewLine);
             }
-        }
+        } //done
 
         private void btn_query_power_Click(object sender, EventArgs e)
         {
