@@ -24,7 +24,7 @@ byte cmd_throttle_read_speed[] = {
 byte cmd_throttle_write_speed[] = {
   0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
 
-byte cmd_mega_read_status[] = {
+byte cmd_mega_read_state[] = {
   0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52, 0x41};
 byte cmd_mega_write_buttons[] = {
   0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57, 0x41};
@@ -41,6 +41,7 @@ byte cmd_lighting_write_mode[] = {
 byte start_byte = 0x1B;
 byte stop_byte = 0x0A;
 byte inArray[18];
+bool authenticated = false;
 
 TinyGPS gps; //Create GPS device
 
@@ -93,174 +94,15 @@ void loop()
   for(int i=0; i<18; i++) //clear the input array
   {
     inArray[i] = 0xFF;
+    authenticated = false;
   }
   
   read_HW_serial(); //
+  authenticate();
+  process();
   
   
-  
-    /*
-    if(Serial.available() > 1)
-     {
-     //if(Serial.read() == 49){
-     //gsm.print("AT+IPR=?");
-     //gsm.print('\r');
-     //}
-     if(Serial.read() == 50){
-     gsm.print("AT+IPR?");
-     gsm.print('\r');
-     }
-     if(Serial.read() == 49){
-     gsm.print("AT+IPR=9600");
-     gsm.print('\r');
-     }
-     if(Serial.read() == 52){
-     digitalWrite(gsm_power,LOW);
-     delay(1500);
-     digitalWrite(gsm_power,HIGH);
-     }
-     if(Serial.read() == 53){
-     gsm.print("ATE0");
-     gsm.print('\r');
-     }
-     if(Serial.read() == 54){
-     gsm.print("ATE0");
-     gsm.print('\r');
-     }
-     if(Serial.read() == 55){
-     gsm.print("AT+IPR?");
-     gsm.print('\r');
-     }
-     }
-     */
-    if (serial_gsm.available())
-      Serial.write(serial_gsm.read());
-  if (Serial.available())
-    serial_gsm.write(Serial.read());
 }
-/* bool newdata = false;
- unsigned long start = millis();
- 
- // Every second we print an update
- while (millis() - start < 1000)
- {
- if (feedgps())
- newdata = true;
- }
- 
- gpsdump(gps);
- }
- 
- static void gpsdump(TinyGPS &gps)
- {
- float flat, flon;
- unsigned long age, date, time, chars = 0;
- unsigned short sentences = 0, failed = 0;
- static const float LONDON_LAT = 51.508131, LONDON_LON = -0.128002;
- 
- print_int(gps.satellites(), TinyGPS::GPS_INVALID_SATELLITES, 5);
- print_int(gps.hdop(), TinyGPS::GPS_INVALID_HDOP, 5);
- gps.f_get_position(&flat, &flon, &age);
- print_float(flat, TinyGPS::GPS_INVALID_F_ANGLE, 9, 5);
- print_float(flon, TinyGPS::GPS_INVALID_F_ANGLE, 10, 5);
- print_int(age, TinyGPS::GPS_INVALID_AGE, 5);
- 
- print_date(gps);
- 
- print_float(gps.f_altitude(), TinyGPS::GPS_INVALID_F_ALTITUDE, 8, 2);
- print_float(gps.f_course(), TinyGPS::GPS_INVALID_F_ANGLE, 7, 2);
- print_float(gps.f_speed_kmph(), TinyGPS::GPS_INVALID_F_SPEED, 6, 2);
- print_str(gps.f_course() == TinyGPS::GPS_INVALID_F_ANGLE ? "*** " : TinyGPS::cardinal(gps.f_course()), 6);
- print_int(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0UL : (unsigned long)TinyGPS::distance_between(flat, flon, LONDON_LAT, LONDON_LON) / 1000, 0xFFFFFFFF, 9);
- print_float(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : TinyGPS::course_to(flat, flon, 51.508131, -0.128002), TinyGPS::GPS_INVALID_F_ANGLE, 7, 2);
- print_str(flat == TinyGPS::GPS_INVALID_F_ANGLE ? "*** " : TinyGPS::cardinal(TinyGPS::course_to(flat, flon, LONDON_LAT, LONDON_LON)), 6);
- 
- gps.stats(&chars, &sentences, &failed);
- print_int(chars, 0xFFFFFFFF, 6);
- print_int(sentences, 0xFFFFFFFF, 10);
- print_int(failed, 0xFFFFFFFF, 9);
- Serial.println();
- }
- 
- static void print_int(unsigned long val, unsigned long invalid, int len)
- {
- char sz[32];
- if (val == invalid)
- strcpy(sz, "*******");
- else
- sprintf(sz, "%ld", val);
- sz[len] = 0;
- for (int i=strlen(sz); i<len; ++i)
- sz[i] = ' ';
- if (len > 0) 
- sz[len-1] = ' ';
- Serial.print(sz);
- feedgps();
- }
- 
- static void print_float(float val, float invalid, int len, int prec)
- {
- char sz[32];
- if (val == invalid)
- {
- strcpy(sz, "*******");
- sz[len] = 0;
- if (len > 0) 
- sz[len-1] = ' ';
- for (int i=7; i<len; ++i)
- sz[i] = ' ';
- Serial.print(sz);
- }
- else
- {
- Serial.print(val, prec);
- int vi = abs((int)val);
- int flen = prec + (val < 0.0 ? 2 : 1);
- flen += vi >= 1000 ? 4 : vi >= 100 ? 3 : vi >= 10 ? 2 : 1;
- for (int i=flen; i<len; ++i)
- Serial.print(" ");
- }
- feedgps();
- }
- 
- static void print_date(TinyGPS &gps)
- {
- int year;
- byte month, day, hour, minute, second, hundredths;
- unsigned long age;
- gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &age);
- if (age == TinyGPS::GPS_INVALID_AGE)
- Serial.print("*******    *******    ");
- else
- {
- char sz[32];
- sprintf(sz, "%02d/%02d/%02d %02d:%02d:%02d   ",
- month, day, year, hour, minute, second);
- Serial.print(sz);
- }
- print_int(age, TinyGPS::GPS_INVALID_AGE, 5);
- feedgps();
- }
- 
- static void print_str(const char *str, int len)
- {
- int slen = strlen(str);
- for (int i=0; i<len; ++i)
- Serial.print(i<slen ? str[i] : ' ');
- feedgps();
- }
- 
- static bool feedgps()
- {
- while (serial_gps.available())
- {
- if (gps.encode(serial_gps.read()))
- return true;
- }
- return false;
- }
- 
- */
 
   void read_HW_serial()
   /*
@@ -300,3 +142,85 @@ void loop()
       }
     }
   }
+  
+  
+  void authenticate()
+  /*
+  checks bytes 1-5 of the incoming dta array to make sure 
+  that the authentication code matches
+  */
+  {
+    authenticated = false;
+    if(inArray[1] == code_1){
+      if(inArray[2] == code_2){
+        if(inArray[3] == code_3){
+          if(inArray[4] == code_4){
+            if(inArray[5] == code_5){
+              authenticated == true;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  void process()
+  {
+   /*
+   Begins processing the incoming string
+   */
+   // Nano Commands
+   if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
+    {
+      
+    }
+   // Throttle Commands 
+   if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
+    {
+      
+    }
+   // Mega Commands 
+   if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
+    {
+      
+    }
+   // Lighting Commands 
+   if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
+    {
+      
+    }
+   if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
+    {
+      
+    }
+  }
+    
+

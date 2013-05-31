@@ -729,6 +729,21 @@ namespace Scooter_Controller
                 textBox1.AppendText("Querying Main Status" + Environment.NewLine);
                 textBox2.AppendText(BitConverter.ToString(led_state) + Environment.NewLine);
             }
+        }
+
+        private void btn_current_throttle_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] led_state = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x31, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(led_state, 0, 18);
+                textBox1.AppendText("Querying Current Throttle Position" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(led_state) + Environment.NewLine);
+            }
         } //done
     } 
 }

@@ -6,3 +6,4 @@ C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\R
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csproj.GenerateResource.Cache
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.exe
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.pdb
+C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csprojResolveAssemblyReference.cache

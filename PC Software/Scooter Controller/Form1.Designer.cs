@@ -91,6 +91,7 @@
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.btn_current_throttle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -470,6 +471,7 @@
             // 
             this.groupBox3.AutoSize = true;
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox3.Controls.Add(this.btn_current_throttle);
             this.groupBox3.Controls.Add(this.btn_forward);
             this.groupBox3.Controls.Add(this.btn_reverse);
             this.groupBox3.Controls.Add(this.btn_stop);
@@ -812,6 +814,16 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Throttle Controller";
             // 
+            // btn_current_throttle
+            // 
+            this.btn_current_throttle.Location = new System.Drawing.Point(119, 108);
+            this.btn_current_throttle.Name = "btn_current_throttle";
+            this.btn_current_throttle.Size = new System.Drawing.Size(100, 30);
+            this.btn_current_throttle.TabIndex = 29;
+            this.btn_current_throttle.Text = "Read Current";
+            this.btn_current_throttle.UseVisualStyleBackColor = true;
+            this.btn_current_throttle.Click += new System.EventHandler(this.btn_current_throttle_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -922,6 +934,7 @@
         private System.Windows.Forms.Button btn_query_power;
         private System.Windows.Forms.Button lighting_status;
         private System.Windows.Forms.Button btn_query_led_status;
+        private System.Windows.Forms.Button btn_current_throttle;
     }
 }
 
