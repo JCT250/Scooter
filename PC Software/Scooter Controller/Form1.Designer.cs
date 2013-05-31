@@ -64,6 +64,7 @@
             this.btn_query_power = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btn_current_throttle = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lighting_status = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -91,7 +92,8 @@
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.btn_current_throttle = new System.Windows.Forms.Button();
+            this.btn_camera_raise_stop = new System.Windows.Forms.Button();
+            this.btn_camera_stop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -484,6 +486,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Throttle Control";
             // 
+            // btn_current_throttle
+            // 
+            this.btn_current_throttle.Location = new System.Drawing.Point(119, 108);
+            this.btn_current_throttle.Name = "btn_current_throttle";
+            this.btn_current_throttle.Size = new System.Drawing.Size(100, 30);
+            this.btn_current_throttle.TabIndex = 29;
+            this.btn_current_throttle.Text = "Read Current";
+            this.btn_current_throttle.UseVisualStyleBackColor = true;
+            this.btn_current_throttle.Click += new System.EventHandler(this.btn_current_throttle_Click);
+            // 
             // groupBox4
             // 
             this.groupBox4.AutoSize = true;
@@ -519,6 +531,8 @@
             // 
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.btn_camera_stop);
+            this.groupBox5.Controls.Add(this.btn_camera_raise_stop);
             this.groupBox5.Controls.Add(this.btn_camera_raise);
             this.groupBox5.Controls.Add(this.btn_camera_lower);
             this.groupBox5.Controls.Add(this.groupBox6);
@@ -577,12 +591,13 @@
             // 
             // btn_serial_connect
             // 
+            this.btn_serial_connect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btn_serial_connect.Location = new System.Drawing.Point(13, 48);
             this.btn_serial_connect.Name = "btn_serial_connect";
             this.btn_serial_connect.Size = new System.Drawing.Size(100, 30);
             this.btn_serial_connect.TabIndex = 33;
             this.btn_serial_connect.Text = "Connect";
-            this.btn_serial_connect.UseVisualStyleBackColor = true;
+            this.btn_serial_connect.UseVisualStyleBackColor = false;
             this.btn_serial_connect.Click += new System.EventHandler(this.btn_serial_connect_Click);
             // 
             // btn_serial_refresh
@@ -624,12 +639,13 @@
             // 
             // btn_serial_disconnect
             // 
+            this.btn_serial_disconnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btn_serial_disconnect.Location = new System.Drawing.Point(132, 48);
             this.btn_serial_disconnect.Name = "btn_serial_disconnect";
             this.btn_serial_disconnect.Size = new System.Drawing.Size(100, 30);
             this.btn_serial_disconnect.TabIndex = 36;
             this.btn_serial_disconnect.Text = "Disconnect";
-            this.btn_serial_disconnect.UseVisualStyleBackColor = true;
+            this.btn_serial_disconnect.UseVisualStyleBackColor = false;
             this.btn_serial_disconnect.Click += new System.EventHandler(this.btn_serial_disconnect_Click);
             // 
             // groupBox8
@@ -814,15 +830,25 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Throttle Controller";
             // 
-            // btn_current_throttle
+            // btn_camera_raise_stop
             // 
-            this.btn_current_throttle.Location = new System.Drawing.Point(119, 108);
-            this.btn_current_throttle.Name = "btn_current_throttle";
-            this.btn_current_throttle.Size = new System.Drawing.Size(100, 30);
-            this.btn_current_throttle.TabIndex = 29;
-            this.btn_current_throttle.Text = "Read Current";
-            this.btn_current_throttle.UseVisualStyleBackColor = true;
-            this.btn_current_throttle.Click += new System.EventHandler(this.btn_current_throttle_Click);
+            this.btn_camera_raise_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_raise_stop.Location = new System.Drawing.Point(13, 55);
+            this.btn_camera_raise_stop.Name = "btn_camera_raise_stop";
+            this.btn_camera_raise_stop.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_raise_stop.TabIndex = 36;
+            this.btn_camera_raise_stop.Text = "Stop";
+            this.btn_camera_raise_stop.UseVisualStyleBackColor = false;
+            // 
+            // btn_camera_stop
+            // 
+            this.btn_camera_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_stop.Location = new System.Drawing.Point(225, 55);
+            this.btn_camera_stop.Name = "btn_camera_stop";
+            this.btn_camera_stop.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_stop.TabIndex = 37;
+            this.btn_camera_stop.Text = "Stop";
+            this.btn_camera_stop.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -935,6 +961,8 @@
         private System.Windows.Forms.Button lighting_status;
         private System.Windows.Forms.Button btn_query_led_status;
         private System.Windows.Forms.Button btn_current_throttle;
+        private System.Windows.Forms.Button btn_camera_stop;
+        private System.Windows.Forms.Button btn_camera_raise_stop;
     }
 }
 
