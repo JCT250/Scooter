@@ -68,6 +68,8 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lighting_status = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btn_camera_stop = new System.Windows.Forms.Button();
+            this.btn_camera_raise_stop = new System.Windows.Forms.Button();
             this.btn_camera_raise = new System.Windows.Forms.Button();
             this.btn_camera_lower = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -92,8 +94,10 @@
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.btn_camera_raise_stop = new System.Windows.Forms.Button();
-            this.btn_camera_stop = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -109,6 +113,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox13.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_speed_1
@@ -410,6 +415,7 @@
             this.trackBar1.TabIndex = 28;
             this.trackBar1.TickFrequency = 8;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
             // 
             // groupBox1
             // 
@@ -548,6 +554,26 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Camera Control";
             // 
+            // btn_camera_stop
+            // 
+            this.btn_camera_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_stop.Location = new System.Drawing.Point(225, 55);
+            this.btn_camera_stop.Name = "btn_camera_stop";
+            this.btn_camera_stop.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_stop.TabIndex = 37;
+            this.btn_camera_stop.Text = "Stop";
+            this.btn_camera_stop.UseVisualStyleBackColor = false;
+            // 
+            // btn_camera_raise_stop
+            // 
+            this.btn_camera_raise_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_raise_stop.Location = new System.Drawing.Point(13, 55);
+            this.btn_camera_raise_stop.Name = "btn_camera_raise_stop";
+            this.btn_camera_raise_stop.Size = new System.Drawing.Size(100, 30);
+            this.btn_camera_raise_stop.TabIndex = 36;
+            this.btn_camera_raise_stop.Text = "Stop";
+            this.btn_camera_raise_stop.UseVisualStyleBackColor = false;
+            // 
             // btn_camera_raise
             // 
             this.btn_camera_raise.Location = new System.Drawing.Point(13, 21);
@@ -579,6 +605,10 @@
             this.groupBox6.TabIndex = 32;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Throttle Controller";
+            // 
+            // serialPort1
+            // 
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // comboBox1
             // 
@@ -830,25 +860,46 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Throttle Controller";
             // 
-            // btn_camera_raise_stop
+            // timer1
             // 
-            this.btn_camera_raise_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btn_camera_raise_stop.Location = new System.Drawing.Point(13, 55);
-            this.btn_camera_raise_stop.Name = "btn_camera_raise_stop";
-            this.btn_camera_raise_stop.Size = new System.Drawing.Size(100, 30);
-            this.btn_camera_raise_stop.TabIndex = 36;
-            this.btn_camera_raise_stop.Text = "Stop";
-            this.btn_camera_raise_stop.UseVisualStyleBackColor = false;
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 200;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btn_camera_stop
+            // groupBox15
             // 
-            this.btn_camera_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btn_camera_stop.Location = new System.Drawing.Point(225, 55);
-            this.btn_camera_stop.Name = "btn_camera_stop";
-            this.btn_camera_stop.Size = new System.Drawing.Size(100, 30);
-            this.btn_camera_stop.TabIndex = 37;
-            this.btn_camera_stop.Text = "Stop";
-            this.btn_camera_stop.UseVisualStyleBackColor = false;
+            this.groupBox15.AutoSize = true;
+            this.groupBox15.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox15.Controls.Add(this.textBox3);
+            this.groupBox15.Controls.Add(this.groupBox16);
+            this.groupBox15.Location = new System.Drawing.Point(739, 12);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox15.Size = new System.Drawing.Size(381, 554);
+            this.groupBox15.TabIndex = 45;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Serial History";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(13, 21);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox3.Size = new System.Drawing.Size(355, 517);
+            this.textBox3.TabIndex = 34;
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.AutoSize = true;
+            this.groupBox16.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox16.Location = new System.Drawing.Point(-9, -25);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox16.Size = new System.Drawing.Size(20, 4);
+            this.groupBox16.TabIndex = 32;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Throttle Controller";
             // 
             // Form1
             // 
@@ -856,7 +907,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(754, 603);
+            this.ClientSize = new System.Drawing.Size(1139, 603);
+            this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.groupBox9);
@@ -892,6 +944,8 @@
             this.groupBox11.PerformLayout();
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -963,6 +1017,10 @@
         private System.Windows.Forms.Button btn_current_throttle;
         private System.Windows.Forms.Button btn_camera_stop;
         private System.Windows.Forms.Button btn_camera_raise_stop;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.GroupBox groupBox16;
     }
 }
 

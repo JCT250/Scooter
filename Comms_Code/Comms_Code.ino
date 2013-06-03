@@ -41,13 +41,15 @@ byte cmd_lighting_write_mode[] = {
 byte start_byte = 0x1B;
 byte stop_byte = 0x0A;
 byte inArray[18];
+byte inData;
 bool authenticated = false;
+bool new_data = false;
 
 TinyGPS gps; //Create GPS device
 
 SoftwareSerial serial_gps(9, 8); // Attach Software Serial devices
 SoftwareSerial serial_gsm(10, 11);
-SoftwareSerial serial_throttle(0,0);
+SoftwareSerial serial_throttle(13,12);
 SoftwareSerial serial_mega(0,0);
 SoftwareSerial serial_camera(0,0);
 SoftwareSerial serial_lighting(0,0);
@@ -59,7 +61,7 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
-static int lock_pin = A7; //remote lock Mega
+static int lock_pin = A5; //remote lock Mega
 static int gsm_reset = A0;
 static int gsm_power = A1;
 
@@ -81,146 +83,210 @@ void setup()
   serial_mega.begin(9600);
   serial_camera.begin(9600);
   serial_lighting.begin(9600);
-
+  Serial.println("Serial connections opened");
 
   //turn on gsm module
   digitalWrite(gsm_power,LOW);
   delay(1500);
   digitalWrite(gsm_power,HIGH);
+  Serial.println("Entering Loop");
 }
 
 void loop()
 {
   for(int i=0; i<18; i++) //clear the input array
-  {
-    inArray[i] = 0xFF;
-    authenticated = false;
-  }
-  
+   {
+   inArray[i] = 0xFF;
+   authenticated = false;
+   new_data = false;
+   }
   read_HW_serial(); //
+  if(new_data == true)
+  {
   authenticate();
   process();
-  
-  
+  }
+
 }
 
-  void read_HW_serial()
-  /*
+void read_HW_serial()
+/*
   Check to see if there is data at the serial port ready to read. 
-  If there is then read the first byte and check to see if it is a 
-  valid start byte. If so then read 17 more bytes. Check each byte
-  to make sure that it isn't a stop byte.
-  If it is not a valid start byte then read teh contents of the serial
-  buffer into a trash variable
-  */
+ If there is then read the first byte and check to see if it is a 
+ valid start byte. If so then read 17 more bytes. Check each byte
+ to make sure that it isn't a stop byte.
+ If it is not a valid start byte then read the contents of the serial
+ buffer into a trash variable
+ */
+{
+  if(Serial.available() > 17)
   {
-   if(Serial.available() > 0)
+    inData = Serial.read();
+    if(inData == start_byte)
     {
-      byte inData = Serial.read();
-      if(inData == start_byte)
+      int i;
+      inArray[0] = inData;
+      for(i=1; i<18; i++)
       {
-        int i;
-        inArray[0] = inData;
-        for(i=1; i<18; i++)
-          inData = Serial.read();
+        inData = Serial.read();
         if(inData != stop_byte)
         {
           inArray[i] = inData;
         }
         else if(inData == stop_byte)
         {
-          inArray[18] = inData;
+          inArray[17] = inData;
           i = 19;
         }
       }
-      else if(Serial.read() != start_byte)
+      new_data = true;
+    }
+    else if(Serial.read() != start_byte)
+    {
+      while(Serial.available() > 0)
       {
-        while(Serial.available() > 0)
-        {
-          byte trash = Serial.read();
-        }
+        byte trash = Serial.read();
       }
     }
+    Serial.print("Recieved: ");
+    int i;
+    for(i=0; i<18; i++)
+    {
+      Serial.print(inArray[i]);
+      Serial.print(" ");
+    }
+    Serial.println();
   }
-  
-  
-  void authenticate()
-  /*
+}
+
+
+void authenticate()
+/*
   checks bytes 1-5 of the incoming dta array to make sure 
-  that the authentication code matches
-  */
+ that the authentication code matches
+ */
+{
+  authenticated = false;
+  if(inArray[1] == code_1 && inArray[2] == code_2 && inArray[3] == code_3 && inArray[4] == code_4 && inArray[5] == code_5)
   {
-    authenticated = false;
-    if(inArray[1] == code_1){
-      if(inArray[2] == code_2){
-        if(inArray[3] == code_3){
-          if(inArray[4] == code_4){
-            if(inArray[5] == code_5){
-              authenticated == true;
-            }
-          }
-        }
-      }
-    }
+    authenticated == true;
+    Serial.println("Authenticated");
   }
-  
-  void process()
-  {
-   /*
+}
+
+void process()
+{
+  /*
    Begins processing the incoming string
    */
-   // Nano Commands
-   if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
+  // Nano Commands
+  Serial.println("Processing");
+  if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
+  {
+    if(inArray[9] == 0x43)
     {
+      serial_gps.listen();
+      bool new_gps_data = false;
+      unsigned long gps_chars;
+      unsigned short gps_sentences, gps_failed ;
+    
+      // For one second we parse GPS data and report some key values
+      for (unsigned long start = millis(); millis() - start < 1000;)
+      {
+        while (serial_gps.available())
+        {
+          char c = serial_gps.read();
+          if (gps.encode(c)) // Did a new valid sentence come in?
+            new_gps_data = true;
+        }
+      }
+    
+      if (new_gps_data)
+      {
+        float flat, flon;
+        unsigned long age;
+        gps.f_get_position(&flat, &flon, &age);
+        Serial.print("LAT=");
+        Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+        Serial.print(" LON=");
+        Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        Serial.print(" SAT=");
+        Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
+        Serial.print(" SPEED=");
+        Serial.print(gps.f_speed_kmph());
+        Serial.print(" PREC=");
+        Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+      }
       
-    }
-   if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
-    {
-      
-    }
-   // Throttle Commands 
-   if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
-    {
-      
-    }
-   // Mega Commands 
-   if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
-    {
-      
-    }
-   // Lighting Commands 
-   if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
-    {
-      
-    }
-   if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
-    {
+      gps.stats(&gps_chars, &gps_sentences, &gps_failed);
+      Serial.print(" CHARS=");
+      Serial.print(gps_chars);
+      Serial.print(" SENTENCES=");
+      Serial.print(gps_sentences);
+      Serial.print(" CSUM ERR=");
+      Serial.println(gps_failed);
       
     }
   }
-    
+  if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
+  {
+    if(inArray[9] == 0x31)
+    {
+      digitalWrite(lock_pin, LOW);
+      Serial.println("Remote Lock");
+    }
+    if(inArray[9] == 0x30)
+    {
+      digitalWrite(lock_pin, HIGH);
+      Serial.println("Remote Unlock");
+    }
+  }
+  if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
+  {
+
+  }
+  if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
+  {
+
+  }
+  // Throttle Commands 
+  if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
+  {
+
+  }
+  if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
+  {
+   serial_throttle.write(inArray[9]);
+   serial_throttle.write(inArray[10]);
+   serial_throttle.write(inArray[11]);
+  }
+  // Mega Commands 
+  if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
+  {
+
+  }
+  if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
+  {
+
+  }
+  if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
+  {
+
+  }
+  // Lighting Commands 
+  if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
+  {
+
+  }
+  if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
+  {
+
+  }
+  if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
+  {
+
+  }
+}
+
+
 

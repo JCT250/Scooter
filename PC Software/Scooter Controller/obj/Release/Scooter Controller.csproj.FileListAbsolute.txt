@@ -7,3 +7,12 @@ C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\R
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.exe
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.pdb
 C:\Users\prepress2\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csprojResolveAssemblyReference.cache
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.exe.config
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.exe
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.pdb
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.exe
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.pdb
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csprojResolveAssemblyReference.cache
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Form1.resources
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Properties.Resources.resources
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csproj.GenerateResource.Cache

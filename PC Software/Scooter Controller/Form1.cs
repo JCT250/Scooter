@@ -14,6 +14,8 @@ namespace Scooter_Controller
     public partial class Form1 : Form
     {
         private bool direction = true;
+        private bool trackbar_updated = false;
+        string RXString;
 
         public Form1()
         {
@@ -84,12 +86,12 @@ namespace Scooter_Controller
                 if (trackBar1.Value <= 125)
                 {
                     trackBar1.Value = trackBar1.Value + 2;
-                    throttle_update();
+                  //  throttle_update();
                 }
                 if (trackBar1.Value == 126)
                 {
                     trackBar1.Value = trackBar1.Value + 1;
-                    throttle_update();
+                    //throttle_update();
                 }
                 
             }
@@ -98,12 +100,12 @@ namespace Scooter_Controller
                 if (trackBar1.Value > 1)
                 {
                     trackBar1.Value = trackBar1.Value - 2;
-                    throttle_update();
+                   // throttle_update();
                 }
                 if (trackBar1.Value == 1)
                 {
                     trackBar1.Value = trackBar1.Value - 1;
-                    throttle_update();
+                   // throttle_update();
                 }
             }
             if (e.KeyCode == (Keys.X))
@@ -154,13 +156,30 @@ namespace Scooter_Controller
             serialPort1 = new SerialPort(portName);
             if (!serialPort1.IsOpen)
             {
-                serialPort1.BaudRate = 19200;
+                serialPort1.BaudRate = 9600;
                 serialPort1.Open();
                 btn_serial_connect.Enabled = false;
                 lbl_serial.Text = (String.Format("Connected to '{0}'", comboBox1.SelectedItem));
 
             }
         } //done
+
+        private void DisplayText(object sender, EventArgs e)
+        {
+            MessageBox.Show("Here");
+            textBox3.AppendText(RXString);
+        }
+
+        private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            //MessageBox.Show("Here");
+            RXString = serialPort1.ReadExisting();
+            //textBox3.AppendText(RXString);
+            this.Invoke(new EventHandler(DisplayText));
+
+        }
+
+        
 
         private void btn_serial_connect_Click(object sender, EventArgs e)
         {
@@ -650,7 +669,7 @@ namespace Scooter_Controller
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-                 throttle_update();
+               //  throttle_update();
         } //done
 
         private void throttle_update()
@@ -744,6 +763,21 @@ namespace Scooter_Controller
                 textBox1.AppendText("Querying Current Throttle Position" + Environment.NewLine);
                 textBox2.AppendText(BitConverter.ToString(led_state) + Environment.NewLine);
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (trackbar_updated == true)
+            {
+                throttle_update();
+                trackbar_updated = false;
+            }
+            timer1.Enabled = true;
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            trackbar_updated = true;
         } //done
     } 
 }
