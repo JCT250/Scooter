@@ -252,10 +252,22 @@ void process()
   // Throttle Commands 
   if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
   {
-
+     byte inData = 0x00;
+     int i;
+     serial_throttle.listen();
+     if(serial_throttle.available() > 3){
+       while(inData != 0x1B){
+         inData = serial_throttle.read();
+         Serial.print(inData);
+       }
+       for(i=0; i<3; i++){
+         Serial.print(serial_throttle.read());
+       }
+     }      
   }
   if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
   {
+   serial_throttle.write(start_byte);
    serial_throttle.write(inArray[9]);
    serial_throttle.write(inArray[10]);
    serial_throttle.write(inArray[11]);

@@ -41,17 +41,20 @@ byte throttle_write(byte value)
 void serial_control(){
   byte inArray[7];
   int i;
-  byte = start_test;
-  
-  while (start_test != 0x1B){
-  start_test = serial_throttle.read();
+  byte inData = 0x00;
+
+  while (inData != 0x1B){ //Dump data in the serial port until reaching the start byte
+    inData = serial_throttle.read();
   }
-  
-  for(i=0; i<7; i++)
+
+  inArray[0] = inData; //place the start byte in position zero of the array
+
+  for(i=1; i<4; i++) //read three more bytes into positions 1, 2, 3 of the array
   {
     inArray[i] = serial_throttle.read();
   }
-  incoming_byte = (inArray[3] * 100) + (inArray[4] * 10) + inArray[5];
+
+  incoming_byte = (inArray[1] * 100) + (inArray[2] * 10) + inArray[3];
   while(incoming_byte != 128 && incoming_byte != 127)
   { 
     if(incoming_byte != incoming_byte_old){
@@ -60,28 +63,26 @@ void serial_control(){
       Serial.println(incoming_byte);
       incoming_byte_old = incoming_byte;
     }
-    if(serial_throttle.available() > 6){
-      //inArray[] = (0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-      inArray[0] = 0x00;
-      inArray[1] = 0x00;
-      inArray[2] = 0x00;
-      inArray[3] = 0x00;
-      inArray[4] = 0x00;
-      inArray[5] = 0x00;
-      inArray[6] = 0x00;
-      inArray[7] = 0x00;
-      while (start_test != 0x1B){
-        start_test = serial_throttle.read();
+    if(serial_throttle.available() > 3){
+      for (i=0; i<4; i++){
+        inArray[i] = 0x00;
       }
-      
-      for(i=0; i<7; i++)
+
+      while (inData != 0x1B){
+        inData = serial_throttle.read();
+      }
+
+      inArray[0] = inData;
+
+      for(i=1; i<4; i++)
       {
         inArray[i] = serial_throttle.read();
       }
-      incoming_byte = (inArray[3] * 100) + (inArray[4] * 10) + inArray[5];
+
+      incoming_byte = (inArray[1] * 100) + (inArray[2] * 10) + inArray[3];
+      //byte trash;
+      //while (serial_throttle.available() > 0) trash = serial_throttle.read();
     }
-    byte rubbish;
-    while (serial_throttle.available() > 0) rubbish = serial_throttle.read();
   }
 }
 
@@ -92,8 +93,8 @@ void loop() {
   if (serial_throttle.available() > 6) {
     serial_control();
   }
-  
-  
+
+
   total = total - readings[index]; //subtract the old reading at this position in the array from the total         
   readings[index] = analogRead(throttle_input); // read from the sensor:  
   total = total + readings[index]; // add the reading to the total:   
@@ -105,6 +106,8 @@ void loop() {
   throttle_output_val = map(average, 0, 1023, 255, 0); //map the average to the correct range for output
   if(throttle_output_val != old_throttle_output_val){ //check to see if the value has changed
     Serial.println(throttle_output_val); //print the value to the serial port
+    serial_throttle.write(0x1B);
+    serial_throttle.print(throttle_output_val);
     throttle_write(throttle_output_val); //analog write the value to the output pin
     old_throttle_output_val = throttle_output_val; //update the current value
   }
@@ -112,6 +115,7 @@ void loop() {
   delay(2);
 
 }
+
 
 
 

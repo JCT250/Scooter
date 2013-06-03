@@ -15,7 +15,7 @@ namespace Scooter_Controller
     {
         private bool direction = true;
         private bool trackbar_updated = false;
-        string RXString;
+        
 
         public Form1()
         {
@@ -28,6 +28,7 @@ namespace Scooter_Controller
             comboBox1.DataSource = ports;
             this.KeyPreview = true;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -160,26 +161,10 @@ namespace Scooter_Controller
                 serialPort1.Open();
                 btn_serial_connect.Enabled = false;
                 lbl_serial.Text = (String.Format("Connected to '{0}'", comboBox1.SelectedItem));
+                serialPort1.DataReceived += serialPort1_DataReceived;
 
             }
-        } //done
-
-        private void DisplayText(object sender, EventArgs e)
-        {
-            MessageBox.Show("Here");
-            textBox3.AppendText(RXString);
-        }
-
-        private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            //MessageBox.Show("Here");
-            RXString = serialPort1.ReadExisting();
-            //textBox3.AppendText(RXString);
-            this.Invoke(new EventHandler(DisplayText));
-
-        }
-
-        
+        } //done     
 
         private void btn_serial_connect_Click(object sender, EventArgs e)
         {
@@ -669,7 +654,7 @@ namespace Scooter_Controller
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-               //  throttle_update();
+
         } //done
 
         private void throttle_update()
@@ -694,6 +679,7 @@ namespace Scooter_Controller
             
             if (!serialPort1.IsOpen)
             {
+                trackbar_updated = false;
                 serial_check();
             }
             else
@@ -778,6 +764,17 @@ namespace Scooter_Controller
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             trackbar_updated = true;
+        }
+
+        private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            this.BeginInvoke(new EventHandler(DisplayText));
         } //done
+        
+        private void DisplayText(object sender, EventArgs e)
+        {
+            textBox3.AppendText(serialPort1.ReadExisting() + Environment.NewLine);
+        }
+
     } 
 }
