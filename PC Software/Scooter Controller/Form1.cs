@@ -773,7 +773,7 @@ namespace Scooter_Controller
         
         private void DisplayText(object sender, EventArgs e)
         {
-            textBox3.AppendText(serialPort1.ReadExisting() + Environment.NewLine);
+            textBox3.AppendText(DateTime.Now.ToString("HH:mm:ss ") + serialPort1.ReadExisting() + Environment.NewLine);
         }
 
     } 

@@ -95,16 +95,16 @@ void setup()
 void loop()
 {
   for(int i=0; i<18; i++) //clear the input array
-   {
-   inArray[i] = 0xFF;
-   authenticated = false;
-   new_data = false;
-   }
+  {
+    inArray[i] = 0xFF;
+    authenticated = false;
+    new_data = false;
+  }
   read_HW_serial(); //
   if(new_data == true)
   {
-  authenticate();
-  process();
+    authenticate();
+    process();
   }
 
 }
@@ -172,6 +172,9 @@ void authenticate()
     authenticated == true;
     Serial.println("Authenticated");
   }
+  else{
+    Serial.println("Authentication Error");
+  }
 }
 
 void process()
@@ -181,124 +184,131 @@ void process()
    */
   // Nano Commands
   Serial.println("Processing");
-  if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
-  {
-    if(inArray[9] == 0x43)
+  if(authenticated == true){
+    if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
     {
-      serial_gps.listen();
-      bool new_gps_data = false;
-      unsigned long gps_chars;
-      unsigned short gps_sentences, gps_failed ;
-    
-      // For one second we parse GPS data and report some key values
-      for (unsigned long start = millis(); millis() - start < 1000;)
+      if(inArray[9] == 0x43)
       {
-        while (serial_gps.available())
+        serial_gps.listen();
+        bool new_gps_data = false;
+        unsigned long gps_chars;
+        unsigned short gps_sentences, gps_failed ;
+
+        // For one second we parse GPS data and report some key values
+        for (unsigned long start = millis(); millis() - start < 1000;)
         {
-          char c = serial_gps.read();
-          if (gps.encode(c)) // Did a new valid sentence come in?
-            new_gps_data = true;
+          while (serial_gps.available())
+          {
+            char c = serial_gps.read();
+            if (gps.encode(c)) // Did a new valid sentence come in?
+              new_gps_data = true;
+          }
         }
+
+        if (new_gps_data)
+        {
+          float flat, flon;
+          unsigned long age;
+          gps.f_get_position(&flat, &flon, &age);
+          Serial.print("LAT=");
+          Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+          Serial.print(" LON=");
+          Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+          Serial.print(" SAT=");
+          Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
+          Serial.print(" SPEED=");
+          Serial.print(gps.f_speed_kmph());
+          Serial.print(" PREC=");
+          Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+        }
+
+        gps.stats(&gps_chars, &gps_sentences, &gps_failed);
+        Serial.print(" CHARS=");
+        Serial.print(gps_chars);
+        Serial.print(" SENTENCES=");
+        Serial.print(gps_sentences);
+        Serial.print(" CSUM ERR=");
+        Serial.println(gps_failed);
+
       }
-    
-      if (new_gps_data)
+    }
+    if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
+    {
+      if(inArray[9] == 0x31)
       {
-        float flat, flon;
-        unsigned long age;
-        gps.f_get_position(&flat, &flon, &age);
-        Serial.print("LAT=");
-        Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
-        Serial.print(" LON=");
-        Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
-        Serial.print(" SAT=");
-        Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
-        Serial.print(" SPEED=");
-        Serial.print(gps.f_speed_kmph());
-        Serial.print(" PREC=");
-        Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+        digitalWrite(lock_pin, LOW);
+        Serial.println("Remote Lock");
       }
-      
-      gps.stats(&gps_chars, &gps_sentences, &gps_failed);
-      Serial.print(" CHARS=");
-      Serial.print(gps_chars);
-      Serial.print(" SENTENCES=");
-      Serial.print(gps_sentences);
-      Serial.print(" CSUM ERR=");
-      Serial.println(gps_failed);
-      
+      if(inArray[9] == 0x30)
+      {
+        digitalWrite(lock_pin, HIGH);
+        Serial.println("Remote Unlock");
+      }
     }
-  }
-  if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
-  {
-    if(inArray[9] == 0x31)
+    if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
     {
-      digitalWrite(lock_pin, LOW);
-      Serial.println("Remote Lock");
+      int i;
+      for(i=9; i<16; i++){
+        serial_camera.print(inArray[i]);
+      }
     }
-    if(inArray[9] == 0x30)
+    if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
     {
-      digitalWrite(lock_pin, HIGH);
-      Serial.println("Remote Unlock");
+
     }
-  }
-  if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
-  {
+    // Throttle Commands 
+    if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
+    {
+      byte inData = 0x00;
+      int i;
+      serial_throttle.listen();
+      if(serial_throttle.available() > 3){
+        while(inData != 0x1B){
+          inData = serial_throttle.read();
+          Serial.print(inData);
+        }
+        for(i=0; i<3; i++){
+          Serial.print(serial_throttle.read());
+        }
+      }      
+    }
+    if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
+    {
+      serial_throttle.write(start_byte);
+      serial_throttle.write(inArray[9]);
+      serial_throttle.write(inArray[10]);
+      serial_throttle.write(inArray[11]);
+    }
+    // Mega Commands 
+    if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
+    {
 
-  }
-  if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
-  {
+    }
+    if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
+    {
 
-  }
-  // Throttle Commands 
-  if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
-  {
-     byte inData = 0x00;
-     int i;
-     serial_throttle.listen();
-     if(serial_throttle.available() > 3){
-       while(inData != 0x1B){
-         inData = serial_throttle.read();
-         Serial.print(inData);
-       }
-       for(i=0; i<3; i++){
-         Serial.print(serial_throttle.read());
-       }
-     }      
-  }
-  if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
-  {
-   serial_throttle.write(start_byte);
-   serial_throttle.write(inArray[9]);
-   serial_throttle.write(inArray[10]);
-   serial_throttle.write(inArray[11]);
-  }
-  // Mega Commands 
-  if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
-  {
+    }
+    if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
+    {
 
-  }
-  if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
-  {
+    }
+    // Lighting Commands 
+    if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
+    {
 
-  }
-  if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
-  {
+    }
+    if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
+    {
 
-  }
-  // Lighting Commands 
-  if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
-  {
+    }
+    if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
+    {
 
-  }
-  if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
-  {
-
-  }
-  if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
-  {
-
+    }
   }
 }
+
+
 
 
 
