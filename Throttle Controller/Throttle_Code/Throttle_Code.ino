@@ -39,7 +39,7 @@ byte throttle_write(byte value)
 }
 
 void serial_control(){
-  byte inArray[7];
+  byte inArray[4];
   int i;
   byte inData = 0x00;
 
@@ -64,6 +64,7 @@ void serial_control(){
       incoming_byte_old = incoming_byte;
     }
     if(serial_throttle.available() > 3){
+      inData = 0x00;
       for (i=0; i<4; i++){
         inArray[i] = 0x00;
       }
@@ -78,22 +79,27 @@ void serial_control(){
       {
         inArray[i] = serial_throttle.read();
       }
-
       incoming_byte = (inArray[1] * 100) + (inArray[2] * 10) + inArray[3];
-      //byte trash;
-      //while (serial_throttle.available() > 0) trash = serial_throttle.read();
+      while (serial_throttle.available() > 0)
+      { 
+        byte trash;
+        trash = serial_throttle.read();
+      }
+
     }
   }
+      incoming_byte_mapped = map(incoming_byte, 0, 255, 54, 201);
+      throttle_write(incoming_byte_mapped);
+      Serial.println(incoming_byte);
 }
 
 
 void loop() {
   // put your main code here, to run repeatedly: 
 
-  if (serial_throttle.available() > 6) {
+  if (serial_throttle.available() > 3) {
     serial_control();
   }
-
 
   total = total - readings[index]; //subtract the old reading at this position in the array from the total         
   readings[index] = analogRead(throttle_input); // read from the sensor:  
@@ -106,7 +112,6 @@ void loop() {
   throttle_output_val = map(average, 0, 1023, 255, 0); //map the average to the correct range for output
   if(throttle_output_val != old_throttle_output_val){ //check to see if the value has changed
     Serial.println(throttle_output_val); //print the value to the serial port
-    serial_throttle.write(0x1B);
     serial_throttle.print(throttle_output_val);
     throttle_write(throttle_output_val); //analog write the value to the output pin
     old_throttle_output_val = throttle_output_val; //update the current value
@@ -115,6 +120,7 @@ void loop() {
   delay(2);
 
 }
+
 
 
 

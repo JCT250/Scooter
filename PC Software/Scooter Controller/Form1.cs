@@ -15,7 +15,7 @@ namespace Scooter_Controller
     {
         private bool direction = true;
         private bool trackbar_updated = false;
-        
+        public string rxstring;
 
         public Form1()
         {
@@ -768,12 +768,20 @@ namespace Scooter_Controller
 
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            this.BeginInvoke(new EventHandler(DisplayText));
+           /* this.BeginInvoke(new EventHandler(DisplayText));
+            rxstring = serialPort1.ReadExisting();*/
         } //done
         
         private void DisplayText(object sender, EventArgs e)
         {
-            textBox3.AppendText(DateTime.Now.ToString("HH:mm:ss ") + serialPort1.ReadExisting() + Environment.NewLine);
+            if (serialPort1.IsOpen == true)
+            {
+                if (serialPort1.BytesToRead > 0)
+                {
+                    textBox3.AppendText(DateTime.Now.ToString("HH:mm:ss ") + serialPort1.ReadExisting() + Environment.NewLine);
+                }
+            }
+            timer2.Enabled = true;
         }
 
     } 

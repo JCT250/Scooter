@@ -169,7 +169,7 @@ void authenticate()
   authenticated = false;
   if(inArray[1] == code_1 && inArray[2] == code_2 && inArray[3] == code_3 && inArray[4] == code_4 && inArray[5] == code_5)
   {
-    authenticated == true;
+    authenticated = true;
     Serial.println("Authenticated");
   }
   else{
@@ -183,8 +183,9 @@ void process()
    Begins processing the incoming string
    */
   // Nano Commands
-  Serial.println("Processing");
-  if(authenticated == true){
+
+    if(authenticated == true){
+    Serial.println("Processing");
     if(inArray[6] == cmd_comms_read_location[6] && inArray[7] == cmd_comms_read_location[7] && inArray[8] == cmd_comms_read_location[8])
     {
       if(inArray[9] == 0x43)
@@ -229,7 +230,6 @@ void process()
         Serial.print(gps_sentences);
         Serial.print(" CSUM ERR=");
         Serial.println(gps_failed);
-
       }
     }
     if(inArray[6] == cmd_comms_write_remotelock[6] && inArray[7] == cmd_comms_write_remotelock[7] && inArray[8] == cmd_comms_write_remotelock[8])
@@ -259,19 +259,17 @@ void process()
     // Throttle Commands 
     if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
     {
+      serial_throttle.listen();
       byte inData = 0x00;
       int i;
-      serial_throttle.listen();
-      if(serial_throttle.available() > 3){
-        while(inData != 0x1B){
-          inData = serial_throttle.read();
-          Serial.print(inData);
-        }
-        for(i=0; i<3; i++){
+      delay(200);
+      if(serial_throttle.available()>3){
+        for(i=0; i<10; i++){
           Serial.print(serial_throttle.read());
         }
-      }      
+      }
     }
+
     if(inArray[6] == cmd_throttle_write_speed[6] && inArray[7] == cmd_throttle_write_speed[7] && inArray[8] == cmd_throttle_write_speed[8])
     {
       serial_throttle.write(start_byte);
@@ -307,6 +305,9 @@ void process()
     }
   }
 }
+
+
+
 
 
 

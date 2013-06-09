@@ -98,6 +98,7 @@
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -877,7 +878,7 @@
             this.groupBox15.Location = new System.Drawing.Point(739, 12);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox15.Size = new System.Drawing.Size(381, 554);
+            this.groupBox15.Size = new System.Drawing.Size(401, 554);
             this.groupBox15.TabIndex = 45;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Serial History";
@@ -889,7 +890,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox3.Size = new System.Drawing.Size(355, 517);
+            this.textBox3.Size = new System.Drawing.Size(375, 517);
             this.textBox3.TabIndex = 34;
             // 
             // groupBox16
@@ -904,13 +905,20 @@
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Throttle Controller";
             // 
+            // timer2
+            // 
+            this.timer2.Enabled = true;
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.DisplayText);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1139, 603);
+            this.ClientSize = new System.Drawing.Size(1156, 603);
             this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.groupBox11);
@@ -1024,6 +1032,7 @@
         private System.Windows.Forms.GroupBox groupBox15;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 
