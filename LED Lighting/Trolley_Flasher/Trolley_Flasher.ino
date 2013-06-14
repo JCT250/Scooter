@@ -1,9 +1,8 @@
 #include <LiquidCrystal.h>
 volatile int modeint = 1; //int to store the current mode
 volatile int activeint = 0; //int to determine whether we are currently active
-volatile int runonce = 0; // used to determine whether we have already run one mode 
-                          //(if it is 0 then we setup the LED levles, if it is 1 then we run through the loop because the levels have already been set)
-const int T = 100; //t=to make it easier to change a global time variable
+volatile int runonce = 0; // used to determine whether we have already run one mode, (if it is 0 then we setup the LED levels, if it is 1 then we run through the loop because the levels have already been set)
+const int T = 100; //t=to make it easier to change a global time variable 
 volatile unsigned long previous_interrupt = 0;
 volatile unsigned long current_interrupt = 0;
 volatile unsigned long previous_interrupt1 = 0;
@@ -51,9 +50,12 @@ attachInterrupt(3,active,LOW);
 
 void active();
 void mode();
+void serial_process();
+void serial_mode_change();
+void serial_active_change();
 
 lcd.begin(8, 2);
-Serial.begin(115200);
+Serial.begin(9600);
 digitalWrite(0, HIGH);
 digitalWrite(1, HIGH);
 digitalWrite(2, HIGH);
@@ -389,3 +391,56 @@ void mode(){
 
 }
 
+void serial_process()
+{
+	detachInterrupt(1); //detach the interrupts
+	detachInterrupt(3);
+
+	int i;
+	byte trash = 0x00;
+	byte inData = 0x00;
+	byte inArray[3];
+
+	for(i=0; i<3; i++) //wipe the receiving array
+	{
+		inArray[i] = 0x00;
+	}
+
+	while(inData != 0x1B) //read bytes from the serial port until we find the start byte
+	{
+		inData = Serial.read();
+	}
+
+	inArray[0] = inData; //save the start byte in the array
+	inArray[1] = Serial.read(); //read another byte and place it in the next position
+	inArray[2] = Serial.read(); //and then do the same again
+	
+	while(Serial.available() > 0) //flush the serial port of any other crap that is still in there
+	{
+		trash = Serial.read();
+	}
+
+	if(inArray[1] == 0x00) //if the command byte is to change the state then call that process
+	{
+		serial_active_change();
+	}
+	if(inArray[2] == 0x00) //if the command byte is to change the mode then call that process
+	{
+		serial_mode_change();
+	}	
+
+
+	attachInterrupt(1,mode,LOW); //reattach the interrupts
+	attachInterrupt(3,active,LOW);
+
+}
+
+void serial_mode_change()
+{
+
+}
+
+void serial_active_change()
+{
+
+}
