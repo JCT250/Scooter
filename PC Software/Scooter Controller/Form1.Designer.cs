@@ -66,7 +66,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn_current_throttle = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.lighting_status = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_camera_stop = new System.Windows.Forms.Button();
             this.btn_camera_raise_stop = new System.Windows.Forms.Button();
@@ -507,7 +506,6 @@
             // 
             this.groupBox4.AutoSize = true;
             this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox4.Controls.Add(this.lighting_status);
             this.groupBox4.Controls.Add(this.bnt_lighting_mode_1);
             this.groupBox4.Controls.Add(this.btn_lighting_mode_2);
             this.groupBox4.Controls.Add(this.btn_lighting_mode_3);
@@ -519,20 +517,10 @@
             this.groupBox4.Location = new System.Drawing.Point(250, 157);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
-            this.groupBox4.Size = new System.Drawing.Size(232, 211);
+            this.groupBox4.Size = new System.Drawing.Size(232, 175);
             this.groupBox4.TabIndex = 32;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Lighting Control";
-            // 
-            // lighting_status
-            // 
-            this.lighting_status.Location = new System.Drawing.Point(13, 165);
-            this.lighting_status.Name = "lighting_status";
-            this.lighting_status.Size = new System.Drawing.Size(100, 30);
-            this.lighting_status.TabIndex = 28;
-            this.lighting_status.Text = "Query Status";
-            this.lighting_status.UseVisualStyleBackColor = true;
-            this.lighting_status.Click += new System.EventHandler(this.lighting_status_Click);
             // 
             // groupBox5
             // 
@@ -881,7 +869,8 @@
             this.groupBox15.Size = new System.Drawing.Size(401, 554);
             this.groupBox15.TabIndex = 45;
             this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Serial History";
+            this.groupBox15.Text = "Serial Data Received";
+            this.groupBox15.Enter += new System.EventHandler(this.groupBox15_Enter);
             // 
             // textBox3
             // 
@@ -1023,7 +1012,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.GroupBox groupBox14;
         private System.Windows.Forms.Button btn_query_power;
-        private System.Windows.Forms.Button lighting_status;
         private System.Windows.Forms.Button btn_query_led_status;
         private System.Windows.Forms.Button btn_current_throttle;
         private System.Windows.Forms.Button btn_camera_stop;

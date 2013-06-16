@@ -61,7 +61,7 @@ void setup() {
   void serial_active_change();
 
   lcd.begin(8, 2);
-  Serial.begin(9600);
+  Serial.begin(115200);
   serial_lighting.begin(9600);
 
   digitalWrite(0, HIGH);
@@ -82,9 +82,11 @@ void loop() {
   lcd.print(modeint);
   lcd.setCursor(4,1);
   lcd.print(activeint);
+  serial_check();
 
   do{
     delay(200);
+    serial_check();
   }
   while(activeint == 0); 
 
@@ -440,7 +442,7 @@ void serial_process()
   {
     serial_active_change();
   }
-  if(inArray[2] == 0x42) //if the command byte is to change the mode then call that process
+  if(inArray[1] == 0x42) //if the command byte is to change the mode then call that process
   {
     serial_mode_change();
   }
@@ -493,7 +495,8 @@ void serial_mode_change()
 void serial_active_change()
 {
 
-  if(inArray[2] == 0x31 ){
+  if(inArray[2] == 0x30 ){
+    activeint = 0;
     Serial.println("Pins Off");
     digitalWrite(Lred, 0);
     digitalWrite(Lgreen, 0);
@@ -510,7 +513,8 @@ void serial_active_change()
     RbW = 0;
   }
 
-  else if(activeint == 0x30){
+  else if(inArray[2] == 0x31){
+    activeint = 1;
     LrW = LrM;
     LgW = LgM;
     LbW = LbM;

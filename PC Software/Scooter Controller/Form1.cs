@@ -691,21 +691,6 @@ namespace Scooter_Controller
             }
         } //done
 
-        private void lighting_status_Click(object sender, EventArgs e)
-        {
-            if (!serialPort1.IsOpen)
-            {
-                serial_check();
-            }
-            else
-            {
-                Byte[] lighting_satus = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x52, 0x41, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
-                serialPort1.Write(lighting_satus, 0, 18);
-                textBox1.AppendText("Querying Lighting Status" + Environment.NewLine);
-                textBox2.AppendText(BitConverter.ToString(lighting_satus) + Environment.NewLine);
-            }
-        } //done
-
         private void btn_query_power_Click(object sender, EventArgs e)
         {
             if (!serialPort1.IsOpen)
@@ -782,6 +767,11 @@ namespace Scooter_Controller
                 }
             }
             timer2.Enabled = true;
+        }
+
+        private void groupBox15_Enter(object sender, EventArgs e)
+        {
+
         }
 
     } 
