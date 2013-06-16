@@ -21,22 +21,17 @@ byte cmd_comms_write_cameraheight[] = {
 
 byte cmd_throttle_read_speed[] = {
   0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x52, 0x41};
-byte cmd_throttle_write_speed[] = {
+byte cmd_throttle_write[] = {
   0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
 
-byte cmd_mega_read_state[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52, 0x41};
-byte cmd_mega_write_buttons[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57, 0x41};
-byte cmd_mega_write_powerstate[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57, 0x42};
+byte cmd_mega_read[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52};
+byte cmd_mega_write[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57};
 
-byte cmd_lighting_read_state[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x52, 0x41};
-byte cmd_lighting_write_state[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57, 0x41};
-byte cmd_lighting_write_mode[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57, 0x42};
+byte cmd_lighting_write[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57};
+
 
 byte start_byte = 0x1B;
 byte stop_byte = 0x0A;
@@ -278,30 +273,36 @@ void process()
       serial_throttle.write(inArray[11]);
     }
     // Mega Commands 
-    if(inArray[6] == cmd_mega_read_state[6] && inArray[7] == cmd_mega_read_state[7] && inArray[8] == cmd_mega_read_state[8])
+    if(inArray[6] == cmd_mega_read[6] && inArray[7] == cmd_mega_read[7])
     {
-
+      serial_mega.write(start_byte);
+      serial_mega.write(inArray[7]);
+      serial_mega.write(inArray[8]);
+      serial_mega.write(inArray[9]);
+      serial_mega.write(inArray[10]);
+      serial_mega.write(inArray[11]);
+      serial_mega.write(inArray[12]);
+      serial_mega.write(inArray[13]);
+      serial_mega.write(inArray[14]);
+      serial_mega.write(inArray[15]);
+      serial_mega.write(inArray[16]);
     }
-    if(inArray[6] == cmd_mega_write_buttons[6] && inArray[7] == cmd_mega_write_buttons[7] && inArray[8] == cmd_mega_write_buttons[8])
+    if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7])
     {
-
-    }
-    if(inArray[6] == cmd_mega_write_powerstate[6] && inArray[7] == cmd_mega_write_powerstate[7] && inArray[8] == cmd_mega_write_powerstate[8])
-    {
-
+      serial_mega.write(start_byte);
+      serial_mega.write(inArray[7]);
+      serial_mega.write(inArray[8]);
+      serial_mega.write(inArray[9]);
+      serial_mega.write(inArray[10]);
+      serial_mega.write(inArray[11]);
+      serial_mega.write(inArray[12]);
+      serial_mega.write(inArray[13]);
+      serial_mega.write(inArray[14]);
+      serial_mega.write(inArray[15]);
+      serial_mega.write(inArray[16]);
     }
     // Lighting Commands 
-    if(inArray[6] == cmd_lighting_read_state[6] && inArray[7] == cmd_lighting_read_state[7] && inArray[8] == cmd_lighting_read_state[8])
-    {
-
-    }
-    if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
-    {
-      serial_lighting.write(start_byte);
-      serial_lighting.write(inArray[8]);
-      serial_lighting.write(inArray[9]);
-    }
-    if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
+    if(inArray[6] == cmd_lighting_write[6] && inArray[7] == cmd_lighting_write[7])
     {
       serial_lighting.write(start_byte);
       serial_lighting.write(inArray[8]);

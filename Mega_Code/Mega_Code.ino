@@ -1,9 +1,10 @@
+#include <SoftwareSerial.h>
 
 /*
   Trolley Debugger
  
  Version Number: 5.0
-
+ 
  */
 
 String inputString = "";         // a string to hold incoming data
@@ -66,6 +67,8 @@ int oldStat_BatteryCharging = 0; //Battery Charging
 
 boolean refreshstatus = true;
 
+byte inArray[11]; //array to hold incoming data from the software serial port
+
 volatile int currentspeed = 0; 
 volatile int oldcurrentspeed = 0;
 
@@ -75,13 +78,15 @@ volatile int indicateright = 0;
 
 volatile int indicateleft = 0;
 
+SoftwareSerial serial_mega(0,0);
 
 void setup() {
 
   // initialize serial ports
   Serial.begin(115200); // Connection through to computer
   Serial3.begin(9600); // Connection through to LCD
-  
+  serial_mega.begin(9600);
+
   // initialize the digital pin as an output.
   pinMode(relay1, OUTPUT);
   pinMode(relay2, OUTPUT);
@@ -92,9 +97,9 @@ void setup() {
   pinMode(relay7, OUTPUT);
   pinMode(relay8, OUTPUT);
   pinMode(relaypower, OUTPUT);
-  
+
   Serial.println("Outputs Set");
-  
+
   // Configure interrupt pins  
   pinMode(2, INPUT);
   pinMode(3, INPUT);
@@ -102,9 +107,9 @@ void setup() {
   pinMode(19, INPUT);
   pinMode(20, INPUT);
   pinMode(21, INPUT);
-  
+
   Serial.println("Interrupts Set");
-  
+
   // Configure input pins
   pinMode(Stat_Speed1, INPUT);
   pinMode(Stat_Speed2, INPUT);
@@ -118,20 +123,18 @@ void setup() {
   pinMode(Stat_BatteryCharging, INPUT);
   pinMode(scooter_lock, INPUT_PULLUP);
   pinMode(scooter_key, INPUT_PULLUP);
-  
+
   Serial.println("Inputs Set");
 
-  
   // Attach interupt pins to ISR's
-  //attachInterrupt(5, isr_Horn, CHANGE);
   attachInterrupt(0, isr_Headlights, RISING);
   attachInterrupt(2, isr_ShiftUp, RISING);
   attachInterrupt(3, isr_ShiftDown, RISING);
   attachInterrupt(4, isr_IndicateLeft, RISING);
   attachInterrupt(1, isr_IndicateRight, RISING);
-  
+
   Serial.println("ISRs Attached");
-    
+
   // set the size of the display if it isn't 16x2 (you only have to do this once)
   Serial3.write(0xFE);
   Serial3.write(0xD1);
@@ -153,9 +156,9 @@ void setup() {
   Serial3.write(0x4B);
   Serial3.write(0xFE);
   Serial3.write(0x54);
-  
+
   Serial.println("LCD setup complete");
-  
+
   // create a custom character for battery level 1
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -169,7 +172,7 @@ void setup() {
   Serial3.write(0xFF);
   Serial3.write((uint8_t)0xFF);
   delay(10);
-  
+
   // create a custom character for battery level 2
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -183,7 +186,7 @@ void setup() {
   Serial3.write(0xFF);
   Serial3.write((uint8_t)0xFF);
   delay(10);
-  
+
   // create a custom character for battery level 3
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -197,7 +200,7 @@ void setup() {
   Serial3.write(0xFF);
   Serial3.write((uint8_t)0xFF);
   delay(10);
-  
+
   // create a custom character for battery level 4
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -211,7 +214,7 @@ void setup() {
   Serial3.write(0xFF);
   Serial3.write((uint8_t)0xFF);
   delay(10);
-  
+
   // create a custom character for battery charging
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -225,7 +228,7 @@ void setup() {
   Serial3.write(0x04);
   Serial3.write((uint8_t)0x04);
   delay(10);
-  
+
   // create a custom character for Headlights
   Serial3.write(0xFE);
   Serial3.write(0x4E);
@@ -239,10 +242,18 @@ void setup() {
   Serial3.write(0x0E);
   Serial3.write((uint8_t)0x0E);
   delay(10);
-  
+
   Serial.println("LCD custom characters written");
-  
-  // clear screen
+
+  void serial_check();
+  void serial_process();
+  void serial_write_buttons();
+  void serial_write_power();
+  void serial_read_state();
+
+  Serial.println("Internal serial functions declared");
+
+    // clear screen
   Serial3.write(0xFE);
   Serial3.write(0x58);
   delay(10); 
@@ -253,13 +264,13 @@ void setup() {
   Serial3.println("Trolley OS 0.1");
   Serial3.print("Loading...");
   delay(1000);
-  
-  
+
+
   // reserve 200 bytes for the inputString:
   inputString.reserve(200);
-  
+
   time = 0;
-  
+
   if(digitalRead(Stat_Speed1) == HIGH) {
     currentspeed = 1;
     oldcurrentspeed = 1;
@@ -276,10 +287,10 @@ void setup() {
     currentspeed = 4;
     oldcurrentspeed = 4;
   }
-  
+
   digitalWrite(relaypower, 1);
-  
-lcd_clear(); 
+
+  lcd_clear(); 
   Serial.println("Entering Loop");
 }
 
@@ -287,92 +298,92 @@ void loop() {
 
 
   digitalWrite(relay7, (digitalRead(18)));
-  
+
   if(digitalRead(scooter_lock) == LOW){
     isr_detach();
     scooter_lock_screen_remote();
     lcd_update(); //update the LCD
     digitalWrite(relaypower, HIGH); 
     isr_attach();
-   
+
   }
- 
- 
-   if(digitalRead(scooter_key) == 1){
+
+
+  if(digitalRead(scooter_key) == 1){
     isr_detach();
     scooter_lock_screen_key();
     lcd_update(); //update the LCD
     digitalWrite(relaypower, HIGH); 
     isr_attach();
-   
+
   }
-    
-  
+
+
   if (stringComplete) {
     Serial.println(inputString);
-   
-   if (inputString[0] == 'R') {
-     //We have a relay command
-     if (inputString[1] == '1') {
-       digitalWrite(relay1, HIGH);
-       delay(500);
-       digitalWrite(relay1, LOW);
-     }
-     if (inputString[1] == '2') {
-       digitalWrite(relay2, HIGH);
-       delay(500);
-       digitalWrite(relay2, LOW);
-     }
-     if (inputString[1] == '3') {
-       digitalWrite(relay3, HIGH);
-       delay(500);
-       digitalWrite(relay3, LOW);
-     }
-     if (inputString[1] == '4') {
-       digitalWrite(relay4, HIGH);
-       delay(500);
-       digitalWrite(relay4, LOW);
-     }
-     if (inputString[1] == '5') {
-       digitalWrite(relay5, HIGH);
-       delay(500);
-       digitalWrite(relay5, LOW);
-     }
-     if (inputString[1] == '6') {
-       digitalWrite(relay6, HIGH);
-       delay(500);
-       digitalWrite(relay6, LOW);
-     }
-     if (inputString[1] == '7') {
-       digitalWrite(relay7, HIGH);
-       delay(500);
-       digitalWrite(relay7, LOW);
-     }
-     if (inputString[1] == '8') {
-       digitalWrite(relay8, HIGH);
-       delay(500);
-       digitalWrite(relay8, LOW);
-     }
-    if (inputString[1] =='I'){
+
+    if (inputString[0] == 'R') {
+      //We have a relay command
+      if (inputString[1] == '1') {
+        digitalWrite(relay1, HIGH);
+        delay(500);
+        digitalWrite(relay1, LOW);
+      }
+      if (inputString[1] == '2') {
+        digitalWrite(relay2, HIGH);
+        delay(500);
+        digitalWrite(relay2, LOW);
+      }
+      if (inputString[1] == '3') {
+        digitalWrite(relay3, HIGH);
+        delay(500);
+        digitalWrite(relay3, LOW);
+      }
+      if (inputString[1] == '4') {
+        digitalWrite(relay4, HIGH);
+        delay(500);
+        digitalWrite(relay4, LOW);
+      }
+      if (inputString[1] == '5') {
+        digitalWrite(relay5, HIGH);
+        delay(500);
+        digitalWrite(relay5, LOW);
+      }
+      if (inputString[1] == '6') {
+        digitalWrite(relay6, HIGH);
+        delay(500);
+        digitalWrite(relay6, LOW);
+      }
+      if (inputString[1] == '7') {
+        digitalWrite(relay7, HIGH);
+        delay(500);
+        digitalWrite(relay7, LOW);
+      }
+      if (inputString[1] == '8') {
+        digitalWrite(relay8, HIGH);
+        delay(500);
+        digitalWrite(relay8, LOW);
+      }
+      if (inputString[1] =='I'){
         digitalWrite(relaypower, HIGH);
-    }
-    if (inputString[1] =='O'){
+      }
+      if (inputString[1] =='O'){
         digitalWrite(relaypower, LOW);
-    }
-    if (inputString[1] =='C'){
+      }
+      if (inputString[1] =='C'){
         calibration_menu();
+      }
     }
-   }
-   
-    
+
+
     // clear the string:
     inputString = "";
     stringComplete = false;
-    
+
 
   }
   //Now we need to query the LED's
-  
+
   if (oldStat_Speed1 != digitalRead(Stat_Speed1)) refreshstatus = true;
   if (oldStat_Speed2 != digitalRead(Stat_Speed2)) refreshstatus = true;
   if (oldStat_Speed3 != digitalRead(Stat_Speed3)) refreshstatus = true;
@@ -383,7 +394,7 @@ void loop() {
   if (oldStat_Battery3 != digitalRead(Stat_Battery3)) refreshstatus = true;
   if (oldStat_Battery4 != digitalRead(Stat_Battery4)) refreshstatus = true;
   if (oldStat_BatteryCharging != digitalRead(Stat_BatteryCharging)) refreshstatus = true;
-  
+
   if (refreshstatus) {
     oldStat_Speed1 = digitalRead(Stat_Speed1);
     oldStat_Speed2 = digitalRead(Stat_Speed2);
@@ -395,33 +406,33 @@ void loop() {
     oldStat_Battery3 = digitalRead(Stat_Battery3);
     oldStat_Battery4 = digitalRead(Stat_Battery4);
     oldStat_BatteryCharging = digitalRead(Stat_BatteryCharging);
-    
-    
-  Serial.print("Speed 1 = ");
-  Serial.println(digitalRead(Stat_Speed1));
-  Serial.print("Speed 2 = ");
-  Serial.println(digitalRead(Stat_Speed2));
-  Serial.print("Speed 3 = ");
-  Serial.println(digitalRead(Stat_Speed3));
-  Serial.print("Speed 4 = ");
-  Serial.println(digitalRead(Stat_Speed4));
-  Serial.print("Headlights = ");
-  Serial.println(digitalRead(Stat_Headlights));
-  Serial.print("Battery 1 = ");
-  Serial.println(digitalRead(Stat_Battery1));
-  Serial.print("Battery 2 = ");
-  Serial.println(digitalRead(Stat_Battery2));
-  Serial.print("Battery 3 = ");
-  Serial.println(digitalRead(Stat_Battery3));
-  Serial.print("Battery 4 = ");
-  Serial.println(digitalRead(Stat_Battery4));
-  Serial.print("Battery Charging = ");
-  Serial.println(digitalRead(Stat_BatteryCharging));
-  refreshstatus=false;
+
+
+    Serial.print("Speed 1 = ");
+    Serial.println(digitalRead(Stat_Speed1));
+    Serial.print("Speed 2 = ");
+    Serial.println(digitalRead(Stat_Speed2));
+    Serial.print("Speed 3 = ");
+    Serial.println(digitalRead(Stat_Speed3));
+    Serial.print("Speed 4 = ");
+    Serial.println(digitalRead(Stat_Speed4));
+    Serial.print("Headlights = ");
+    Serial.println(digitalRead(Stat_Headlights));
+    Serial.print("Battery 1 = ");
+    Serial.println(digitalRead(Stat_Battery1));
+    Serial.print("Battery 2 = ");
+    Serial.println(digitalRead(Stat_Battery2));
+    Serial.print("Battery 3 = ");
+    Serial.println(digitalRead(Stat_Battery3));
+    Serial.print("Battery 4 = ");
+    Serial.println(digitalRead(Stat_Battery4));
+    Serial.print("Battery Charging = ");
+    Serial.println(digitalRead(Stat_BatteryCharging));
+    refreshstatus=false;
   }
-  
+
   if (updatespeed == 1) {
-   isr_detach();
+    isr_detach();
     if (currentspeed == 1) {
       Serial.println("R1H");
       digitalWrite(relay1, HIGH);
@@ -431,9 +442,9 @@ void loop() {
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
-    
-  if (currentspeed == 2) {
-    Serial.println("R2H");
+
+    if (currentspeed == 2) {
+      Serial.println("R2H");
       digitalWrite(relay2, HIGH);
       delay(150);
       Serial.println("R2L");
@@ -441,9 +452,9 @@ void loop() {
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
-    
-  if (currentspeed == 3) {
-    Serial.println("R3H");
+
+    if (currentspeed == 3) {
+      Serial.println("R3H");
       digitalWrite(relay3, HIGH);
       delay(150);
       Serial.println("R3L");
@@ -451,9 +462,9 @@ void loop() {
       oldcurrentspeed = currentspeed;
       updatespeed = 0;
     }
-    
-  if (currentspeed == 4) {
-    Serial.println("R4H");
+
+    if (currentspeed == 4) {
+      Serial.println("R4H");
       digitalWrite(relay4, HIGH);
       delay(150);
       Serial.println("R4L");
@@ -474,33 +485,33 @@ void loop() {
     headlights = 0;
     isr_attach();
   }
-  
 
-   if (indicateleft == 1) {
-     isr_detach();
-     Serial.println("ILH");
-     digitalWrite(relay5, HIGH);
-     delay(150);
-     Serial.println("ILL");
-     digitalWrite(relay5, LOW);
-     indicateleft = 0;
-     isr_attach();
-   }
-      
-   if (indicateright == 1) {
-     isr_detach();
-     Serial.println("IRH");
-     digitalWrite(relay6, HIGH);
-     delay(150);
-     Serial.println("IRL");
-     digitalWrite(relay6, LOW);
-     indicateright = 0;
-     isr_attach();
-   }  
-      
 
- lcd_update(); 
-  
+  if (indicateleft == 1) {
+    isr_detach();
+    Serial.println("ILH");
+    digitalWrite(relay5, HIGH);
+    delay(150);
+    Serial.println("ILL");
+    digitalWrite(relay5, LOW);
+    indicateleft = 0;
+    isr_attach();
+  }
+
+  if (indicateright == 1) {
+    isr_detach();
+    Serial.println("IRH");
+    digitalWrite(relay6, HIGH);
+    delay(150);
+    Serial.println("IRL");
+    digitalWrite(relay6, LOW);
+    indicateright = 0;
+    isr_attach();
+  }  
+
+
+  lcd_update(); 
+
 }
 
 /*
@@ -525,60 +536,60 @@ void serialEvent() {
 
 /*
 void isr_Horn() {
-  Serial.println("Horn Selected");
-  if(digitalRead(3) == LOW) {
-    digitalWrite(relay7, HIGH);
-  }else{
-    digitalWrite(relay7, LOW);
-  }
-  
-}
-*/
+ Serial.println("Horn Selected");
+ if(digitalRead(3) == LOW) {
+ digitalWrite(relay7, HIGH);
+ }else{
+ digitalWrite(relay7, LOW);
+ }
+ 
+ }
+ */
 
 
 void isr_Headlights() {
   newisr0 = millis();
-  
+
   if((oldisr0+150) < newisr0) {
-  headlights = 1;
-  oldisr0 = newisr0;
+    headlights = 1;
+    oldisr0 = newisr0;
   }
-  
+
 }
 
 void isr_ShiftUp() {
   newisr2 = millis();
   if((oldisr2+300) < newisr2) {
-  if(currentspeed < 4) currentspeed++;
-  oldisr2=newisr2;
-  updatespeed = 1;
+    if(currentspeed < 4) currentspeed++;
+    oldisr2=newisr2;
+    updatespeed = 1;
   }
 }
 
 void isr_ShiftDown() {
   newisr3 = millis();
   if((oldisr3+300) < newisr3) {
-  if(currentspeed > 1) currentspeed--;
-  oldisr3=newisr3;
-  updatespeed = 1;
- }
+    if(currentspeed > 1) currentspeed--;
+    oldisr3=newisr3;
+    updatespeed = 1;
+  }
 }
 
 void isr_IndicateLeft() {
-   newisr4 = millis();
-  
+  newisr4 = millis();
+
   if((oldisr4+300) < newisr4) {
-  indicateleft = 1;
-  oldisr4=newisr4;
+    indicateleft = 1;
+    oldisr4=newisr4;
   }
 }
 
 void isr_IndicateRight() {
-   newisr5 = millis();
-  
+  newisr5 = millis();
+
   if((oldisr5+300) < newisr5) {
-  indicateright = 1;
-  oldisr5=newisr5;
+    indicateright = 1;
+    oldisr5=newisr5;
   }
 }
 
@@ -589,91 +600,91 @@ void lcd_clear(){
 
 
 void calibration_menu(){
-    
-    Serial.println("Turning Scooter Off");
-    delay(500);
-    digitalWrite(relaypower, LOW);
-    delay(1000);
-    
-    Serial.println("Presetting for calibration");
-    delay(500);
-    digitalWrite(relay1, HIGH);
-    digitalWrite(relay2, HIGH);
-    delay(1000);
 
-    Serial.println("Turning Scooter On");
-    delay(500);
-    digitalWrite(relaypower, HIGH);
-    delay(3000);
-    
-    Serial.println("Presetting complete");
-    delay(500);
-    digitalWrite(relay1, LOW);
-    digitalWrite(relay2, LOW);
-    delay(1000);
-    
-    Serial.println("Entering Calibration"); //begin calibration
-    delay(1000);
-    digitalWrite(relay1, HIGH); //enter service menu option 1
-    delay(150);
-    digitalWrite(relay1, LOW);
-    delay(1000);
-    
-    Serial.println("Please pull lever CCW");
-    delay(3000);
-    digitalWrite(relay1, HIGH);
-    delay(150);
-    digitalWrite(relay1, LOW);
-    delay(1000);
-    
-    Serial.println("Please center the lever");
-    delay(3000);
-    digitalWrite(relay2, HIGH);
-    delay(150);
-    digitalWrite(relay2, LOW);
-    delay(1000);
-    
-    Serial.println("Please pull lever CW");
-    delay(3000);
-    digitalWrite(relay4, HIGH);
-    delay(150);
-    digitalWrite(relay4, LOW);
-    delay(1000);
-    
-    Serial.println("Please center the lever");
-    delay(3000);
-    digitalWrite(relay3, HIGH);
-    delay(150);
-    digitalWrite(relay3, LOW);
-    delay(2000);
-    
-    Serial.println("Turning Scooter Off");
-    delay(1000);
-    digitalWrite(relaypower, LOW);
-    delay(3000);
-    Serial.println("Turning Scooter On");
-    delay(1000);
-    digitalWrite(relaypower, HIGH);
-    
-    delay(1000);
-    Serial.println("Auto calibration complete");
-    delay(3000);
+  Serial.println("Turning Scooter Off");
+  delay(500);
+  digitalWrite(relaypower, LOW);
+  delay(1000);
+
+  Serial.println("Presetting for calibration");
+  delay(500);
+  digitalWrite(relay1, HIGH);
+  digitalWrite(relay2, HIGH);
+  delay(1000);
+
+  Serial.println("Turning Scooter On");
+  delay(500);
+  digitalWrite(relaypower, HIGH);
+  delay(3000);
+
+  Serial.println("Presetting complete");
+  delay(500);
+  digitalWrite(relay1, LOW);
+  digitalWrite(relay2, LOW);
+  delay(1000);
+
+  Serial.println("Entering Calibration"); //begin calibration
+  delay(1000);
+  digitalWrite(relay1, HIGH); //enter service menu option 1
+  delay(150);
+  digitalWrite(relay1, LOW);
+  delay(1000);
+
+  Serial.println("Please pull lever CCW");
+  delay(3000);
+  digitalWrite(relay1, HIGH);
+  delay(150);
+  digitalWrite(relay1, LOW);
+  delay(1000);
+
+  Serial.println("Please center the lever");
+  delay(3000);
+  digitalWrite(relay2, HIGH);
+  delay(150);
+  digitalWrite(relay2, LOW);
+  delay(1000);
+
+  Serial.println("Please pull lever CW");
+  delay(3000);
+  digitalWrite(relay4, HIGH);
+  delay(150);
+  digitalWrite(relay4, LOW);
+  delay(1000);
+
+  Serial.println("Please center the lever");
+  delay(3000);
+  digitalWrite(relay3, HIGH);
+  delay(150);
+  digitalWrite(relay3, LOW);
+  delay(2000);
+
+  Serial.println("Turning Scooter Off");
+  delay(1000);
+  digitalWrite(relaypower, LOW);
+  delay(3000);
+  Serial.println("Turning Scooter On");
+  delay(1000);
+  digitalWrite(relaypower, HIGH);
+
+  delay(1000);
+  Serial.println("Auto calibration complete");
+  delay(3000);
 
 }
-  
+
 void isr_detach(){
- 
- detachInterrupt(0);
- detachInterrupt(1);
- detachInterrupt(2);
- detachInterrupt(3);
- detachInterrupt(4);
- detachInterrupt(5);
-  
+
+  detachInterrupt(0);
+  detachInterrupt(1);
+  detachInterrupt(2);
+  detachInterrupt(3);
+  detachInterrupt(4);
+  detachInterrupt(5);
+
 }
 
 void isr_attach(){
- // attachInterrupt(5, isr_Horn, CHANGE);
+  // attachInterrupt(5, isr_Horn, CHANGE);
   attachInterrupt(0, isr_Headlights, FALLING);
   attachInterrupt(2, isr_ShiftUp, FALLING);
   attachInterrupt(3, isr_ShiftDown, FALLING);
@@ -683,107 +694,107 @@ void isr_attach(){
 }
 
 void lcd_update(){
-  
-      Serial3.write(0xFE); //Change backlight Color
-      Serial3.write(0xD0);
-      Serial3.write(0x00); //R
-      Serial3.write(0xFF); //G
-      Serial3.write(0x00); //B
-      delay(10);
 
-      Serial3.write(0xFE); //Move the cursor
-      Serial3.write(0x47);
-      Serial3.write(0x01); //column
-      Serial3.write(0x01); //row
-      
-      Serial3.print("Speed:");
-    
-        Serial3.write(0xFE); //Move the cursor
-        Serial3.write(0x47);
-        Serial3.write(0x07); //column
-        Serial3.write(0x01); //row
-        
-      if(digitalRead(Stat_Speed1) == 1){
-    
-        Serial3.write((uint8_t)0); //Write 25% icon
-        Serial3.print("   "); //Write blanks over the other icon spaces
-      }
-      
-      else if(digitalRead(Stat_Speed2) == 1){
-        Serial3.write((uint8_t)0); //Write 25% icon
-        Serial3.write((uint8_t)1); //Write 50% icon
-        Serial3.print("  "); //Write blanks over the other icon spaces
-      }
-      
-      else if(digitalRead(Stat_Speed3) == 1){
-        Serial3.write((uint8_t)0); //Write 25% icon
-        Serial3.write((uint8_t)1); //Write 50% icon
-        Serial3.write((uint8_t)2); //Write 75% icon
-        Serial3.print(" "); //Write blanks over the other icon spaces
-      }
-      
-      else if(digitalRead(Stat_Speed4) == 1){
-        Serial3.write((uint8_t)0); //Write 25% icon
-        Serial3.write((uint8_t)1); //Write 50% icon
-        Serial3.write((uint8_t)2); //Write 75% icon
-        Serial3.write((uint8_t)3); //Write 100% icon
-      }
-      
-        Serial3.write(0xFE); // move the cursor
-        Serial3.write(0x47);
-        Serial3.write(0x01); //column
-        Serial3.write(0x02); //row
-        
-      if(digitalRead(Stat_Battery1) == 1){
-        Serial3.write((uint8_t)0);
-      }
-      else if(digitalRead(Stat_Battery1) == 0){
-        Serial3.print(" ");
-      }
-      if(digitalRead(Stat_Battery2) == 1){
-        Serial3.write((uint8_t)1);
-      }
-      else if(digitalRead(Stat_Battery2) == 0){
-        Serial3.print(" ");
-      }
-      if(digitalRead(Stat_Battery3) == 1){
-        Serial3.write((uint8_t)2);
-      }
-      else if(digitalRead(Stat_Battery3) == 0){
-        Serial3.print(" ");
-      }
-      if(digitalRead(Stat_Battery4) == 1){
-        Serial3.write((uint8_t)3);
-      }
-      else if(digitalRead(Stat_Battery4) == 0){
-        Serial3.print(" ");
-      }
-      
-      Serial3.print("        ");
-      
-      if(digitalRead(Stat_Headlights) == 1){
-        Serial3.write((uint8_t)5); //If the headlights are on then write the icon to indicate that
-      }
-      else if(digitalRead(Stat_Headlights) == 0){
-        Serial3.print(" "); //If the headlights are off then write a blank over that space
-      }
-    
-      Serial3.print(" ");
-    
-      if(digitalRead(Stat_BatteryCharging) == 1){
-        Serial3.write((uint8_t)4); //If the battery LED is on then write the icon to indicate that 
-      }
-      else if(digitalRead(Stat_BatteryCharging) == 0){
-        Serial3.print(" "); //If the battery LED is off then write the icon to indicate that 
-      }
- }
- 
+  Serial3.write(0xFE); //Change backlight Color
+  Serial3.write(0xD0);
+  Serial3.write(0x00); //R
+  Serial3.write(0xFF); //G
+  Serial3.write(0x00); //B
+  delay(10);
+
+  Serial3.write(0xFE); //Move the cursor
+  Serial3.write(0x47);
+  Serial3.write(0x01); //column
+  Serial3.write(0x01); //row
+
+  Serial3.print("Speed:");
+
+  Serial3.write(0xFE); //Move the cursor
+  Serial3.write(0x47);
+  Serial3.write(0x07); //column
+  Serial3.write(0x01); //row
+
+  if(digitalRead(Stat_Speed1) == 1){
+
+    Serial3.write((uint8_t)0); //Write 25% icon
+    Serial3.print("   "); //Write blanks over the other icon spaces
+  }
+
+  else if(digitalRead(Stat_Speed2) == 1){
+    Serial3.write((uint8_t)0); //Write 25% icon
+    Serial3.write((uint8_t)1); //Write 50% icon
+    Serial3.print("  "); //Write blanks over the other icon spaces
+  }
+
+  else if(digitalRead(Stat_Speed3) == 1){
+    Serial3.write((uint8_t)0); //Write 25% icon
+    Serial3.write((uint8_t)1); //Write 50% icon
+    Serial3.write((uint8_t)2); //Write 75% icon
+    Serial3.print(" "); //Write blanks over the other icon spaces
+  }
+
+  else if(digitalRead(Stat_Speed4) == 1){
+    Serial3.write((uint8_t)0); //Write 25% icon
+    Serial3.write((uint8_t)1); //Write 50% icon
+    Serial3.write((uint8_t)2); //Write 75% icon
+    Serial3.write((uint8_t)3); //Write 100% icon
+  }
+
+  Serial3.write(0xFE); // move the cursor
+  Serial3.write(0x47);
+  Serial3.write(0x01); //column
+  Serial3.write(0x02); //row
+
+  if(digitalRead(Stat_Battery1) == 1){
+    Serial3.write((uint8_t)0);
+  }
+  else if(digitalRead(Stat_Battery1) == 0){
+    Serial3.print(" ");
+  }
+  if(digitalRead(Stat_Battery2) == 1){
+    Serial3.write((uint8_t)1);
+  }
+  else if(digitalRead(Stat_Battery2) == 0){
+    Serial3.print(" ");
+  }
+  if(digitalRead(Stat_Battery3) == 1){
+    Serial3.write((uint8_t)2);
+  }
+  else if(digitalRead(Stat_Battery3) == 0){
+    Serial3.print(" ");
+  }
+  if(digitalRead(Stat_Battery4) == 1){
+    Serial3.write((uint8_t)3);
+  }
+  else if(digitalRead(Stat_Battery4) == 0){
+    Serial3.print(" ");
+  }
+
+  Serial3.print("        ");
+
+  if(digitalRead(Stat_Headlights) == 1){
+    Serial3.write((uint8_t)5); //If the headlights are on then write the icon to indicate that
+  }
+  else if(digitalRead(Stat_Headlights) == 0){
+    Serial3.print(" "); //If the headlights are off then write a blank over that space
+  }
+
+  Serial3.print(" ");
+
+  if(digitalRead(Stat_BatteryCharging) == 1){
+    Serial3.write((uint8_t)4); //If the battery LED is on then write the icon to indicate that 
+  }
+  else if(digitalRead(Stat_BatteryCharging) == 0){
+    Serial3.print(" "); //If the battery LED is off then write the icon to indicate that 
+  }
+}
+
 
 
 void scooter_lock_screen_key(){
   Serial.println("Scooter locked by Key");
-    digitalWrite(relaypower, LOW);
-    while(digitalRead(scooter_key) == 1){
+  digitalWrite(relaypower, LOW);
+  while(digitalRead(scooter_key) == 1){
     Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
@@ -816,14 +827,14 @@ void scooter_lock_screen_key(){
     delay(10);
     Serial3.print(" SCOOTER LOCKED");
     delay(1500);
-    }
+  }
 }
 
 
 void scooter_lock_screen_remote(){
   Serial.println("Scooter locked by Remote");
-    digitalWrite(relaypower, LOW);
-    while(digitalRead(scooter_lock) == 0){
+  digitalWrite(relaypower, LOW);
+  while(digitalRead(scooter_lock) == 0){
     Serial3.write(0xFE); //Change backlight Color
     Serial3.write(0xD0);
     Serial3.write(0xFF); //R
@@ -856,6 +867,77 @@ void scooter_lock_screen_remote(){
     delay(10);
     Serial3.print("  SYSTEM ERROR");
     delay(1500);
-    }
+  }
 }
+
+void serial_check()
+{
+  if(serial_mega.available() > 9)
+  {
+    serial_process();
+  } 
+}
+
+void serial_process()
+{
+
+  isr_detach();
+
+  int i;
+  byte trash = 0x00;
+  byte inData = 0x00;
+
+  for(i=0; i<10; i++) //wipe the receiving array
+  {
+    inArray[i] = 0x00;
+  }
+
+  while(inData != 0x1B) //read bytes from the serial port until we find the start byte
+  {
+    inData = serial_mega.read();
+  }
+
+  for(i=1; i<12; i++)
+  {
+    inArray[i] = serial_mega.read(); //read 10 more bytes into the incoming array
+  }
+
+  if(inArray[1] == 0x57 && inArray[2] == 0x41) //if the command bytes are to emulate a button press then call that process
+  {
+    serial_write_buttons();
+  }
+  if(inArray[1] == 0x57 && inArray[2] == 0x42) //if the command bytes are to change the power state then call that process
+  {
+    serial_write_power();
+  }
+  if(inArray[1] == 0x52 && inArray[2] == 0x41) //if the command bytes are to read the scooter status then call that process
+  {
+    serial_read_state();
+  }
+
+  while(serial_mega.available() > 0) //flush the serial port of any other crap that is still in there
+  {
+    trash = serial_mega.read();
+  }	
+
+  isr_attach();
+}
+
+void serial_write_buttons()
+{
+  
+}
+
+void serial_write_power()
+{
+  
+}
+
+void serial_read_state()
+{
+  
+}
+
+
+
 
