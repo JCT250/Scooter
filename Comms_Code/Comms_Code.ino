@@ -52,7 +52,7 @@ SoftwareSerial serial_gsm(10, 11);
 SoftwareSerial serial_throttle(13,12);
 SoftwareSerial serial_mega(0,0);
 SoftwareSerial serial_camera(0,0);
-SoftwareSerial serial_lighting(0,0);
+SoftwareSerial serial_lighting(7,6);
 
 static void gpsdump(TinyGPS &gps);
 static bool feedgps();
@@ -297,11 +297,15 @@ void process()
     }
     if(inArray[6] == cmd_lighting_write_state[6] && inArray[7] == cmd_lighting_write_state[7] && inArray[8] == cmd_lighting_write_state[8])
     {
-
+      serial_lighting.write(start_byte);
+      serial_lighting.write(inArray[8]);
+      serial_lighting.write(inArray[9]);
     }
     if(inArray[6] == cmd_lighting_write_mode[6] && inArray[7] == cmd_lighting_write_mode[7] && inArray[8] == cmd_lighting_write_mode[8])
     {
-
+      serial_lighting.write(start_byte);
+      serial_lighting.write(inArray[8]);
+      serial_lighting.write(inArray[9]);
     }
   }
 }

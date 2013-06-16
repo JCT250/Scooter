@@ -622,7 +622,7 @@ namespace Scooter_Controller
             {
                 Byte[] lighting_deactivate = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x33, 0x57, 0x41, 0x30, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(lighting_deactivate, 0, 18);
-                textBox1.AppendText("Setting Lighting Mode 4" + Environment.NewLine);
+                textBox1.AppendText("Lighting Deactivated" + Environment.NewLine);
                 textBox2.AppendText(BitConverter.ToString(lighting_deactivate) + Environment.NewLine);
             }
         } //done
