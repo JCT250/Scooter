@@ -600,74 +600,99 @@ void lcd_clear(){
 
 
 void calibration_menu(){
-
-  Serial.println("Turning Scooter Off");
+  
+  lcd_clear();
+  Msg("    POWERING", 0x01, 0x01);
+  Msg("  OFF  SCOOTER", 0x01, 0x02);
   delay(500);
   digitalWrite(relaypower, LOW);
   delay(1000);
 
-  Serial.println("Presetting for calibration");
+  lcd_clear();
+  Msg("  PRESETTING", 0x01, 0x01);
+  Msg("FOR  CALIBRATION", 0x01, 0x02);
   delay(500);
   digitalWrite(relay1, HIGH);
   digitalWrite(relay2, HIGH);
   delay(1000);
 
-  Serial.println("Turning Scooter On");
+  lcd_clear();
+  Msg("    POWERING", 0x01, 0x01);
+  Msg("   ON SCOOTER", 0x01, 0x02);
   delay(500);
   digitalWrite(relaypower, HIGH);
   delay(3000);
 
-  Serial.println("Presetting complete");
+  lcd_clear();
+  Msg("   PRESETTING", 0x01, 0x01);
+  Msg("    COMPLETE", 0x01, 0x02);
   delay(500);
   digitalWrite(relay1, LOW);
   digitalWrite(relay2, LOW);
   delay(1000);
 
-  Serial.println("Entering Calibration"); //begin calibration
+  lcd_clear();
+  Msg("     PLEASE", 0x01, 0x01);
+  Msg("      WAIT", 0x01, 0x02);
   delay(1000);
   digitalWrite(relay1, HIGH); //enter service menu option 1
   delay(150);
   digitalWrite(relay1, LOW);
   delay(1000);
-
-  Serial.println("Please pull lever CCW");
+  
+  lcd_clear();
+  Msg("  PLEASE  PULL", 0x01, 0x01);
+  Msg("   LEVER  CCW", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay1, HIGH);
   delay(150);
   digitalWrite(relay1, LOW);
   delay(1000);
-
-  Serial.println("Please center the lever");
+  
+  lcd_clear();
+  Msg(" PLESAE  CENTER", 0x01, 0x01);
+  Msg("   THE  LEVER", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay2, HIGH);
   delay(150);
   digitalWrite(relay2, LOW);
   delay(1000);
-
-  Serial.println("Please pull lever CW");
+  
+  lcd_clear();
+  Msg("  PLEASE  PULL", 0x01, 0x01);
+  Msg("    LEVER CW", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay4, HIGH);
   delay(150);
   digitalWrite(relay4, LOW);
   delay(1000);
-
-  Serial.println("Please center the lever");
+  
+  lcd_clear();
+  Msg(" PLESAE  CENTER", 0x01, 0x01);
+  Msg("   THE  LEVER", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay3, HIGH);
   delay(150);
   digitalWrite(relay3, LOW);
   delay(2000);
-
-  Serial.println("Turning Scooter Off");
+  
+  lcd_clear();
+  Msg("    POWERING", 0x01, 0x01);
+  Msg("  OFF  SCOOTER", 0x01, 0x02);
   delay(1000);
   digitalWrite(relaypower, LOW);
   delay(3000);
-  Serial.println("Turning Scooter On");
+  
+  lcd_clear();
+  Msg("    POWERING", 0x01, 0x01);
+  Msg("   ON SCOOTER", 0x01, 0x02);
   delay(1000);
   digitalWrite(relaypower, HIGH);
-
   delay(1000);
-  Serial.println("Auto calibration complete");
+  
+  lcd_clear();
+  Msg("AUTO CALIBRATION", 0x01, 0x01);
+  Msg("    COMPLETE", 0x01, 0x02);
   delay(3000);
 
 }
@@ -936,6 +961,16 @@ void serial_write_power()
 void serial_read_state()
 {
   
+}
+
+void Msg(const char *message,  const byte column, const byte row)
+{
+  Serial3.write(0xFE); //Move the cursor
+  Serial3.write(0x47);
+  Serial3.write(column); //column
+  Serial3.write(row); //row
+  delay(10);
+  Serial3.write(message);
 }
 
 

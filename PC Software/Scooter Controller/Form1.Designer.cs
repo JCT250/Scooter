@@ -98,6 +98,8 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.btn_throttle_calibrate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -114,6 +116,7 @@
             this.groupBox11.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox15.SuspendLayout();
+            this.groupBox17.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_speed_1
@@ -900,6 +903,28 @@
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.DisplayText);
             // 
+            // groupBox17
+            // 
+            this.groupBox17.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox17.Controls.Add(this.btn_throttle_calibrate);
+            this.groupBox17.Location = new System.Drawing.Point(250, 338);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Padding = new System.Windows.Forms.Padding(10, 5, 10, 0);
+            this.groupBox17.Size = new System.Drawing.Size(232, 67);
+            this.groupBox17.TabIndex = 46;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "Settings";
+            // 
+            // btn_throttle_calibrate
+            // 
+            this.btn_throttle_calibrate.Location = new System.Drawing.Point(13, 21);
+            this.btn_throttle_calibrate.Name = "btn_throttle_calibrate";
+            this.btn_throttle_calibrate.Size = new System.Drawing.Size(100, 30);
+            this.btn_throttle_calibrate.TabIndex = 20;
+            this.btn_throttle_calibrate.Text = "Calibrate";
+            this.btn_throttle_calibrate.UseVisualStyleBackColor = true;
+            this.btn_throttle_calibrate.Click += new System.EventHandler(this.btn_throttle_calibrate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -908,6 +933,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1156, 603);
+            this.Controls.Add(this.groupBox17);
             this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.groupBox11);
@@ -946,6 +972,7 @@
             this.groupBox13.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
+            this.groupBox17.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1021,6 +1048,8 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.GroupBox groupBox16;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.Button btn_throttle_calibrate;
     }
 }
 

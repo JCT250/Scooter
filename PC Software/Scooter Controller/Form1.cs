@@ -774,5 +774,20 @@ namespace Scooter_Controller
 
         }
 
+        private void btn_throttle_calibrate_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] horn = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x43, 0x43, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(horn, 0, 18);
+                textBox1.AppendText("Calibrating Throttle" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(horn) + Environment.NewLine);
+            }
+        }
+
     } 
 }
