@@ -66,6 +66,7 @@ int oldStat_Battery4 = 0; //Battery 4
 int oldStat_BatteryCharging = 0; //Battery Charging
 
 boolean refreshstatus = true;
+boolean override_state = false;
 
 byte inArray[11]; //array to hold incoming data from the software serial port
 
@@ -929,22 +930,22 @@ void serial_process()
 
   if(inArray[1] == 0x57 && inArray[2] == 0x42) //if the command bytes are to change the power state then call that process
   {
-    serial_write_power();
+    serial_write_power(); //done
   }
 
-  if(inArray[1] == 0x57 && inArray[2] == 0x43) //if the command bytes are to calibrate the throttle then call that process
+  if(inArray[1] == 0x57 && inArray[2] == 0x43 && inArray[3] == 0x43) //if the command bytes are to calibrate the throttle then call that process
   {
-    calibration_menu();
+    calibration_menu(); //done
   }
 
-  if(inArray[1] == 0x52 && inArray[2] == 0x4C) //if the command bytes are to read the scooter status then call that process
+  if(inArray[1] == 0x52 && inArray[2] == 0x41 && inArray[3] == 0x4C) //if the command bytes are to read the scooter status then call that process
   {
-    serial_read_state();
+    serial_read_state(); //done
   }
 
-  if(inArray[1] == 0x52 && inArray[2] == 0x50) //if the command bytes are to read the scooter status then call that process
+  if(inArray[1] == 0x52 && inArray[2] == 0x50 && inArray[3] == 0x50) //if the command bytes are to read the scooter status then call that process
   {
-    serial_read_power();
+    serial_read_power(); //done
   }
 
   while(serial_mega.available() > 0) //flush the serial port of any other crap that is still in there
@@ -1006,12 +1007,12 @@ void serial_write_buttons()
 
 void serial_write_power()
 {
-  if(1 == 1)
+  if(inArray[3] == 0x31)
   {
 	  digitalWrite(relaypower, HIGH);
   }
 
-  if(1 == 1)
+  if(inArray[3] == 0x30)
   {
 	  digitalWrite(relaypower, LOW);
   }
@@ -1019,6 +1020,7 @@ void serial_write_power()
 
 void serial_read_state()
 {
+  Serial.print(digitalRead(Stat_Speed1));
   Serial.print(digitalRead(Stat_Speed2)); 
   Serial.print(digitalRead(Stat_Speed3));
   Serial.print(digitalRead(Stat_Speed4));
@@ -1029,6 +1031,7 @@ void serial_read_state()
   Serial.print(digitalRead(Stat_Battery4)); 
   Serial.print(digitalRead(Stat_BatteryCharging));
 }
+
 void serial_read_power()
 {
 	Serial.print("Power Relay: ");
@@ -1037,6 +1040,8 @@ void serial_read_power()
 	Serial.print(digitalRead(scooter_lock));
 	Serial.print(" Key Lock state: ");
 	Serial.print(digitalRead(scooter_key));
+	Serial.print(" Override state: ");
+	Serial.print(override_state);
 }
 
 

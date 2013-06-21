@@ -1,7 +1,7 @@
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
-//Board = Arduino Mega 2560 or Mega ADK
-#define __AVR_ATmega2560__
+//Board = Arduino Nano w/ ATmega328
+#define __AVR_ATmega328P__
 #define ARDUINO 103
 #define __AVR__
 #define F_CPU 16000000L
@@ -49,7 +49,7 @@ void serial_write_power();
 void serial_read_state();
 void serial_read_power();
 
-#include "C:\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
+#include "C:\Arduino\hardware\arduino\variants\eightanaloginputs\pins_arduino.h" 
 #include "C:\Arduino\hardware\arduino\cores\arduino\arduino.h"
 #include "C:\Users\prepress2\Documents\GitHub\Scooter\Mega_Code\Mega_Code.ino"
 #endif
