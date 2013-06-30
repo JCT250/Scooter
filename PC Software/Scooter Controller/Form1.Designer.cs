@@ -99,8 +99,8 @@
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.groupBox17 = new System.Windows.Forms.GroupBox();
-            this.btn_throttle_calibrate = new System.Windows.Forms.Button();
             this.btn_override_key = new System.Windows.Forms.Button();
+            this.btn_throttle_calibrate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -917,16 +917,6 @@
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Settings";
             // 
-            // btn_throttle_calibrate
-            // 
-            this.btn_throttle_calibrate.Location = new System.Drawing.Point(13, 21);
-            this.btn_throttle_calibrate.Name = "btn_throttle_calibrate";
-            this.btn_throttle_calibrate.Size = new System.Drawing.Size(100, 30);
-            this.btn_throttle_calibrate.TabIndex = 20;
-            this.btn_throttle_calibrate.Text = "Calibrate";
-            this.btn_throttle_calibrate.UseVisualStyleBackColor = true;
-            this.btn_throttle_calibrate.Click += new System.EventHandler(this.btn_throttle_calibrate_Click);
-            // 
             // btn_override_key
             // 
             this.btn_override_key.Location = new System.Drawing.Point(119, 21);
@@ -937,6 +927,16 @@
             this.btn_override_key.UseVisualStyleBackColor = true;
             this.btn_override_key.Click += new System.EventHandler(this.btn_override_key_Click);
             // 
+            // btn_throttle_calibrate
+            // 
+            this.btn_throttle_calibrate.Location = new System.Drawing.Point(13, 21);
+            this.btn_throttle_calibrate.Name = "btn_throttle_calibrate";
+            this.btn_throttle_calibrate.Size = new System.Drawing.Size(100, 30);
+            this.btn_throttle_calibrate.TabIndex = 20;
+            this.btn_throttle_calibrate.Text = "Calibrate";
+            this.btn_throttle_calibrate.UseVisualStyleBackColor = true;
+            this.btn_throttle_calibrate.Click += new System.EventHandler(this.btn_throttle_calibrate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -944,7 +944,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1156, 603);
+            this.ClientSize = new System.Drawing.Size(914, 426);
             this.Controls.Add(this.groupBox17);
             this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox13);
