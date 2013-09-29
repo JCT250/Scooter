@@ -1,6 +1,8 @@
+#include <EEPROM.h>
 #include <SoftwareSerial.h>
-
 #include <TinyGPS.h>
+
+#define remote_lock 1
 
 //sets the security code
 #define code_1 0x01 
@@ -22,16 +24,16 @@ byte cmd_mega_read[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52
 byte cmd_mega_write[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57};
 
 
-byte cmd_lighting_write[] = {
-  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57};
+byte cmd_lighting_write[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57};
 
+int remote_lock_state = 0;
 
 byte start_byte = 0x1B;
 byte stop_byte = 0x0A;
 byte inArray[18];
 byte inData;
-bool authenticated = false;
-bool new_data = false;
+bool authenticated = false; //flag determining whether the incoming string has been authenticated
+bool new_data = false; //flag determining whether there is new data to read
 
 TinyGPS gps; //Create GPS device
 
@@ -49,20 +51,23 @@ static void print_int(unsigned long val, unsigned long invalid, int len);
 static void print_date(TinyGPS &gps);
 static void print_str(const char *str, int len);
 
-static int lock_pin = A5; //remote lock Mega
+static int lock_pin = A5; //remote lock signal connected to Mega
 static int gsm_reset = A0;
 static int gsm_power = A1;
 
 
 void setup()
 {
+
+
   pinMode(gsm_power, OUTPUT);
   digitalWrite(gsm_power, HIGH);
   pinMode(gsm_reset, OUTPUT);
   digitalWrite(gsm_reset, LOW);
 
   pinMode(lock_pin, OUTPUT);
-  digitalWrite(lock_pin, HIGH);
+	remote_lock_state = EEPROM.read(remote_lock); //read the remote lock state from the EEPROM and load it into a variable
+	digitalWrite(lock_pin,remote_lock_state);
 
   Serial.begin(9600);  
   serial_gps.begin(9600);
@@ -225,30 +230,32 @@ void process()
       if(inArray[9] == 0x31)
       {
         digitalWrite(lock_pin, LOW);
+		EEPROM.write(remote_lock,0);
         Serial.println("Remote Lock");
       }
       if(inArray[9] == 0x30)
       {
         digitalWrite(lock_pin, HIGH);
+		EEPROM.write(remote_lock,1);
         Serial.println("Remote Unlock");
       }
     }
 
 	//Camera Commands
-    if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8])
+    if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8]) //Move the camera around
     {
       int i;
       for(i=9; i<16; i++){
         serial_camera.print(inArray[i]);
       }
     }
-    if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8])
+    if(inArray[6] == cmd_comms_write_cameraheight[6] && inArray[7] == cmd_comms_write_cameraheight[7] && inArray[8] == cmd_comms_write_cameraheight[8]) //Change the camera height
     {
 
     }
 
     // Throttle Commands 
-    if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8])
+    if(inArray[6] == cmd_throttle_read_speed[6] && inArray[7] == cmd_throttle_read_speed[7] && inArray[8] == cmd_throttle_read_speed[8]) //Read the currect speed being output from the throttle Nano
     {
       serial_throttle.listen();
       byte inData = 0x00;
@@ -271,7 +278,7 @@ void process()
       }
     }
 
-    if(inArray[6] == cmd_throttle_write[6] && inArray[7] == cmd_throttle_write[7] && inArray[8] == cmd_throttle_write[8])
+    if(inArray[6] == cmd_throttle_write[6] && inArray[7] == cmd_throttle_write[7] && inArray[8] == cmd_throttle_write[8]) //Write a new speed to the throttle Nano
     {
       serial_throttle.write(start_byte);
       serial_throttle.write(inArray[9]);
@@ -283,7 +290,7 @@ void process()
     if(inArray[6] == cmd_mega_read[6] && inArray[7] == cmd_mega_read[7])
     {
       serial_mega.listen();
-      serial_mega.write(start_byte);
+      serial_mega.write(start_byte); //send to the mega the command to read the led states
       serial_mega.write(inArray[7]);
       serial_mega.write(inArray[8]);
       serial_mega.write(inArray[9]);
@@ -294,28 +301,29 @@ void process()
       serial_mega.write(inArray[14]);
       serial_mega.write(inArray[15]);
       serial_mega.write(inArray[16]);
-      delay(1000);
+      delay(1000); //then wait for it to process
+
       byte inData = 0x00;
       delay(200);
 
-      if(serial_throttle.available()>5){ //if there is enough data in the buffer
+      if(serial_mega.available()>5){ //if there is enough data in the buffer
 
         while(inData != start_byte) //while inData is not the start byte
 		{
-			inData = serial_throttle.read(); //read from the buffer and store as inData
+			inData = serial_mega.read(); //read from the buffer and store as inData
 		}
 		if(inData != stop_byte) //if inData is not the stop byte
 		{
 			while(inData != stop_byte) //then while it's not
 			{
 				Serial.write(inData); //write the value to the computer via the hardware serial port
-				inData = serial_throttle.read(); //and read the next value in the buffer
+				inData = serial_mega.read(); //and read the next value in the buffer
 			}
         }
       }
     }
 
-	if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7])
+	if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7]) //Writing button presses to the Mega. The string from the computer will already be in the correct format to be processed by the Mega so all we need to do is fwrd it on
     {
       serial_mega.write(start_byte);
       serial_mega.write(inArray[7]);
@@ -331,7 +339,7 @@ void process()
     }
 
     // Lighting Commands 
-    if(inArray[6] == cmd_lighting_write[6] && inArray[7] == cmd_lighting_write[7])
+    if(inArray[6] == cmd_lighting_write[6] && inArray[7] == cmd_lighting_write[7]) //Controlling the lighting, the second byte determines whether we are changing the mode or the state, the second one is the new mode / state
     {
       serial_lighting.write(start_byte);
       serial_lighting.write(inArray[8]);

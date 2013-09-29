@@ -43,10 +43,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>F:\Program Files\Arduino\hardware\arduino\cores\arduino;F:\Program Files\Arduino\hardware\arduino\variants\mega;F:\Program Files\Arduino\libraries\SoftwareSerial;F:\Program Files\Arduino\libraries\SoftwareSerial\utility;f:\program files\arduino\hardware\tools\avr\avr\include\;f:\program files\arduino\hardware\tools\avr\avr\include\avr\;f:\program files\arduino\hardware\tools\avr\avr\;f:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>F:\Users\James\Documents\GitHub\Scooter\Arduino Code\Mega_Code\Visual Micro\.Mega_Code.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>C:\Arduino\hardware\arduino\cores\arduino;C:\Arduino\hardware\arduino\variants\mega;C:\Arduino\libraries\SoftwareSerial;C:\Arduino\libraries\SoftwareSerial\utility;c:\arduino\hardware\tools\avr\avr\include\;c:\arduino\hardware\tools\avr\avr\include\avr\;c:\arduino\hardware\tools\avr\avr\;c:\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\Users\prepress2\Documents\GitHub\Scooter\Arduino Code\Mega_Code\Visual Micro\.Mega_Code.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=105;ARDUINO_MAIN;__AVR__;F_CPU=16000000L;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=103;__AVR__;F_CPU=16000000L;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
