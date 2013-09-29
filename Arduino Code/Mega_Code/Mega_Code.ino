@@ -162,92 +162,6 @@ void setup() {
 
   Serial.println("LCD setup complete");
 
-  // create a custom character for battery level 1
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)0); // location #0
-  Serial3.write((uint8_t)0x00); // 8 bytes of character data
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0xFF);
-  Serial3.write((uint8_t)0xFF);
-  delay(10);
-
-  // create a custom character for battery level 2
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)1); // location #1
-  Serial3.write((uint8_t)0x00); // 8 bytes of character data
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0x00);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write((uint8_t)0xFF);
-  delay(10);
-
-  // create a custom character for battery level 3
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)2); // location #2
-  Serial3.write((uint8_t)0x00); // 8 bytes of character data
-  Serial3.write(0x00);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write((uint8_t)0xFF);
-  delay(10);
-
-  // create a custom character for battery level 4
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)3); // location #3
-  Serial3.write((uint8_t)0xFF); // 8 bytes of character data
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write(0xFF);
-  Serial3.write((uint8_t)0xFF);
-  delay(10);
-
-  // create a custom character for battery charging
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)4); // location #4
-  Serial3.write((uint8_t)0x15); // 8 bytes of character data
-  Serial3.write(0x15);
-  Serial3.write(0x1F);
-  Serial3.write(0x1F);
-  Serial3.write(0x0E);
-  Serial3.write(0x04);
-  Serial3.write(0x04);
-  Serial3.write((uint8_t)0x04);
-  delay(10);
-
-  // create a custom character for Headlights
-  Serial3.write(0xFE);
-  Serial3.write(0x4E);
-  Serial3.write((uint8_t)5); // location #5
-  Serial3.write((uint8_t)0x0E); // 8 bytes of character data
-  Serial3.write(0x11);
-  Serial3.write(0x11);
-  Serial3.write(0x15);
-  Serial3.write(0x15);
-  Serial3.write(0x0E);
-  Serial3.write(0x0E);
-  Serial3.write((uint8_t)0x0E);
-  delay(10);
-
-  Serial.println("LCD custom characters written");
-
   void serial_check();
   void serial_process();
   void serial_write_buttons();
@@ -295,6 +209,93 @@ void setup() {
   digitalWrite(relaypower, 1);
 
   lcd_clear(); 
+  
+  // create a custom character for battery level 1
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)0); // location #0
+  Serial3.write((uint8_t)0x00); // 8 bytes of character data
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0xFF);
+  Serial3.write((uint8_t)0xFF);
+  delay(20);
+
+  // create a custom character for battery level 2
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)1); // location #1
+  Serial3.write((uint8_t)0x00); // 8 bytes of character data
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0x00);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write((uint8_t)0xFF);
+  delay(20);
+
+  // create a custom character for battery level 3
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)2); // location #2
+  Serial3.write((uint8_t)0x00); // 8 bytes of character data
+  Serial3.write(0x00);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write((uint8_t)0xFF);
+  delay(20);
+
+  // create a custom character for battery level 4
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)3); // location #3
+  Serial3.write((uint8_t)0xFF); // 8 bytes of character data
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write(0xFF);
+  Serial3.write((uint8_t)0xFF);
+  delay(20);
+
+  // create a custom character for battery charging
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)4); // location #4
+  Serial3.write((uint8_t)0x15); // 8 bytes of character data
+  Serial3.write(0x15);
+  Serial3.write(0x1F);
+  Serial3.write(0x1F);
+  Serial3.write(0x0E);
+  Serial3.write(0x04);
+  Serial3.write(0x04);
+  Serial3.write((uint8_t)0x04);
+  delay(20);
+
+  // create a custom character for Headlights
+  Serial3.write(0xFE);
+  Serial3.write(0x4E);
+  Serial3.write((uint8_t)5); // location #5
+  Serial3.write((uint8_t)0x0E); // 8 bytes of character data
+  Serial3.write(0x11);
+  Serial3.write(0x11);
+  Serial3.write(0x15);
+  Serial3.write(0x15);
+  Serial3.write(0x0E);
+  Serial3.write(0x0E);
+  Serial3.write((uint8_t)0x0E);
+  delay(20);
+
+  Serial.println("LCD custom characters written");
+  
   Serial.println("Entering Loop");
 }
 
@@ -368,6 +369,22 @@ void loop() {
         delay(500);
         digitalWrite(relay8, LOW);
       }
+      if (inputString[1] == 'M') { //POWER OFF THEN SET THE BELOW TWO RELAYS HIGH AND POWER ON, THEN USE THE STRING "RN" TO SET THEM LOW AGAIN TO ENTER THE MAIN MENU
+        digitalWrite(relay1, HIGH);
+        digitalWrite(relay4, HIGH);   
+      }
+      if (inputString[1] == 'N') {
+        digitalWrite(relay1, LOW);
+        digitalWrite(relay4, LOW);   
+      }
+      if (inputString[1] == 'S') { //POWER OFF THEN SET THE BELOW TWO RELAYS HIGH AND POWER ON, THEN USE THE STRING "RN" TO SET THEM LOW AGAIN TO ENTER THE SERVICE MENU
+        digitalWrite(relay1, HIGH);
+        digitalWrite(relay2, HIGH);   
+      }
+      if (inputString[1] == 'D') {
+        digitalWrite(relay1, LOW);
+        digitalWrite(relay2, LOW);   
+      }
       if (inputString[1] =='I'){
         digitalWrite(relaypower, HIGH);
       }
@@ -399,7 +416,7 @@ void loop() {
   if (oldStat_Battery4 != digitalRead(Stat_Battery4)) refreshstatus = true;
   if (oldStat_BatteryCharging != digitalRead(Stat_BatteryCharging)) refreshstatus = true;
 
-  if (refreshstatus = true) 
+  if (refreshstatus == true) 
   {
     oldStat_Speed1 = digitalRead(Stat_Speed1);
     oldStat_Speed2 = digitalRead(Stat_Speed2);
@@ -642,32 +659,32 @@ void lcd_update(){
   Serial3.write(0x01); //column
   Serial3.write(0x02); //row
 
+  Serial3.print("Batt:");
+  
   if(digitalRead(Stat_Battery1) == 1){
     Serial3.write((uint8_t)0);
+    Serial3.print("   ");
   }
-  else if(digitalRead(Stat_Battery1) == 0){
-    Serial3.print(" ");
-  }
-  if(digitalRead(Stat_Battery2) == 1){
+  else if(digitalRead(Stat_Battery2) == 1){
+    Serial3.write((uint8_t)0);
     Serial3.write((uint8_t)1);
+    Serial3.print("  ");
   }
-  else if(digitalRead(Stat_Battery2) == 0){
-    Serial3.print(" ");
-  }
-  if(digitalRead(Stat_Battery3) == 1){
+  else if(digitalRead(Stat_Battery3) == 1){
+    Serial3.write((uint8_t)0);
+    Serial3.write((uint8_t)1);
     Serial3.write((uint8_t)2);
-  }
-  else if(digitalRead(Stat_Battery3) == 0){
     Serial3.print(" ");
   }
-  if(digitalRead(Stat_Battery4) == 1){
+  else if(digitalRead(Stat_Battery4) == 1){
+    Serial3.write((uint8_t)0);
+    Serial3.write((uint8_t)1);
+    Serial3.write((uint8_t)2);
     Serial3.write((uint8_t)3);
   }
-  else if(digitalRead(Stat_Battery4) == 0){
-    Serial3.print(" ");
-  }
-
-  Serial3.print("        ");
+  else(Serial3.print("   "));
+  
+  Serial3.print("   ");
 
   if(digitalRead(Stat_Headlights) == 1){
     Serial3.write((uint8_t)5); //If the headlights are on then write the icon to indicate that
