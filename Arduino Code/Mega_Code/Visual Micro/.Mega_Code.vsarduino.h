@@ -47,7 +47,7 @@ void serial_process();
 void serial_write_buttons();
 void serial_write_power();
 void serial_read_state();
-void serial_read_power();
+void serial_read_lock();
 
 #include "C:\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "C:\Arduino\hardware\arduino\cores\arduino\arduino.h"

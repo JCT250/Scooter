@@ -113,13 +113,13 @@ void loop() {
   average = total / numReadings; // calculate the average:
 
   throttle_output_val = map(average, 0, 1023, 255, 0); //map the average to the correct range for output
-  serial_throttle.write(throttle_output_val);
+  serial_throttle.write((map(throttle_output_val,63,187,100,-100)));
   if(throttle_output_val != old_throttle_output_val){ //check to see if the value has changed
     Serial.println(throttle_output_val); //print the value to the serial port
     throttle_write(throttle_output_val); //analog write the value to the output pin
     old_throttle_output_val = throttle_output_val; //update the current value
   }
-
+ 
   delay(2);
 
 }
