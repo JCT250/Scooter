@@ -40,7 +40,7 @@ TinyGPS gps; //Create GPS device
 SoftwareSerial serial_gps(9, 8); // Attach Software Serial devices
 SoftwareSerial serial_gsm(10, 11);
 SoftwareSerial serial_throttle(13,12);
-SoftwareSerial serial_mega(0,0);
+SoftwareSerial serial_mega(4, 5);
 SoftwareSerial serial_camera(0,0);
 SoftwareSerial serial_lighting(7,6);
 
@@ -261,21 +261,11 @@ void process()
       byte inData = 0x00;
       delay(200);
 
-      if(serial_throttle.available()>3){ //if there is enough data in the buffer
-
-        while(inData != start_byte) //while inData is not the start byte
-		{
-			inData = serial_throttle.read(); //read from the buffer and store as inData
-		}
-		if(inData != stop_byte) //if inData is not the stop byte
-		{
-			while(inData != stop_byte) //then while it's not
-			{
-				Serial.write(inData); //write the value to the computer via the hardware serial port
-				inData = serial_throttle.read(); //and read the next value in the buffer
-			}
-        }
+      if(serial_throttle.available()){ //if there is enough data in the buffer
+        Serial.println("Data available");
+        Serial.println(serial_throttle.read());
       }
+      serial_gps.listen();
     }
 
     if(inArray[6] == cmd_throttle_write[6] && inArray[7] == cmd_throttle_write[7] && inArray[8] == cmd_throttle_write[8]) //Write a new speed to the throttle Nano
@@ -304,7 +294,7 @@ void process()
       delay(1000); //then wait for it to process
 
       byte inData = 0x00;
-      delay(200);
+      delay(1000);
 
       if(serial_mega.available()>5){ //if there is enough data in the buffer
 
@@ -320,6 +310,7 @@ void process()
 				inData = serial_mega.read(); //and read the next value in the buffer
 			}
         }
+        Serial.println(" ");
       }
     }
 

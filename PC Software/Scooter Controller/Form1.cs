@@ -791,6 +791,17 @@ namespace Scooter_Controller
 
         private void btn_override_key_Click(object sender, EventArgs e)
         {
+            if (!serialPort1.IsOpen)
+            {
+                serial_check();
+            }
+            else
+            {
+                Byte[] power_on = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x32, 0x57, 0x44, 0x31, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                serialPort1.Write(power_on, 0, 18);
+                textBox1.AppendText("Overriding Key" + Environment.NewLine);
+                textBox2.AppendText(BitConverter.ToString(power_on) + Environment.NewLine);
+            }
 
         }
 

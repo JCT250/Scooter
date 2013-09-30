@@ -21,7 +21,7 @@ int index = 0;                  // the index of the current reading
 int total = 0;                  // the running total
 int average = 0; 
 
-SoftwareSerial serial_throttle (12, 13);
+SoftwareSerial serial_throttle (7, 8);
 
 void setup() {
   // put your setup code here, to run once:
@@ -113,11 +113,9 @@ void loop() {
   average = total / numReadings; // calculate the average:
 
   throttle_output_val = map(average, 0, 1023, 255, 0); //map the average to the correct range for output
+  serial_throttle.write(throttle_output_val);
   if(throttle_output_val != old_throttle_output_val){ //check to see if the value has changed
     Serial.println(throttle_output_val); //print the value to the serial port
-	serial_throttle.write(start_byte);
-    serial_throttle.print(throttle_output_val);
-	serial_throttle.write(stop_byte);
     throttle_write(throttle_output_val); //analog write the value to the output pin
     old_throttle_output_val = throttle_output_val; //update the current value
   }

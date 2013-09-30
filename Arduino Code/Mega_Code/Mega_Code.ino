@@ -304,7 +304,7 @@ void loop() {
 
   digitalWrite(relay7, (digitalRead(18))); //sound the horn if the horn button is pressed
 
-  if(digitalRead(scooter_lock) == LOW){ //check to see if the input from the Nano is Low, if so then call the lock process
+  if(digitalRead(scooter_lock) == LOW && override_state != 1){ //check to see if the input from the Nano is Low, if so then call the lock process
     isr_detach();
     scooter_lock_screen_remote();
     lcd_update(); //update the LCD
@@ -313,8 +313,9 @@ void loop() {
 
   }
 
+  if(digitalRead(scooter_key) == 0 && override_state == 1) override_state = 0;
 
-  if(digitalRead(scooter_key) == 1){ //check to see if the key input is no longer being pulled low, if so then call the key lock process
+  if(digitalRead(scooter_key) == 1 && override_state != 1){ //check to see if the key input is no longer being pulled low, if so then call the key lock process
     isr_detach();
     scooter_lock_screen_key();
     lcd_update(); //update the LCD
@@ -530,7 +531,7 @@ void loop() {
     isr_attach();
   }  
 
-
+  serial_check();
   lcd_update(); 
 
 }
@@ -867,6 +868,8 @@ void scooter_lock_screen_key(){
     delay(10);
     Serial3.print(" SCOOTER LOCKED");
     delay(1500);
+    serial_check();
+    if(override_state == 1) break;
   }
 }
 
@@ -906,12 +909,14 @@ void scooter_lock_screen_remote(){
     delay(10);
     Serial3.print("  SYSTEM ERROR");
     delay(1500);
+    serial_check();
+    if(override_state == 1) break;
   }
 }
 
 void serial_check()
 {
-	if(Serial2.available() > 9)
+  if(Serial2.available() > 9)
   {
     serial_process();
   } 
@@ -921,7 +926,9 @@ void serial_process()
 {
 
   isr_detach();
-
+  
+  Serial.println("Processing Serial Data");
+  
   int i;
   byte trash = 0x00;
   byte inData = 0x00;
@@ -943,6 +950,13 @@ void serial_process()
 	  inArray[i] = Serial2.read(); //read 10 more bytes into the incoming array
   }
 
+  for(i=1; i<11; i++)
+  {
+    Serial.print(inArray[i]);
+    Serial.print(" ");
+  }
+  Serial.println(" ");
+  
   if(inArray[1] == 0x57 && inArray[2] == 0x41) //if the command bytes are to emulate a button press then call that process
   {
     serial_write_buttons(); //done
@@ -955,7 +969,7 @@ void serial_process()
 
   if(inArray[1] == 0x57 && inArray[2] == 0x43 && inArray[3] == 0x43) //if the command bytes are to calibrate the throttle then call that process
   {
-    calibration_menu(); //done
+    //calibration_menu(); //done
   }
 
   if(inArray[1] == 0x52 && inArray[2] == 0x41 && inArray[3] == 0x4C) //if the command bytes are to read the scooter LED states then call that process
@@ -963,9 +977,14 @@ void serial_process()
     serial_read_state(); //done
   }
 
-  if(inArray[1] == 0x52 && inArray[2] == 0x50 && inArray[3] == 0x50) //if the command bytes are to read the scooter general status then call that process
+  if(inArray[1] == 0x52 && inArray[2] == 0x41 && inArray[3] == 0x50) //if the command bytes are to read the scooter general status then call that process
   {
-    serial_read_power(); //done
+    serial_read_lock(); //done
+  }
+  
+  if(inArray[1] == 0x57 && inArray[2] == 0x44) //if the command bytes are to change the power state then call that process
+  {
+    override_state = 1; //done
   }
 
   while(Serial2.available() > 0) //flush the serial port of any other crap that is still in there
@@ -1041,31 +1060,42 @@ void serial_write_power()
 void serial_read_state()
 {
   Serial2.write(start_byte);
+  Serial2.print("S1:");
   Serial2.print(digitalRead(Stat_Speed1));
+  Serial2.print(" S2:");
   Serial2.print(digitalRead(Stat_Speed2)); 
+  Serial2.print(" S3:");
   Serial2.print(digitalRead(Stat_Speed3));
+  Serial2.print(" S4:");
   Serial2.print(digitalRead(Stat_Speed4));
-  Serial2.print(digitalRead(Stat_Headlights));  
-  Serial2.print(digitalRead(Stat_Battery1)); 
-  Serial2.print(digitalRead(Stat_Battery2)); 
-  Serial2.print(digitalRead(Stat_Battery3)); 
-  Serial2.print(digitalRead(Stat_Battery4)); 
+  Serial2.print(" HL:");
+  Serial2.print(digitalRead(Stat_Headlights));
+  Serial2.print(" B1:");  
+  Serial2.print(digitalRead(Stat_Battery1));
+  Serial2.print(" B2:"); 
+  Serial2.print(digitalRead(Stat_Battery2));
+  Serial2.print(" B3:"); 
+  Serial2.print(digitalRead(Stat_Battery3));
+  Serial2.print(" B4:"); 
+  Serial2.print(digitalRead(Stat_Battery4));
+  Serial2.print(" BC:"); 
   Serial2.print(digitalRead(Stat_BatteryCharging));
   Serial2.write(stop_byte);
 
 }
 
-void serial_read_power()
+void serial_read_lock()
 {
 	Serial2.write(start_byte);
-	Serial2.print("Power Relay: ");
-	Serial2.print(digitalRead(relaypower));
-	Serial2.print(" Remote Lock state: ");
-	Serial2.print(digitalRead(scooter_lock));
-	Serial2.print(" Key Lock state: ");
-	Serial2.print(digitalRead(scooter_key));
-	Serial2.print(" Override state: ");
-	Serial2.print(override_state);
+	Serial2.print(" Rmte Lck: ");
+	if(digitalRead(scooter_lock) == 1) Serial2.print("OFF");
+        else(Serial2.print("ON"));
+	Serial2.print(" Key Lck: ");
+	if(digitalRead(scooter_key) == 1) Serial2.print("ON");
+        else(Serial2.print("OFF"));
+	Serial2.print(" Ovride: ");
+        if(override_state == 1) Serial2.print("ON");
+        else(Serial2.print("OFF"));
 	Serial2.write(stop_byte);
 }
 

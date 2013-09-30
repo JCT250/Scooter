@@ -280,6 +280,7 @@
             // 
             // btn_pan_left
             // 
+            this.btn_pan_left.Enabled = false;
             this.btn_pan_left.Location = new System.Drawing.Point(119, 55);
             this.btn_pan_left.Name = "btn_pan_left";
             this.btn_pan_left.Size = new System.Drawing.Size(100, 30);
@@ -290,6 +291,7 @@
             // 
             // btn_pan_right
             // 
+            this.btn_pan_right.Enabled = false;
             this.btn_pan_right.Location = new System.Drawing.Point(331, 55);
             this.btn_pan_right.Name = "btn_pan_right";
             this.btn_pan_right.Size = new System.Drawing.Size(100, 30);
@@ -300,6 +302,7 @@
             // 
             // btn_pan_up
             // 
+            this.btn_pan_up.Enabled = false;
             this.btn_pan_up.Location = new System.Drawing.Point(225, 19);
             this.btn_pan_up.Name = "btn_pan_up";
             this.btn_pan_up.Size = new System.Drawing.Size(100, 30);
@@ -310,6 +313,7 @@
             // 
             // btn_pan_down
             // 
+            this.btn_pan_down.Enabled = false;
             this.btn_pan_down.Location = new System.Drawing.Point(225, 91);
             this.btn_pan_down.Name = "btn_pan_down";
             this.btn_pan_down.Size = new System.Drawing.Size(100, 30);
@@ -460,7 +464,7 @@
             this.btn_query_power.Name = "btn_query_power";
             this.btn_query_power.Size = new System.Drawing.Size(100, 30);
             this.btn_query_power.TabIndex = 45;
-            this.btn_query_power.Text = "Query PWR State";
+            this.btn_query_power.Text = "Query Lock";
             this.btn_query_power.UseVisualStyleBackColor = true;
             this.btn_query_power.Click += new System.EventHandler(this.btn_query_power_Click);
             // 
@@ -550,6 +554,7 @@
             // btn_camera_stop
             // 
             this.btn_camera_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_stop.Enabled = false;
             this.btn_camera_stop.Location = new System.Drawing.Point(225, 55);
             this.btn_camera_stop.Name = "btn_camera_stop";
             this.btn_camera_stop.Size = new System.Drawing.Size(100, 30);
@@ -560,6 +565,7 @@
             // btn_camera_raise_stop
             // 
             this.btn_camera_raise_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_camera_raise_stop.Enabled = false;
             this.btn_camera_raise_stop.Location = new System.Drawing.Point(13, 55);
             this.btn_camera_raise_stop.Name = "btn_camera_raise_stop";
             this.btn_camera_raise_stop.Size = new System.Drawing.Size(100, 30);
@@ -569,6 +575,7 @@
             // 
             // btn_camera_raise
             // 
+            this.btn_camera_raise.Enabled = false;
             this.btn_camera_raise.Location = new System.Drawing.Point(13, 21);
             this.btn_camera_raise.Name = "btn_camera_raise";
             this.btn_camera_raise.Size = new System.Drawing.Size(100, 30);
@@ -579,6 +586,7 @@
             // 
             // btn_camera_lower
             // 
+            this.btn_camera_lower.Enabled = false;
             this.btn_camera_lower.Location = new System.Drawing.Point(13, 91);
             this.btn_camera_lower.Name = "btn_camera_lower";
             this.btn_camera_lower.Size = new System.Drawing.Size(100, 30);
@@ -695,6 +703,11 @@
             this.code_1.Size = new System.Drawing.Size(43, 20);
             this.code_1.TabIndex = 37;
             this.code_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.code_1.ValueChanged += new System.EventHandler(this.code_1_ValueChanged);
             // 
             // code_2
@@ -709,6 +722,11 @@
             this.code_2.Size = new System.Drawing.Size(43, 20);
             this.code_2.TabIndex = 38;
             this.code_2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_2.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.code_2.ValueChanged += new System.EventHandler(this.code_2_ValueChanged);
             // 
             // code_3
@@ -723,6 +741,11 @@
             this.code_3.Size = new System.Drawing.Size(43, 20);
             this.code_3.TabIndex = 39;
             this.code_3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_3.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
             this.code_3.ValueChanged += new System.EventHandler(this.code_3_ValueChanged);
             // 
             // code_4
@@ -737,6 +760,11 @@
             this.code_4.Size = new System.Drawing.Size(43, 20);
             this.code_4.TabIndex = 40;
             this.code_4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_4.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
             this.code_4.ValueChanged += new System.EventHandler(this.code_4_ValueChanged);
             // 
             // code_5
@@ -751,6 +779,11 @@
             this.code_5.Size = new System.Drawing.Size(43, 20);
             this.code_5.TabIndex = 41;
             this.code_5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.code_5.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.code_5.ValueChanged += new System.EventHandler(this.code_5_ValueChanged);
             // 
             // groupBox9
@@ -944,7 +977,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(914, 426);
+            this.ClientSize = new System.Drawing.Size(914, 574);
             this.Controls.Add(this.groupBox17);
             this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox13);
