@@ -270,10 +270,12 @@ void process()
 
     if(inArray[6] == cmd_throttle_write[6] && inArray[7] == cmd_throttle_write[7] && inArray[8] == cmd_throttle_write[8]) //Write a new speed to the throttle Nano
     {
+      serial_throttle.listen();
       serial_throttle.write(start_byte);
       serial_throttle.write(inArray[9]);
       serial_throttle.write(inArray[10]);
       serial_throttle.write(inArray[11]);
+      serial_gps.listen();
     }
 
     // Mega Commands 
@@ -312,10 +314,12 @@ void process()
         }
         Serial.println(" ");
       }
+      serial_gps.listen();
     }
 
 	if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7]) //Writing button presses to the Mega. The string from the computer will already be in the correct format to be processed by the Mega so all we need to do is fwrd it on
     {
+      serial_mega.listen();
       serial_mega.write(start_byte);
       serial_mega.write(inArray[7]);
       serial_mega.write(inArray[8]);
@@ -327,14 +331,17 @@ void process()
       serial_mega.write(inArray[14]);
       serial_mega.write(inArray[15]);
       serial_mega.write(inArray[16]);
+      serial_gps.listen();
     }
 
     // Lighting Commands 
     if(inArray[6] == cmd_lighting_write[6] && inArray[7] == cmd_lighting_write[7]) //Controlling the lighting, the second byte determines whether we are changing the mode or the state, the second one is the new mode / state
     {
+      serial_lighting.listen();
       serial_lighting.write(start_byte);
       serial_lighting.write(inArray[8]);
       serial_lighting.write(inArray[9]);
+      serial_gps.listen();
     }
   }
 }
