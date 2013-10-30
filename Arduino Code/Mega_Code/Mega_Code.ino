@@ -765,7 +765,7 @@ void calibration_menu(){
   delay(1000);
   
   lcd_clear();
-  Msg(" PLESAE  CENTER", 0x01, 0x01);
+  Msg(" PLEASE  CENTER", 0x01, 0x01);
   Msg("   THE  LEVER", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay2, HIGH);
@@ -783,7 +783,7 @@ void calibration_menu(){
   delay(1000);
   
   lcd_clear();
-  Msg(" PLESAE  CENTER", 0x01, 0x01);
+  Msg(" PLEASE  CENTER", 0x01, 0x01);
   Msg("   THE  LEVER", 0x01, 0x02);
   delay(3000);
   digitalWrite(relay3, HIGH);
@@ -809,6 +809,7 @@ void calibration_menu(){
   Msg("AUTO CALIBRATION", 0x01, 0x01);
   Msg("    COMPLETE", 0x01, 0x02);
   delay(3000);
+  lcd_clear();
 
 }
 
@@ -969,7 +970,7 @@ void serial_process()
 
   if(inArray[1] == 0x57 && inArray[2] == 0x43 && inArray[3] == 0x43) //if the command bytes are to calibrate the throttle then call that process
   {
-    //calibration_menu(); //done
+    calibration_menu(); //done
   }
 
   if(inArray[1] == 0x52 && inArray[2] == 0x41 && inArray[3] == 0x4C) //if the command bytes are to read the scooter LED states then call that process

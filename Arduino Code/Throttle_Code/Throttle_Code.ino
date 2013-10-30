@@ -5,9 +5,8 @@
 const int slaveSelectPin = 10;
 
 int throttle_input = A0 ; //input pin from the throttle lever
-byte incoming_byte = 0; //stores the incoming serial data
-byte incoming_byte_old = 0;
-byte incoming_byte_mapped = 0;
+byte inData_old = 0;
+byte inData_mapped = 0;
 byte throttle_output_val = 0; // holds mapped output value
 byte start_byte = 0x1B;
 byte stop_byte = 0x0A;
@@ -42,65 +41,32 @@ byte throttle_write(byte value)
 }
 
 void serial_control(){
-  byte inArray[4];
   int i;
   byte inData = 0x00;
+  Serial.println("Going Remote");
+  inData = serial_throttle.read();
 
-  while (inData != 0x1B){ //Dump data in the serial port until reaching the start byte
-    inData = serial_throttle.read();
-  }
-
-  inArray[0] = inData; //place the start byte in position zero of the array
-
-  for(i=1; i<4; i++) //read three more bytes into positions 1, 2, 3 of the array
-  {
-    inArray[i] = serial_throttle.read();
-  }
-
-  incoming_byte = (inArray[1] * 100) + (inArray[2] * 10) + inArray[3];
-  while(incoming_byte != 128 && incoming_byte != 127)
+  while(inData != 128 && inData != 127)
   { 
-    if(incoming_byte != incoming_byte_old){
-      incoming_byte_mapped = map(incoming_byte, 0, 255, 54, 201);
-      throttle_write(incoming_byte_mapped);
-      Serial.println(incoming_byte);
-      incoming_byte_old = incoming_byte;
-    }
-    if(serial_throttle.available() > 3){
-      inData = 0x00;
-      for (i=0; i<4; i++){
-        inArray[i] = 0x00;
-      }
-
-      while (inData != 0x1B){
-        inData = serial_throttle.read();
-      }
-
-      inArray[0] = inData;
-
-      for(i=1; i<4; i++)
-      {
-        inArray[i] = serial_throttle.read();
-      }
-      incoming_byte = (inArray[1] * 100) + (inArray[2] * 10) + inArray[3];
-      while (serial_throttle.available() > 0)
-      { 
-        byte trash;
-        trash = serial_throttle.read();
-      }
-
-    }
+    if(inData != inData_old){
+      inData_mapped = map(inData, 0, 255, 54, 201);
+      throttle_write(inData_mapped);
+      Serial.println(inData);
+      inData_old = inData;
+   }
+	if(serial_throttle.available()) inData = serial_throttle.read();
   }
-      incoming_byte_mapped = map(incoming_byte, 0, 255, 54, 201);
-      throttle_write(incoming_byte_mapped);
-      Serial.println(incoming_byte);
+  Serial.println("Going Manual");
+      inData_mapped = map(inData, 0, 255, 54, 201);
+      throttle_write(inData_mapped);
+      Serial.println(inData);
 }
 
 
 void loop() {
   // put your main code here, to run repeatedly: 
 
-  if (serial_throttle.available() > 3) {
+  if (serial_throttle.available()) {
     serial_control();
   }
 

@@ -684,7 +684,7 @@ namespace Scooter_Controller
             }
             else
             {
-                Byte[] throttle_write = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x31, 0x57, 0x41, Convert.ToByte(hundreds), Convert.ToByte(tens), Convert.ToByte(ones), 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
+                Byte[] throttle_write = { 0x1B, Convert.ToByte(code_1.Value), Convert.ToByte(code_2.Value), Convert.ToByte(code_3.Value), Convert.ToByte(code_4.Value), Convert.ToByte(code_5.Value), 0x31, 0x57, 0x41, Convert.ToByte(parsed_value), 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x0A };
                 serialPort1.Write(throttle_write, 0, 18);
                 textBox1.AppendText("Updating Throttle Position to " + trackBar1.Value + Environment.NewLine);
                 textBox2.AppendText(BitConverter.ToString(throttle_write) + Environment.NewLine);

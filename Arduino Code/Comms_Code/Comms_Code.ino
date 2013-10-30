@@ -38,7 +38,7 @@ bool new_data = false; //flag determining whether there is new data to read
 TinyGPS gps; //Create GPS device
 
 SoftwareSerial serial_gps(9, 8); // Attach Software Serial devices
-SoftwareSerial serial_gsm(10, 11);
+SoftwareSerial serial_gsm(11, 10);
 SoftwareSerial serial_throttle(13,12);
 SoftwareSerial serial_mega(4, 5);
 SoftwareSerial serial_camera(0,0);
@@ -58,8 +58,6 @@ static int gsm_power = A1;
 
 void setup()
 {
-
-
   pinMode(gsm_power, OUTPUT);
   digitalWrite(gsm_power, HIGH);
   pinMode(gsm_reset, OUTPUT);
@@ -90,17 +88,44 @@ void loop()
   for(int i=0; i<18; i++) //clear the input array
   {
     inArray[i] = 0xFF;
+  }
+  inArray[0] = 0x00;
     authenticated = false;
     new_data = false;
-  }
   read_HW_serial(); //
   if(new_data == true)
   {
     authenticate();
     process();
   }
-
+  serial_gsm_receive();
 }
+
+void serial_gsm_receive()
+{
+	serial_gsm.listen();
+	if(serial_gsm.available())
+	{
+		inData = serial_gsm.read();
+		if(inData == 0x30)
+		{
+			digitalWrite(lock_pin, HIGH);
+			EEPROM.write(remote_lock,1);
+			Serial.println("GSM Remote Unlock");
+		}
+		if(inData == 0x31)
+		{
+			digitalWrite(lock_pin, LOW);
+			EEPROM.write(remote_lock,0);
+			Serial.println("GSM Remote Lock");
+		}
+		if(inData == 0x32)
+		{
+			Serial.println("I should send GPS stuff here");
+		}
+	}
+}
+
 
 void read_HW_serial()
 /*
@@ -115,6 +140,13 @@ void read_HW_serial()
   if(Serial.available() > 17)
   {
     inData = Serial.read();
+	if(inData!= start_byte)
+	{
+		while(Serial.available() && inData != start_byte)
+		{
+			inData = Serial.read();
+		}
+	}
     if(inData == start_byte)
     {
       int i;
@@ -125,11 +157,6 @@ void read_HW_serial()
         if(inData != stop_byte)
         {
           inArray[i] = inData;
-        }
-        else if(inData == stop_byte)
-        {
-          inArray[17] = inData;
-          i = 19;
         }
       }
       new_data = true;
@@ -271,10 +298,7 @@ void process()
     if(inArray[6] == cmd_throttle_write[6] && inArray[7] == cmd_throttle_write[7] && inArray[8] == cmd_throttle_write[8]) //Write a new speed to the throttle Nano
     {
       serial_throttle.listen();
-      serial_throttle.write(start_byte);
       serial_throttle.write(inArray[9]);
-      serial_throttle.write(inArray[10]);
-      serial_throttle.write(inArray[11]);
       serial_gps.listen();
     }
 

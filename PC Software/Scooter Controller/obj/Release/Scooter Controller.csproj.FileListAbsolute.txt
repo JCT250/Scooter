@@ -16,3 +16,7 @@ F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Relea
 F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Form1.resources
 F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.Properties.Resources.resources
 F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter Controller.csproj.GenerateResource.Cache
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.exe.manifest
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\bin\Release\Scooter_Controller.application
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.exe.manifest
+F:\Users\James\Documents\GitHub\Scooter\PC Software\Scooter Controller\obj\Release\Scooter_Controller.application
