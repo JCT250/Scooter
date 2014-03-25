@@ -12,19 +12,28 @@
 #define code_5 0x05
 
 //sets the comparison comands
-byte cmd_comms_read_location[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x52, 0x41};
-byte cmd_comms_write_remotelock[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x41};
-byte cmd_comms_write_cameramove[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x42};
-byte cmd_comms_write_cameraheight[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x43};
+byte cmd_comms_read_location[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x52, 0x41};
+byte cmd_comms_write_remotelock[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x41};
+byte cmd_comms_write_cameramove[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x42};
+byte cmd_comms_write_cameraheight[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x30, 0x57, 0x43};
 
-byte cmd_throttle_read_speed[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x52, 0x41};
-byte cmd_throttle_write[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
+byte cmd_throttle_read_speed[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x52, 0x41};
+byte cmd_throttle_write[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x31, 0x57, 0x41};
 
-byte cmd_mega_read[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52};
-byte cmd_mega_write[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57};
+byte cmd_mega_read[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x52};
+byte cmd_mega_write[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x32, 0x57};
 
 
-byte cmd_lighting_write[] = {0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57};
+byte cmd_lighting_write[] = {
+  0x1B, code_1, code_2, code_3, code_4, code_5, 0x33, 0x57};
 
 int remote_lock_state = 0;
 
@@ -64,8 +73,8 @@ void setup()
   digitalWrite(gsm_reset, LOW);
 
   pinMode(lock_pin, OUTPUT);
-	remote_lock_state = EEPROM.read(remote_lock); //read the remote lock state from the EEPROM and load it into a variable
-	digitalWrite(lock_pin,remote_lock_state);
+  remote_lock_state = EEPROM.read(remote_lock); //read the remote lock state from the EEPROM and load it into a variable
+  digitalWrite(lock_pin,remote_lock_state);
 
   Serial.begin(9600);  
   serial_gps.begin(9600);
@@ -90,8 +99,8 @@ void loop()
     inArray[i] = 0xFF;
   }
   inArray[0] = 0x00;
-    authenticated = false;
-    new_data = false;
+  authenticated = false;
+  new_data = false;
   read_HW_serial(); //
   if(new_data == true)
   {
@@ -103,50 +112,77 @@ void loop()
 
 void serial_gsm_receive()
 {
-	serial_gsm.listen();
-	if(serial_gsm.available())
-	{
-		inData = serial_gsm.read();
-		if(inData == 0x30)
-		{
-			digitalWrite(lock_pin, HIGH);
-			EEPROM.write(remote_lock,1);
-			Serial.println("GSM Remote Unlock");
-		}
-		if(inData == 0x31)
-		{
-			digitalWrite(lock_pin, LOW);
-			EEPROM.write(remote_lock,0);
-			Serial.println("GSM Remote Lock");
-		}
-		if(inData == 0x32)
-		{
-			Serial.println("I should send GPS stuff here");
-		}
-	}
+  serial_gsm.listen();
+  if(serial_gsm.available())
+  {
+    inData = serial_gsm.read();
+    if(inData == 0x30)
+    {
+      digitalWrite(lock_pin, HIGH);
+      EEPROM.write(remote_lock,1);
+      Serial.println("GSM Remote Unlock");
+    }
+    if(inData == 0x31)
+    {
+      digitalWrite(lock_pin, LOW);
+      EEPROM.write(remote_lock,0);
+      Serial.println("GSM Remote Lock");
+    }
+    if(inData == 0x32)
+    {
+      serial_gps.listen();
+      bool new_gps_data = false;
+      unsigned long gps_chars;
+      unsigned short gps_sentences, gps_failed ;
+
+      // For one second we parse GPS data and report some key values
+      for (unsigned long start = millis(); millis() - start < 1000;)
+      {
+        while (serial_gps.available())
+        {
+          char c = serial_gps.read();
+          if (gps.encode(c)) // Did a new valid sentence come in?
+            new_gps_data = true;
+        }
+      }
+
+      if (new_gps_data)
+      {
+        serial_gsm.listen();
+        float flat, flon;
+        unsigned long age;
+        gps.f_get_position(&flat, &flon, &age);
+        serial_gsm.print("LAT=");
+        serial_gsm.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+        serial_gsm.print(" LON=");
+        serial_gsm.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+      }
+    }
+  }
 }
+
 
 
 void read_HW_serial()
 /*
-  Check to see if there is data at the serial port ready to read. 
- If there is then read the first byte and check to see if it is a 
- valid start byte. If so then read 17 more bytes. Check each byte
- to make sure that it isn't a stop byte.
- If it is not a valid start byte then read the contents of the serial
- buffer into a trash variable
- */
+	Check to see if there is data at the serial port ready to read. 
+ 	If there is then read the first byte and check to see if it is a 
+ 	valid start byte. If so then read 17 more bytes. Check each byte
+ 	to make sure that it isn't a stop byte.
+ 	If it is not a valid start byte then read the contents of the serial
+ 	buffer into a trash variable
+ 	*/
 {
   if(Serial.available() > 17)
   {
     inData = Serial.read();
-	if(inData!= start_byte)
-	{
-		while(Serial.available() && inData != start_byte)
-		{
-			inData = Serial.read();
-		}
-	}
+    if(inData!= start_byte)
+    {
+      while(Serial.available() && inData != start_byte)
+      {
+        inData = Serial.read();
+      }
+    }
     if(inData == start_byte)
     {
       int i;
@@ -182,9 +218,9 @@ void read_HW_serial()
 
 void authenticate()
 /*
-  checks bytes 1-5 of the incoming dta array to make sure 
- that the authentication code matches
- */
+	checks bytes 1-5 of the incoming dta array to make sure 
+ 	that the authentication code matches
+ 	*/
 {
   authenticated = false;
   if(inArray[1] == code_1 && inArray[2] == code_2 && inArray[3] == code_3 && inArray[4] == code_4 && inArray[5] == code_5)
@@ -200,8 +236,8 @@ void authenticate()
 void process()
 {
   /*
-   Begins processing the incoming string
-   */
+	Begins processing the incoming string
+   	*/
   // Nano Commands
 
     if(authenticated == true){
@@ -257,18 +293,18 @@ void process()
       if(inArray[9] == 0x31)
       {
         digitalWrite(lock_pin, LOW);
-		EEPROM.write(remote_lock,0);
+        EEPROM.write(remote_lock,0);
         Serial.println("Remote Lock");
       }
       if(inArray[9] == 0x30)
       {
         digitalWrite(lock_pin, HIGH);
-		EEPROM.write(remote_lock,1);
+        EEPROM.write(remote_lock,1);
         Serial.println("Remote Unlock");
       }
     }
 
-	//Camera Commands
+    //Camera Commands
     if(inArray[6] == cmd_comms_write_cameramove[6] && inArray[7] == cmd_comms_write_cameramove[7] && inArray[8] == cmd_comms_write_cameramove[8]) //Move the camera around
     {
       int i;
@@ -325,23 +361,23 @@ void process()
       if(serial_mega.available()>5){ //if there is enough data in the buffer
 
         while(inData != start_byte) //while inData is not the start byte
-		{
-			inData = serial_mega.read(); //read from the buffer and store as inData
-		}
-		if(inData != stop_byte) //if inData is not the stop byte
-		{
-			while(inData != stop_byte) //then while it's not
-			{
-				Serial.write(inData); //write the value to the computer via the hardware serial port
-				inData = serial_mega.read(); //and read the next value in the buffer
-			}
+        {
+          inData = serial_mega.read(); //read from the buffer and store as inData
+        }
+        if(inData != stop_byte) //if inData is not the stop byte
+        {
+          while(inData != stop_byte) //then while it's not
+          {
+            Serial.write(inData); //write the value to the computer via the hardware serial port
+            inData = serial_mega.read(); //and read the next value in the buffer
+          }
         }
         Serial.println(" ");
       }
       serial_gps.listen();
     }
 
-	if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7]) //Writing button presses to the Mega. The string from the computer will already be in the correct format to be processed by the Mega so all we need to do is fwrd it on
+    if(inArray[6] == cmd_mega_write[6] && inArray[7] == cmd_mega_write[7]) //Writing button presses to the Mega. The string from the computer will already be in the correct format to be processed by the Mega so all we need to do is fwrd it on
     {
       serial_mega.listen();
       serial_mega.write(start_byte);
@@ -369,6 +405,7 @@ void process()
     }
   }
 }
+
 
 
 
