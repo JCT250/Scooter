@@ -152,10 +152,15 @@ void serial_gsm_receive()
         float flat, flon;
         unsigned long age;
         gps.f_get_position(&flat, &flon, &age);
-        serial_gsm.print("LAT=");
         serial_gsm.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
-        serial_gsm.print(" LON=");
+        serial_gsm.print("+");
         serial_gsm.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        
+        Serial.println("Written to GSM");
+        Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+        Serial.print("+");
+        Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        Serial.println();
       }
     }
   }
