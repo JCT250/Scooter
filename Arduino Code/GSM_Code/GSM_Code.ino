@@ -2,7 +2,7 @@
 char inchar;
 
 SoftwareSerial serial_gsm(3, 2); // RX, TX
-char Str1[50];
+char Str1[50]; // used to store incoming message from the comms nano
 int LED = 13;
 
 void setup()  
